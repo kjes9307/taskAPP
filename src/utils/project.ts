@@ -2,14 +2,8 @@ import {useQuery,useMutation, QueryKey } from 'react-query';
 import {cleanObject} from 'utils';
 import {useHttp} from 'utils/request';
 import { useAddConfig, useEditConfig } from './use-optimistic-options';
-interface DataType {
-    id?:string,
-    _id?:string,
-    name?:string,
-    done?:boolean
-    todoList? : DataType[]
-    status?:boolean
-}
+import {DataType} from 'utils/type'
+
 export const useProject = (param?:Partial<DataType>) =>{
     const client = useHttp() ;
     // 第一參數為 監控key值

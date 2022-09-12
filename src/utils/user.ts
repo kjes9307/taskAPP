@@ -1,12 +1,9 @@
 import {useQuery } from 'react-query';
 import {cleanObject} from 'utils';
 import {useHttp} from 'utils/request';
+import {UserDataType} from 'utils/type'
 
 
-interface UserDataType {
-    id?:string,
-    name?:string,
-}
 export const useUserInfo = (param?:Partial<UserDataType>) =>{
     const client = useHttp() ;
     // 第一參數為 監控key值

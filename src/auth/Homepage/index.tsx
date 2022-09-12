@@ -5,27 +5,9 @@ import { useUrlQueryParam } from 'utils/url';
 import { useProject } from 'utils/project';
 import {useUserInfo} from 'utils/user';
 import {useProjectModal} from 'component/useModal'
+import {DataType,ItemProps,UserDataType} from 'utils/type';
 
-interface DataType {
-    id?:string,
-    _id?:string,
-    name?:string,
-    done?:boolean
-    todoList? : DataType[]
-    status?:boolean
-}
-type ItemProps = {
-    item: DataType
-    id?: string
-    _id?: string
-    key?: string
-    status?:boolean
-    index?: number
-}
-interface UserDataType {
-    _id?:string,
-    name?:string,
-}
+
 type IfuncProps = {
     searchItem:(newObj:{name:string})=>void
     userList: UserDataType[]
