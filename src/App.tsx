@@ -1,24 +1,15 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import './App.scss';
+import {UnAuthScreen} from "unauth"
+import { useAuth } from 'context/userContext';
+import {Main} from "auth";
 
 function App() {
+  // 若需要user 資訊則從useAuth 取得
+  const {user} = useAuth()
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.tsx</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
+      {user? <Main /> :<UnAuthScreen />}
     </div>
   );
 }

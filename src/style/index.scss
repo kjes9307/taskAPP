@@ -1,0 +1,38 @@
+@import "../../node_modules/bootstrap/scss/functions";
+@import "./helpers/variables";
+@import "../../node_modules/bootstrap/scss/bootstrap";
+
+@import "./base/customereset";
+@import "./abstracts/selfclass";
+@import "./layout/header";
+@import "./pages/login";
+@import "./pages/home";
+@import "./component/menu";
+$utilities: map-merge(
+  $utilities, (
+    "font-size": map-merge(
+      map-get($utilities, "font-size"),
+      ( responsive: true ),
+    ),
+  )
+);
+.navbar-toggler-icon{
+  display: none !important;
+  background-image: none !important;
+}
+.customize{
+  a{
+    color: #772400 !important;
+  }
+}
+
+
+
+
+
+
+
+
+
+
+
