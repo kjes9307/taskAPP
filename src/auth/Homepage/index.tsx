@@ -5,14 +5,9 @@ import { useUrlQueryParam } from 'utils/url';
 import { useProject } from 'utils/project';
 import {useUserInfo} from 'utils/user';
 import {useProjectModal} from 'component/useModal'
-import {DataType,ItemProps,UserDataType} from 'utils/type';
+import {DataType,ItemProps,IfuncProps} from 'utils/type';
 
-
-type IfuncProps = {
-    searchItem:(newObj:{name:string})=>void
-    userList: UserDataType[]
-}
-export const SearchItem =(props:Pick<IfuncProps,"searchItem"|'userList'>) =>{
+export const SearchItem =(props:IfuncProps) =>{
     const [search,setOpen] = useState(false)
     const {open}=useProjectModal()
     const setSearchParam = (value:string) =>{
@@ -30,11 +25,11 @@ export const SearchItem =(props:Pick<IfuncProps,"searchItem"|'userList'>) =>{
                     <span onClick={()=>{setOpen(!search);setSearchParam('')}} style={{cursor:"pointer"}} className="material-symbols-outlined ms-3">
                             search
                     </span>
-                    <Form.Select aria-label="Default select example" className='ms-3' onChange={(e)=>console.log(e.target.value)}>
-                    <option value="0">建立者</option>
+                    <Form.Select aria-label="Default select example" className='ms-3' onChange={(e)=>props.searchItem({...props.param,personId: e.target.value ==='0'? undefined : e.target.value })}>
+                    <option value={'0'}>建立者</option>
                     {
                         props.userList?.map(i=>(
-                            <option key={i._id}>{i.name}</option>
+                            <option value={i._id} key={i._id}>{i.name}</option>
                         )) || <option key='1'>未知</option>
                     }
                     </Form.Select>
@@ -55,7 +50,7 @@ export const SearchItem =(props:Pick<IfuncProps,"searchItem"|'userList'>) =>{
     )
 }
 export const ContainBox =(props: DataType) =>{
-    const {todoList} =props
+    const {todoList,userList} =props
     return (
         <>
         <Table hover>
@@ -70,11 +65,13 @@ export const ContainBox =(props: DataType) =>{
             <tbody>
                 {
                     todoList?.length !== 0 ? todoList?.map((item,idx)=>{
+                        
                         return (
                             <ContainItem 
                               item={item} 
                               key={item._id}
                               index={idx}
+                              creator = {userList?.find(x=> x._id === item.personId)?.name || '未知'}
                             />
                         )
                     })
@@ -86,14 +83,14 @@ export const ContainBox =(props: DataType) =>{
     )
 }
 export const ContainItem = (props:ItemProps) =>{
-    const {item,index} =props
+    const {item,index,creator} =props
     const {starEdit}=useProjectModal()
     return (
         <tr className="fs-6 lh-base p-3 text-center">
             <th scope="row">
             #{index as number +1}</th>
             <td>{item?.name}</td>
-            <td></td>
+            <td>{creator}</td>
             <td className="px-0 d-flex justify-content-center">
             <span className="material-symbols-outlined" style={{cursor:"pointer"}}>
             stars
@@ -110,17 +107,17 @@ export const Task = () =>{
     const debounceParam = useDebounce(param,1000)
     const {isLoading,data:todo} = useProject(debounceParam)
     const {data:userList} = useUserInfo();
-    const searchItem = (newObj:{name:string}) =>{
+    const searchItem = (newObj:{name?:string,personId?:string}) =>{
         setParam(newObj);
     }
     return (
         <>
         
         <Container fluid="md">  
-        <SearchItem userList={userList || []} searchItem={searchItem} />
+        <SearchItem userList={userList || []} searchItem={searchItem} param={param} />
             <Row className='justify-content-center'>
                 <Col md="12">
-                <ContainBox todoList={todo || []} />
+                <ContainBox todoList={todo || []} userList={userList|| []} />
                 </Col>
             </Row>         
         </Container>

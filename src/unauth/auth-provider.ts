@@ -3,7 +3,7 @@ import { AuthForm } from "context/userContext";
 const apiUrl = process.env.REACT_APP_API_URL;
 
 const localStorageKey = "auth_provider_token";
-const localStorageKey1 = "__auth_provider_user__";
+const localStorageKey1 = "auth_provider_user";
 
 export const getToken = () => {
   let token = localStorage.getItem(localStorageKey);
