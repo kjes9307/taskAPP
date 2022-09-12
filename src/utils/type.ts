@@ -6,7 +6,7 @@ export interface DataType {
     personId?: string
 }
 export type ItemProps = {
-    item: DataType
+    item: Partial<DataType>
     index?: number
     creator? : string
 }
@@ -17,7 +17,7 @@ export interface UserDataType {
 }
 
 export type IfuncProps = {
-    searchItem:(newObj:{name?:string,personId?:string})=>void
+    searchItem:(newObj:Pick<DataType,'name'|'personId'>)=>void
     userList: UserDataType[]
-    param: {name?:string,personId?:string}
+    param: Partial<UserDataType>
 }
