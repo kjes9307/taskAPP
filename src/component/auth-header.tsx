@@ -26,7 +26,7 @@ export const AuthHeader = () =>{
     </Navbar>
     <Container fluid="md" className='mb-md-3 mb-lg-7'>
     <section className='d-md-flex justify-content-md-between align-items-md-center flex-md-row-reverse bg-light'>
-        <img src="images/campaign-creators-gMsnXqILjp4-unsplash.jpg" alt="" className='home-brand-img' />
+        <img src="/images/campaign-creators-gMsnXqILjp4-unsplash.jpg" alt="" className='home-brand-img' />
         <div className='text-secondary text-center mt-2'>
             <h1>任務管理</h1>
             <p>幫助您完成任務</p>

@@ -15,7 +15,7 @@ export const UnAuthScreen = () => {
         <UnAuthHeader />
         <Row>
           <Col lg={5}>
-          <img src='images/joseph-gonzalez-zcUgjyqEwe8-unsplash.jpg' alt="images" className="d-none d-lg-inline login-img" />
+          <img src='/images/joseph-gonzalez-zcUgjyqEwe8-unsplash.jpg' alt="images" className="d-none d-lg-inline login-img" />
           </Col>
           <Col lg={7} className="d-lg-flex justify-content-center flex-column">
             {mode?<LoginForm setMode={setModeChange} /> : <RegisterForm setMode={setModeChange} />}

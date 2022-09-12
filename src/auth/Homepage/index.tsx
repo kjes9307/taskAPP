@@ -1,5 +1,6 @@
 import {Container, Row, Col, Table, Form , InputGroup } from 'react-bootstrap';
 import React, {  useState }  from 'react'
+import {Link} from 'react-router-dom'
 import { useDebounce  } from 'utils';
 import { useProjectsSearchParams } from 'utils/url';
 import { useProject } from 'utils/project';
@@ -11,7 +12,7 @@ export const SearchItem =(props:IfuncProps) =>{
     const [search,setOpen] = useState(false)
     const {open}=useProjectModal()
     const setSearchParam = (value:string) =>{
-        props.searchItem({name: value})
+        props.searchItem({...props.param,name: value})
     }
     return (
         <section className='bg-brand-color py-1'>
@@ -58,7 +59,7 @@ export const ContainBox =(props: DataType) =>{
     const {todoList,userList} =props
     return (
         <>
-        <Table hover>
+        <Table hover className='text-dark'>
             <thead>
             <tr className='text-center'>
                 <th className='d-none d-sm-block'>ID</th>
@@ -90,26 +91,37 @@ export const ContainBox =(props: DataType) =>{
 export const ContainItem = (props:ItemProps) =>{
     const {item,index,creator} =props
     const {starEdit}=useProjectModal()
+    const checkedClass = item.pin ? "material-symbols-outlined brand-color" : "material-symbols-outlined "
     return (
-        <tr className="fs-6 lh-base p-3 text-center">
+        <tr className="fs-6 text-center">
             <th scope="row" className='d-none d-sm-block'>
             #{index as number +1}</th>
-            <td>{item?.name}</td>
+            <td><Link to={`task/${item._id}`} className="text-decoration-none">{item?.name}</Link></td>
             <td>{creator}</td>
-            <td className="px-0 d-flex justify-content-center">
-            <span className="material-symbols-outlined" style={{cursor:"pointer"}}>
-            stars
-            </span>
-            <span onClick={()=> starEdit(item?._id || '')}  className="material-symbols-outlined ms-4" style={{cursor:"pointer"}}>
-                edit
-            </span>
+            <td>
+            <div className="d-flex justify-content-center">
+                <span 
+                    onClick={()=>console.log("checked",item._id)}
+                    className={checkedClass}
+                    style={{cursor:"pointer"}}
+                >
+                stars
+                </span>
+                <span 
+                    onClick={()=> starEdit(item?._id || '')}  
+                    className="material-symbols-outlined ms-4" 
+                    style={{cursor:"pointer"}}
+                >
+                    edit
+                </span>
+            </div>
             </td>
         </tr>
     )
 }
 export const Task = () =>{
     const [param,setParam] = useProjectsSearchParams()
-    const {isLoading,data:todo} = useProject(useDebounce(param,1000))
+    const {data:todo} = useProject(useDebounce(param,1000))
     const {data:userList} = useUserInfo();
     const searchItem = (newObj:{name?:string,personId?:string}) =>{
         setParam(newObj);

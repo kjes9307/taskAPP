@@ -4,6 +4,7 @@ export interface DataType {
     todoList? : DataType[]
     userList? : UserDataType[]
     personId?: string
+    pin?:boolean
 }
 export type ItemProps = {
     item: Partial<DataType>
