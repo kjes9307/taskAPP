@@ -14,6 +14,7 @@ export type ItemProps = {
 export interface UserDataType {
     _id?:string,
     name?:string,
+    personId?:string
 }
 
 export type IfuncProps = {

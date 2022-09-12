@@ -1,7 +1,7 @@
 import {Container, Row, Col, Table, Form , InputGroup } from 'react-bootstrap';
 import React, {  useState }  from 'react'
 import { useDebounce  } from 'utils';
-import { useUrlQueryParam } from 'utils/url';
+import { useProjectsSearchParams } from 'utils/url';
 import { useProject } from 'utils/project';
 import {useUserInfo} from 'utils/user';
 import {useProjectModal} from 'component/useModal'
@@ -25,7 +25,12 @@ export const SearchItem =(props:IfuncProps) =>{
                     <span onClick={()=>{setOpen(!search);setSearchParam('')}} style={{cursor:"pointer"}} className="material-symbols-outlined ms-3">
                             search
                     </span>
-                    <Form.Select aria-label="Default select example" className='ms-3' onChange={(e)=>props.searchItem({...props.param,personId: e.target.value ==='0'? undefined : e.target.value })}>
+                    {/* value: 預設值 刷新的時候 不會反白  */}
+                    <Form.Select 
+                        value={props.param.personId? props.param.personId : '0'} 
+                        aria-label="Default select example" className='ms-3' 
+                        onChange={(e)=>props.searchItem({...props.param,personId: e.target.value ==='0'? undefined : e.target.value })}
+                    >
                     <option value={'0'}>建立者</option>
                     {
                         props.userList?.map(i=>(
@@ -56,7 +61,7 @@ export const ContainBox =(props: DataType) =>{
         <Table hover>
             <thead>
             <tr className='text-center'>
-                <th>ID</th>
+                <th className='d-none d-sm-block'>ID</th>
                 <th>任務名稱</th>
                 <th>建立者</th>
                 <th>動作</th>
@@ -87,7 +92,7 @@ export const ContainItem = (props:ItemProps) =>{
     const {starEdit}=useProjectModal()
     return (
         <tr className="fs-6 lh-base p-3 text-center">
-            <th scope="row">
+            <th scope="row" className='d-none d-sm-block'>
             #{index as number +1}</th>
             <td>{item?.name}</td>
             <td>{creator}</td>
@@ -103,9 +108,8 @@ export const ContainItem = (props:ItemProps) =>{
     )
 }
 export const Task = () =>{
-    const [param,setParam] = useUrlQueryParam(['name','personId']);
-    const debounceParam = useDebounce(param,1000)
-    const {isLoading,data:todo} = useProject(debounceParam)
+    const [param,setParam] = useProjectsSearchParams()
+    const {isLoading,data:todo} = useProject(useDebounce(param,1000))
     const {data:userList} = useUserInfo();
     const searchItem = (newObj:{name?:string,personId?:string}) =>{
         setParam(newObj);

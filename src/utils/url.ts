@@ -23,6 +23,17 @@ export const useUrlQueryParam = <K extends string>(keys:K[] ) =>{
     
     ] as const
 }
+export const useProjectsSearchParams = () => {
+  const [param, setParam] = useUrlQueryParam(["name", "personId"]);
+  return [
+    useMemo(
+      // personId is not number here
+      () => ({ ...param, personId: param.personId || undefined }),
+      [param]
+    ),
+    setParam,
+  ] as const;
+};
 
 
 // 使用K的原因是 讓返回值滿足param 需求
@@ -49,14 +60,3 @@ export const useUrlQueryParam = <K extends string>(keys:K[] ) =>{
 
 
    
-export const useProjectsSearchParams = () => {
-    const [param, setParam] = useUrlQueryParam(["name", "personId"]);
-    return [
-      useMemo(
-        () => ({ ...param, personId: Number(param.personId) || undefined }),
-        [param]
-      ),
-      setParam,
-    ] as const;
-  };
-  

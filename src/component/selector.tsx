@@ -9,7 +9,7 @@ interface IselectProps{
     value : string | number | null | undefined
     onChange : (value?:number) => void
     defaultOptionName?: string;
-    options?: { name: string; id: number }[];
+    options?: { name: string; _id: string }[];
 }
 // value 可傳入多種值
 // onChange只會return number | undefined
@@ -27,7 +27,7 @@ export const IdSelect = (props: IselectProps) => {
           <option value={0}>{defaultOptionName}</option>
         ) : null}
         {options?.map((option) => (
-          <option key={option.id} value={option.id}>
+          <option key={option._id} value={option._id}>
             {option.name}
           </option>
         ))}

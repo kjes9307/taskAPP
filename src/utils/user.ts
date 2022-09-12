@@ -1,5 +1,5 @@
 import {useQuery } from 'react-query';
-import {cleanObject} from 'utils';
+// import {cleanObject} from 'utils';
 import {useHttp} from 'utils/request';
 import {UserDataType} from 'utils/type'
 
