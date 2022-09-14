@@ -23,3 +23,24 @@ export type IfuncProps = {
     userList: UserDataType[]
     param: Partial<UserDataType>
 }
+
+export interface Kanban {
+    id: number;
+    name: string;
+    projectId: number;
+  }
+
+  export interface Task {
+    id: number;
+    name: string;
+    // 经办人
+    processorId: number;
+    projectId: number;
+    // 任务组
+    epicId: number;
+    kanbanId: number;
+    // bug or task
+    typeId: number;
+    note: string;
+  }
+  

@@ -1,4 +1,5 @@
 import React, {  useEffect ,ReactNode} from "react";
+import { useQueryClient } from "react-query";
 import * as auth from "unauth/auth-provider";
 import {useAsync} from 'utils/use-async';
 
@@ -32,6 +33,7 @@ const iniUser = async() =>{
     return result? {name} as UserResponse : null
 }
 export const AppProvider = ({ children }: { children: ReactNode }) => {
+    const queryClient = useQueryClient()
     const {setData,isError,isLoading,isIdle,run, data:user} = useAsync<UserResponse|null>()
     // return Provider內部函數
     const appLogin = async({email, password}:AuthForm) => {
@@ -46,6 +48,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         console.log("@logout")
         setData(null);
         auth.logout();
+        queryClient.clear()
     }
     useEffect(()=>{
         run(iniUser())
