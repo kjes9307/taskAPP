@@ -3,7 +3,7 @@ import {cleanObject} from 'utils';
 import {useHttp} from 'utils/request';
 import { useAddConfig, useEditConfig } from './use-optimistic-options';
 import {DataType} from 'utils/type'
-
+// useQuery(key , promise)
 export const useProject = (param?:Partial<DataType>) =>{
     const client = useHttp() ;
     // 第一參數為 監控key值
@@ -13,7 +13,6 @@ export const useProject = (param?:Partial<DataType>) =>{
 
 export const useEditName = (queryKey :QueryKey) => {
     const client = useHttp();
-
     return useMutation((params:Partial<DataType>) =>  client(`task/editProject/${params._id}`, {
             data: params,
             method: "PATCH",

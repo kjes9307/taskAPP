@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import { Modal, Button } from "react-bootstrap";
 import {useProjectModal,useProjectsQueryKey} from 'component/useModal'
 import { useAddName,useEditName } from "utils/project";

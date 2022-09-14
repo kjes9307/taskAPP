@@ -18,6 +18,7 @@ export const useConfig = (
       });
       return { previousItems };
     },
+    // roll back
     onError(error: any, newItem: any, context: any) {
       queryClient.setQueryData(queryKey, context.previousItems);
     },
@@ -34,8 +35,7 @@ export const useEditConfig = (queryKey: QueryKey) =>
     queryKey,
     (target, old) =>
       old?.map((item) =>{
-       if(item._id === target._id) console.log({ ...item, ...target })
-       return (item._id === target._id ? { ...item, ...target } : item)
+       return (item._id === target._id ? { item, ...target } : item)
       }
     ) || []
   );
