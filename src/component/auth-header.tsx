@@ -1,4 +1,5 @@
 import {Container, Nav ,Navbar ,NavDropdown} from 'react-bootstrap'
+import { Link } from 'react-router-dom';
 import { useAuth } from 'context/userContext';
 
 export const AuthHeader = () =>{
@@ -7,7 +8,7 @@ export const AuthHeader = () =>{
     <>
     <Navbar bg="white" expand="lg" className="mb-md-3 mb-lg-7">
       <Container fluid="md" >
-        <Navbar.Brand href="#" className='brand-color bg-brand-font fs-2'>PROJECT</Navbar.Brand>
+        <Navbar.Brand href="#" className='brand-color bg-brand-font fs-2'><Link to="/" className='text-decoration-none'>PROJECT</Link></Navbar.Brand>
         <Navbar.Toggle aria-controls="navbarScroll" className='border-0 fas fa-bars fa-2x brand-color' />
         <Navbar.Collapse id="navbarScroll">
           <Nav

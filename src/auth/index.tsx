@@ -21,7 +21,7 @@ export const Main =() =>{
                     <Route path='task/:id' element={<Board />}>
                         <Route path='Epic' element={<Epic />} />
                         <Route path='Event' element={<TaskBoard />} /> 
-                        <Route index element={<Epic />} />
+                        <Route index element={<TaskBoard />} />
                     </Route>
                 </Routes>
             <ProjectModal projectModalOpen={false} />
