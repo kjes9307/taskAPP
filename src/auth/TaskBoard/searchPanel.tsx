@@ -1,6 +1,5 @@
-import React from "react";
 import {Container,Form,Row,Col,Button} from 'react-bootstrap'
-import { Path, useForm, UseFormRegister, SubmitHandler } from "react-hook-form";
+import { useForm, SubmitHandler } from "react-hook-form";
 import {cleanObject} from 'utils'
 import {useTaskSearchParam} from './util'
 interface IFormValues {
@@ -18,7 +17,14 @@ export const SearchPanel = () => {
     let res= {...data}
     console.log(cleanObject(res))
   };
-
+  const reset = () =>{
+    setPanelParam({
+        type: undefined,
+        status: undefined,
+        taskName: undefined,
+    });
+  }
+  const {type,status,taskName} = param
   return (
     <Container fluid='md' className="mb-3">
     <Row>
@@ -30,7 +36,8 @@ export const SearchPanel = () => {
         className="d-flex align-items-center">
         <Form.Control 
             {...register('taskName')} 
-            type="text" 
+            type="text"
+            value={taskName || ''}
             placeholder="任務名" 
             onChange={(e)=>setPanelParam({...param,taskName:e.target.value})}
             />
@@ -38,7 +45,7 @@ export const SearchPanel = () => {
     <Form.Select 
         {...register("Status")} 
         className="w-100p ms-3 h-25p" 
-        defaultValue={''} 
+        value={status || ''} 
         aria-label="Default select example"
         onChange={(e)=>setPanelParam({...param,status:e.target.value})}
         >
@@ -50,7 +57,7 @@ export const SearchPanel = () => {
     <Form.Select 
         {...register("type")} 
         className="w-100p ms-3 h-25p" 
-        defaultValue={""} 
+        value={type || ''} 
         aria-label="Default select example"
         onChange={(e)=>setPanelParam({...param,type:e.target.value})}
         >
@@ -61,6 +68,7 @@ export const SearchPanel = () => {
         </Form.Select>
       {/* <Select label="負責人" {...register("owner")} /> */}
       <Button type="submit" children='Search' className="ms-4" />
+      <Button type="reset" children='Reset' className="ms-4" onClick={()=> reset()} />
       </div>
     </form>
     </Col>
