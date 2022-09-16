@@ -15,6 +15,9 @@ export const Main =() =>{
     
     return (
         <BrowserRouter>
+            {/* <aside className='position-fixed w-40 h-100 bg-color bg-opacity-25'>
+                123
+            </aside> */}
             <AuthHeader />
                 <Routes>
                     <Route index element={<Task />} ></Route>
