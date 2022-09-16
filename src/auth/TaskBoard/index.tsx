@@ -1,13 +1,14 @@
 import { Container,Row,Col } from 'react-bootstrap';
 import {useBoardData} from './util'
 import { CardItem } from './cardItem';
+import { SearchPanel } from './searchPanel';
 export const TaskBoard = ()=>{
   const {data} = useBoardData();
-  console.log(data);
   return (
     <>
     <Container fluid='md' className='overflow-hidden'>
     <h1>TaskBoard</h1>
+    <SearchPanel />
     <Row className='justify-content-start flex-nowrap scroll-kanban'>
     
     {

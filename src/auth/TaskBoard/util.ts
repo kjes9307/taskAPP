@@ -1,7 +1,8 @@
 import { useLocation } from 'react-router'
 import { useQuery } from 'react-query';
+import {useMemo} from 'react';
 import { useHttp } from 'utils/request';
-
+import {useUrlQueryParam} from 'utils/url'
 export const useProjectIdInUrl = () => {
   const { pathname } = useLocation();
   let arr = pathname.split('/')
@@ -27,5 +28,16 @@ export const useBoardData = () =>{
     enabled: Boolean(id),
     select: (data) => data || []
   })
+}
+
+export const useTaskSearchParam = () =>{
+  const id = useProjectIdInUrl();
+  const [param,setTaskSearchParam] = useUrlQueryParam(['status','type','taskName'])
+  return [useMemo(() => ({
+    "type": param.type || undefined,
+    "status": param.status || undefined,
+    "taskName": param.taskName || undefined
+  }), [param,id]),
+  setTaskSearchParam] as const
 }
 
