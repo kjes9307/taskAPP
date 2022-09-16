@@ -25,6 +25,16 @@ $utilities: map-merge(
     color: #772400 !important;
   }
 }
+.scroll-kanban{
+  overflow-x: auto;
+}
+.scroll-task{
+  overflow: scroll;
+  flex: 1;
+  ::-webikit-scrollbar {
+    display: none;
+  }
+}
 
 
 

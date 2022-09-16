@@ -8,21 +8,24 @@ export const useProjectIdInUrl = () => {
   const id = arr[2];
   return id;
 };
-export interface Iprops extends ColumnType  {
-  alltask: []
+export interface Iprops<K>{
+  alltask: K[]
+  kanbanName: string
+  projectId: string
+  _id: string
 }
 export interface ColumnType {
-  taskName : string;
-  status: 'idle' | 'ongoing' | 'done';
-  type: string;
+    taskName : string,
+    status: string,
+    type: string,
 }
 export const useBoardData = () =>{
   const id = useProjectIdInUrl();
   const client = useHttp() ;
-  return useQuery<Iprops[]>(['task/getKanBan',id],()=>client(`task/getKanBan/${id}`),
+  return useQuery<Iprops<ColumnType>[]>(['task/getKanBan',id],()=>client(`task/getKanBan/${id}`),
   {
     enabled: Boolean(id),
-    select: (data) => data?.[0].alltask || []
+    select: (data) => data || []
   })
 }
 

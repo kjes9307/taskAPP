@@ -6,35 +6,26 @@ export const TaskBoard = ()=>{
   console.log(data);
   return (
     <>
-    <Container fluid="md">
+    <Container fluid='md' className='overflow-hidden'>
     <h1>TaskBoard</h1>
-    <Row className='justify-content-between'>
-    <Col lg="4" className='bg-light py-3'>
-    <h2 className='text-center'>Idle</h2>
+    <Row className='justify-content-start flex-nowrap scroll-kanban'>
+    
     {
       data?.map((item)=> {
-      if(item.status == 'idle')
-        return <CardItem type={item.type} status={item.status} taskName={item.taskName}></CardItem>
-      })
+        return (
+        <Col lg="3" className='bg-light py-4 me-3'>
+        <div id={item._id}>
+        <h2 className='text-center'>{item.kanbanName}</h2>
+        {item.alltask.map(x=>
+          <CardItem type={x.type} status={x.status} taskName={x.taskName}></CardItem>
+          )
+        }
+        </div>
+        </Col>)
+      }) 
     }
-    </Col>
-    <Col lg="4" className='bg-light py-3'>
-    <h2 className='text-center'>Ongoing</h2>
-    {
-      data?.map((item)=> {
-      if(item.status == 'ongoing')
-        return <CardItem type={item.type} status={item.status} taskName={item.taskName}></CardItem>
-      })
-    }
-    </Col>
-    <Col lg="4" className='bg-light py-3'>
-    <h2 className='text-center'>Done</h2>
-    {
-      data?.map((item)=> {
-      if(item.status == 'done')
-        return <CardItem type={item.type} status={item.status} taskName={item.taskName}></CardItem>
-      })
-    }
+    <Col lg="2" className='bg-light py-3 me-1'>
+    <h2 className='text-center'>Add</h2>
     </Col>
     </Row>
     </Container>
