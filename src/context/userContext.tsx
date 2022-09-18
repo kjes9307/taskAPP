@@ -28,7 +28,6 @@ const iniUser = async() =>{
     let {token,name} = auth.getToken()
     if(token){
         result = await auth.checkToken(token)
-        // console.log(result);
     }
     return result? {name} as UserResponse : null
 }

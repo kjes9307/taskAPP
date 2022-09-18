@@ -28,13 +28,12 @@ $utilities: map-merge(
   }
 }
 .scroll-kanban{
-  overflow-x: auto;
-}
-.scroll-task{
-  overflow: scroll;
+  overflow-x: auto !important;
+  z-index: 10;
+  scroll-behavior: smooth;
   flex: 1;
-  ::-webikit-scrollbar {
-    display: none;
+  &::-webkit-scrollbar{
+    display: none ;
   }
 }
 

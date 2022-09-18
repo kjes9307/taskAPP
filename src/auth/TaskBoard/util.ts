@@ -1,6 +1,5 @@
 import { useLocation } from 'react-router'
-import { useQuery } from 'react-query';
-import qs from "qs";
+import { useMutation, useQuery } from 'react-query';
 import {useMemo} from 'react';
 import { useHttp } from 'utils/request';
 import {useUrlQueryParam} from 'utils/url'
@@ -12,10 +11,11 @@ export const useProjectIdInUrl = () => {
   return id;
 };
 export interface Iprops<K>{
-  alltask: K[]
+  alltask?: K[] | []
   kanbanName: string
-  projectId: string
-  _id: string
+  projectId?: string
+  _id?: string
+  creator?:string
 }
 export interface ColumnType {
     taskName : string,
@@ -49,3 +49,12 @@ export const useTaskSearchParam = () =>{
   setTaskSearchParam] as const
 }
 
+export const useAddKanban = () =>{
+  const client = useHttp()
+  const projectId = useProjectIdInUrl();
+  return useMutation((params:Iprops<ColumnType>) =>  client(`task/addKanBan`, {
+    data: {...params,projectId},
+    method: "POST",
+  })
+  ) 
+}

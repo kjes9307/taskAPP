@@ -52,8 +52,8 @@ export const register = (data: AuthForm) => {
   });
 };
 
-export const checkToken = (data:string) => {
-  return fetch(`${apiUrl}/user/checkToken`, {
+export const checkToken = async (data:string) => {
+  return await fetch(`${apiUrl}/user/checkToken`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -64,7 +64,9 @@ export const checkToken = (data:string) => {
       let res = await response.json()
       return res;
     } else {
-      return Promise.reject(response.json());
+      let res = await response.json()
+      console.log(res)
+      return Promise.reject(res);
     }
   });
 };
