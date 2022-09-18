@@ -13,7 +13,7 @@ type switchModeParam = {
 export const LoginForm = (props:switchModeParam) => {
   const {appLogin} = useAuth(); // user 登入系統
   const {run,isLoading} = useAsync(undefined,{throwError:true}); // 處理所有異步請求 & 執行狀態
-  const [errorInfo,setMsg] = useState<{msg:string}|null>(null);
+  const [errorInfo,setMsg] = useState<{message:string}|null>(null);
 
   const { register, handleSubmit, formState: { errors } } = useForm<LoginInputs>();
   const onSubmit: SubmitHandler<LoginInputs> = async data => {
@@ -60,7 +60,7 @@ export const LoginForm = (props:switchModeParam) => {
             </Spinner> :
             null
           }
-          <div className="text-danger fs-4">{ errorInfo?.msg || null}</div>
+          <div className="text-danger fs-4">{ errorInfo?.message || null}</div>
       </div>
       <Button variant="primary" type="submit" className="w-100 login-btn mb-2">
         登入

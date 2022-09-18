@@ -3,12 +3,12 @@ import { Link } from 'react-router-dom';
 import { useAuth } from 'context/userContext';
 
 export const AuthHeader = () =>{
-    const {user} = useAuth()
+    const {user,appLogout} = useAuth()
     return (
     <>
     <Navbar bg="white" expand="lg" className="mb-md-3 mb-lg-7">
       <Container fluid="md" >
-        <Navbar.Brand href="#" className='brand-color bg-brand-font fs-2'><Link to="/" className='text-decoration-none'>PROJECT</Link></Navbar.Brand>
+        <Link to="/" className='text-decoration-none brand-color bg-brand-font fs-2'>PROJECT</Link>
         <Navbar.Toggle aria-controls="navbarScroll" className='border-0 fas fa-bars fa-2x brand-color' />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -19,7 +19,7 @@ export const AuthHeader = () =>{
             <Nav.Link href="#action1" className='text-secondary fs-6'>任務</Nav.Link>
             <NavDropdown title={user?.name} id="navbarScrollingDropdown" className='text-secondary customize ms-lg-3 fs-6'>
               <NavDropdown.Item href="#action2" className='text-secondary fs-6'>會員資料</NavDropdown.Item>
-              <NavDropdown.Item href="#action3" className='text-secondary fs-6'>登出</NavDropdown.Item>
+              <NavDropdown.Item className='text-secondary fs-6' onClick={appLogout}>登出</NavDropdown.Item>
             </NavDropdown>
           </Nav>
         </Navbar.Collapse>

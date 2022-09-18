@@ -39,8 +39,8 @@ export const http = (endStr:string,{data,token,headers,...config}:httpConfig ={}
       }else{
         // fetch 的catch 不會主動抱錯 所以需要 手動rejectt !?
         console.log("request Catch error")
-        let {msg} = await res.json()
-        return Promise.reject(msg);
+        let {message} = await res.json()
+        return Promise.reject(message);
       }
     })
 }

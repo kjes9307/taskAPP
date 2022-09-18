@@ -15,7 +15,7 @@ type switchModeParam = {
 export const RegisterForm = (props:switchModeParam) => {
   const {appRegister} = useAuth(); // user 登入系統
   const {run,isLoading} = useAsync(undefined,{throwError:true}); // 處理所有異步請求 & 執行狀態
-  const [errorInfo,setMsg] = useState<{msg:string}|null>(null);
+  const [errorInfo,setMsg] = useState<{message:string}|null>(null);
   const [regInfo,setInfo] = useState<string|undefined>(undefined);
   const { register, handleSubmit, getValues, formState: { errors } } = useForm<RegisterInputs>();
   const onSubmit: SubmitHandler<RegisterInputs> = async data => {
@@ -116,7 +116,7 @@ export const RegisterForm = (props:switchModeParam) => {
           { errorInfo!==null ? 
              <div className="text-danger d-flex align-items-center">
               <span className="material-symbols-outlined">error</span>
-              {errorInfo?.msg} </div>:null
+              {errorInfo?.message} </div>:null
           }
           { regInfo!==undefined ?
             <div className="brand-color d-flex align-items-center">

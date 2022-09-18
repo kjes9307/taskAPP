@@ -1,4 +1,5 @@
 import React, {  useEffect ,ReactNode} from "react";
+import { Button } from "react-bootstrap";
 import { useQueryClient } from "react-query";
 import * as auth from "unauth/auth-provider";
 import {useAsync} from 'utils/use-async';
@@ -22,18 +23,10 @@ const AuthContext = React.createContext<
         appLogout:()=> void;
     }
     |undefined>(undefined);
-const iniUser = async() =>{
-    console.log("iniUser")
-    let result = null;
-    let {token,name} = auth.getToken()
-    if(token){
-        result = await auth.checkToken(token)
-    }
-    return result? {name} as UserResponse : null
-}
+
 export const AppProvider = ({ children }: { children: ReactNode }) => {
     const queryClient = useQueryClient()
-    const {setData,isError,isLoading,isIdle,run, data:user} = useAsync<UserResponse|null>()
+    const {setData,isError,isLoading,isIdle,run, data:user,error} = useAsync<UserResponse|null>()
     // return Provider內部函數
     const appLogin = async({email, password}:AuthForm) => {
         console.log("@login")
@@ -49,14 +42,26 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         auth.logout();
         queryClient.clear()
     }
+    const iniUser = async() =>{
+        console.log("iniUser")
+        let result = null;
+        let {token,userid} = auth.getToken()
+        if(token){
+            result = await auth.checkToken({token,userid: userid as string});
+        }
+        return result.data as UserResponse || null
+    }
     useEffect(()=>{
         run(iniUser())
     },[])
     if(isIdle || isLoading){
         return <div>Loading</div>
     }
-    if(isError){
-        return <div>Error 404 !</div>
+    const isErrorCheck = (value: any): value is Error => value?.message;
+
+    if(isError && isErrorCheck(error)){
+        
+        return <div>Error 404 ! {error?.message} <Button onClick={appLogout}>返回重新登入頁面</Button></div>
     }
     //注意tsx 才能寫成AuthContext.Provider 
     return <AuthContext.Provider value={{appLogin,appRegister,appLogout,user}} children={children}></AuthContext.Provider>
