@@ -3,6 +3,7 @@ import { useState } from 'react';
 import {useBoardData,useAddKanban} from './util'
 import { CardItem } from './cardItem';
 import { SearchPanel } from './searchPanel';
+import {CreateTask} from './createTask';
 export const TaskBoard = ()=>{
   const {data,isLoading} = useBoardData();
   const {mutateAsync:addKanbanAsync,isError,error} = useAddKanban()
@@ -10,7 +11,6 @@ export const TaskBoard = ()=>{
   const [edit,setEdit] = useState(false);
 
   const handleKeyPress = async(e:React.KeyboardEvent<HTMLInputElement>)=>{
-
     if(e.key==='Enter') {
       let data = {kanbanName,allTask: []}
       await addKanbanAsync(data)
@@ -43,6 +43,7 @@ export const TaskBoard = ()=>{
             )
           }
           </div>
+          <CreateTask kanbanId = {item._id || ''} />
           </Col>)
         }) 
       }

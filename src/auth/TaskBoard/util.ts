@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router'
-import { useMutation, useQuery } from 'react-query';
+import { useMutation, useQuery, useQueryClient } from 'react-query';
 import {useMemo} from 'react';
 import { useHttp } from 'utils/request';
 import {useUrlQueryParam} from 'utils/url'
@@ -12,15 +12,16 @@ export const useProjectIdInUrl = () => {
 };
 export interface Iprops<K>{
   alltask?: K[] | []
-  kanbanName: string
+  kanbanName?: string
   projectId?: string
   _id?: string
   creator?:string
 }
 export interface ColumnType {
-    taskName : string,
-    status: string,
-    type: string,
+    taskName?: string,
+    status?: string,
+    type?: string,
+    kanbanId?:string
 }
 export type Iparams={
   [key:string]: unknown
@@ -52,9 +53,27 @@ export const useTaskSearchParam = () =>{
 export const useAddKanban = () =>{
   const client = useHttp()
   const projectId = useProjectIdInUrl();
+  const queryClient = useQueryClient()
+
   return useMutation((params:Iprops<ColumnType>) =>  client(`task/addKanBan`, {
     data: {...params,projectId},
     method: "POST",
-  })
+  }),{
+    onSuccess: () =>queryClient.invalidateQueries(`task/getKanBan`)
+  }
+  ) 
+}
+
+export const useAddTask = () =>{
+  const client = useHttp()
+  const projectId = useProjectIdInUrl();
+  const queryClient = useQueryClient()
+
+  return useMutation((params:ColumnType) =>  client(`task/addTask`, {
+    data: {...params,projectId},
+    method: "POST",
+  }),{
+    onSuccess: () =>queryClient.invalidateQueries(`task/getKanBan`)
+  }
   ) 
 }
