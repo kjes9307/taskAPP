@@ -49,7 +49,7 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
         if(token){
             result = await auth.checkToken({token,userid: userid as string});
         }
-        return result.data as UserResponse || null
+        return result?.data as UserResponse || null
     }
     useEffect(()=>{
         run(iniUser())
@@ -57,10 +57,8 @@ export const AppProvider = ({ children }: { children: ReactNode }) => {
     if(isIdle || isLoading){
         return <div>Loading</div>
     }
-    const isErrorCheck = (value: any): value is Error => value?.message;
-
+    const isErrorCheck = (value: any): value is Error => value? value?.message:'';
     if(isError && isErrorCheck(error)){
-        
         return <div>Error 404 ! {error?.message} <Button onClick={appLogout}>返回重新登入頁面</Button></div>
     }
     //注意tsx 才能寫成AuthContext.Provider 
