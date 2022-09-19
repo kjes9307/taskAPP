@@ -67,6 +67,18 @@ export const useAddKanban = () =>{
   ) 
 }
 
+export const useDeleteKanban = () =>{
+  const client = useHttp()
+  const queryClient = useQueryClient()
+
+  return useMutation((id:string) =>  client(`task/deleteKanBan/${id}`, {
+    data: {},
+    method: "DELETE",
+  }),{
+    onSuccess: () =>queryClient.invalidateQueries(`task/getKanBan`)
+  }
+  ) 
+}
 export const useAddTask = () =>{
   const client = useHttp()
   const projectId = useProjectIdInUrl();
@@ -74,7 +86,7 @@ export const useAddTask = () =>{
 
   return useMutation((params:ColumnType) =>  client(`task/addTask`, {
     data: {...params,projectId},
-    method: "PATCH",
+    method: "POST",
   }),{
     onSuccess: () =>queryClient.invalidateQueries(`task/getKanBan`)
   }
@@ -87,6 +99,18 @@ export const useEditTask = () =>{
   return useMutation((params:ColumnType) =>  client(`task/editTask`, {
     data: {...params},
     method: "PATCH",
+  }),{
+    onSuccess: () =>queryClient.invalidateQueries(`task/getKanBan`)
+  }
+  ) 
+}
+export const useDeleteTask = () =>{
+  const client = useHttp()
+  const queryClient = useQueryClient()
+
+  return useMutation((id:string) =>  client(`task/deleteTask/${id}`, {
+    data: {},
+    method: "DELETE",
   }),{
     onSuccess: () =>queryClient.invalidateQueries(`task/getKanBan`)
   }

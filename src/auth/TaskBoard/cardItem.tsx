@@ -1,8 +1,7 @@
 import React, {useState} from 'react'
-import { useForm, SubmitHandler } from "react-hook-form";
-import {Card,Modal,Spinner} from 'react-bootstrap'
+import {Card,Modal} from 'react-bootstrap'
 import { ColumnType,useTaskModel,useEditTask,useTaskSearchParam } from "./util"
-
+import { DeleteModal } from './deleteItem'
 const  TypeSelector =()=> {
   const SetType = (e:React.MouseEvent)=>{
     e.stopPropagation()
@@ -36,17 +35,28 @@ const Mark = ({name,keyword}:{name:string,keyword:string}) =>{
   </>
 }
 export const CardItem = (props:ColumnType) =>{
-    const {taskName,status,taskCreator,_id} = props
+    const {taskName,status,_id} = props
     const {startEdit} = useTaskModel()
     const [param]= useTaskSearchParam()
     const {taskName:keyword} = param
+    const handleShow = (e:React.MouseEvent)=>{
+      e.stopPropagation()
+  
+    }
     return (
       <>
       <Card  className="mx-auto mb-3 position-relative p-0" >
         <Card.Body style={{ cursor:"pointer" }} onClick={()=>startEdit(_id || '')}>
+        <div className='d-flex align-items-start justify-content-between'>
+          <div>
           <Card.Title><Mark keyword={keyword as string} name={taskName  as string} /></Card.Title>
           <Card.Subtitle className="mb-2 text-muted">{status}</Card.Subtitle>
+          </div>
+          <div className='d-flex align-items-center justify-content-center' style={{width:30,height:30 ,zIndex:10}} onClick={(e)=> handleShow(e)}>
+          <DeleteModal id={_id || ""} type='task' title={taskName || ""} />
+          </div>
           <TypeSelector />
+        </div>
         </Card.Body>
       </Card>
       
@@ -98,7 +108,6 @@ export const DetailModal = () =>{
         
       </Modal.Body>
       <Modal.Body>
-      
       <div>{status}</div>
       <div>{taskCreator?.name}</div>
       </Modal.Body>

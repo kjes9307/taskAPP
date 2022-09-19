@@ -4,6 +4,7 @@ import {useBoardData,useAddKanban} from './util'
 import { CardItem ,DetailModal } from './cardItem';
 import { SearchPanel } from './searchPanel';
 import {CreateTask} from './createTask';
+import {DeleteModal} from './deleteItem';
 export const TaskBoard = ()=>{
   const {data,isLoading} = useBoardData();
   const {mutateAsync:addKanbanAsync,isError,error} = useAddKanban()
@@ -36,7 +37,10 @@ export const TaskBoard = ()=>{
           return (
           <Col lg='3' className='bg-light py-4 me-3'>
           <div id={item._id}>
+          <div className='d-flex align-items-center justify-content-between mb-5'>
           <h2 className='text-center'>{item.kanbanName}</h2>
+          <DeleteModal id={item._id || ""} type='kanban' title={item?.kanbanName || ""} />
+          </div>
           {item.alltask?.map(x=>
             <CardItem _id={x?._id} taskCreator={x?.taskCreator} type={x.type} status={x.status} taskName={x.taskName}></CardItem>
             )
