@@ -1,7 +1,7 @@
 import { Container,Row,Col,Spinner  } from 'react-bootstrap';
 import { useState } from 'react';
 import {useBoardData,useAddKanban} from './util'
-import { CardItem } from './cardItem';
+import { CardItem ,DetailModal } from './cardItem';
 import { SearchPanel } from './searchPanel';
 import {CreateTask} from './createTask';
 export const TaskBoard = ()=>{
@@ -9,7 +9,6 @@ export const TaskBoard = ()=>{
   const {mutateAsync:addKanbanAsync,isError,error} = useAddKanban()
   const [kanbanName,setKanban] = useState('')
   const [edit,setEdit] = useState(false);
-
   const handleKeyPress = async(e:React.KeyboardEvent<HTMLInputElement>)=>{
     if(e.key==='Enter') {
       let data = {kanbanName,allTask: []}
@@ -39,9 +38,10 @@ export const TaskBoard = ()=>{
           <div id={item._id}>
           <h2 className='text-center'>{item.kanbanName}</h2>
           {item.alltask?.map(x=>
-            <CardItem type={x.type} status={x.status} taskName={x.taskName}></CardItem>
+            <CardItem _id={x?._id} taskCreator={x?.taskCreator} type={x.type} status={x.status} taskName={x.taskName}></CardItem>
             )
           }
+          <DetailModal />
           </div>
           <CreateTask kanbanId = {item._id || ''} />
           </Col>)

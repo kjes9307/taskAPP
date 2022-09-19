@@ -18,11 +18,14 @@ export interface Iprops<K>{
   creator?:string
 }
 export interface ColumnType {
+    _id?:string,
     taskName?: string,
     status?: string,
     type?: string,
     kanbanId?:string
+    taskCreator?: {[key:string]:string}
 }
+
 export type Iparams={
   [key:string]: unknown
 }
@@ -71,9 +74,48 @@ export const useAddTask = () =>{
 
   return useMutation((params:ColumnType) =>  client(`task/addTask`, {
     data: {...params,projectId},
-    method: "POST",
+    method: "PATCH",
   }),{
     onSuccess: () =>queryClient.invalidateQueries(`task/getKanBan`)
   }
   ) 
+}
+export const useEditTask = () =>{
+  const client = useHttp()
+  const queryClient = useQueryClient()
+
+  return useMutation((params:ColumnType) =>  client(`task/editTask`, {
+    data: {...params},
+    method: "PATCH",
+  }),{
+    onSuccess: () =>queryClient.invalidateQueries(`task/getKanBan`)
+  }
+  ) 
+}
+export const useTaskDatail = (id:string) =>{
+  const client = useHttp()
+  return useQuery<ColumnType>(['task/getTask',id],()=>client(`task/getTask/${id}`),
+  {
+    enabled: Boolean(id),
+    select: (data) => data || []
+  })
+}
+export const useTaskModel = () =>{
+  const [{ taskEdit }, setTaskOpen] = useUrlQueryParam([
+    "taskEdit",
+  ]);
+  const {data,isLoading,isError,error} =useTaskDatail(taskEdit)
+  const startEdit = (taskId : string) => setTaskOpen({ taskEdit: taskId });
+  const close = () => {
+    setTaskOpen({ taskEdit: undefined });
+  }
+  return {
+    taskModalOpen : Boolean(taskEdit),
+    startEdit,
+    close,
+    data,
+    isLoading,
+    isError,
+    error
+  }
 }
