@@ -1,12 +1,49 @@
 import { Container,Row,Col,Spinner  } from 'react-bootstrap';
-import { useState } from 'react';
-import {useBoardData,useAddKanban} from './util'
+import React,{ useState } from 'react';
+import {useBoardData,useAddKanban, ColumnType,Iprops} from './util'
 import { CardItem ,DetailModal } from './cardItem';
 import { SearchPanel } from './searchPanel';
 import {CreateTask} from './createTask';
 import {DeleteModal} from './deleteItem';
 import { DragDropContext } from 'react-beautiful-dnd';
-import { Drop } from 'component/drag';
+import { Drop, DropChild ,Drag } from 'component/drag';
+
+export const KanbanCol = React.forwardRef<HTMLDivElement,{kanban:Iprops<ColumnType>}>(({kanban,...props},ref) =>{
+  
+  return (
+    <Col lg='3' className='bg-light py-4 me-3' ref={ref} {...props} >
+      <div id={kanban._id} >
+      
+      <div className='d-flex align-items-center justify-content-between mb-5'>
+      <h2 className='text-center'>{kanban.kanbanName}</h2>
+      <DeleteModal id={kanban._id || ""} type='kanban' title={kanban?.kanbanName || ""} />
+      </div>
+      <Drop
+          type={"ROW"}
+          direction={"vertical"}
+          droppableId={kanban._id as string}
+        >
+        <DropChild>
+          {kanban.alltask?.map((x,idx)=>
+              <Drag
+                key={x?._id}
+                index={idx}
+                draggableId={"task" + x?._id as string}
+              >
+                <div>
+                <CardItem _id={x?._id} taskCreator={x?.taskCreator} type={x.type} status={x.status} taskName={x.taskName}></CardItem>
+                </div>
+              </Drag>
+            )
+          }
+      </DropChild>
+      </Drop>
+      <DetailModal />
+      </div>
+      <CreateTask kanbanId = {kanban._id || ''} />
+    </Col>
+  )
+})
 export const TaskBoard = ()=>{
   const {data,isLoading} = useBoardData();
   const {mutateAsync:addKanbanAsync,isError,error} = useAddKanban()
@@ -34,34 +71,20 @@ export const TaskBoard = ()=>{
       <SearchPanel />
       
       <Row className='d-flex flex-nowrap scroll-kanban'>
-      <DragDropContext onDragEnd={()=>{}}>
-      
+      <DragDropContext onDragEnd={(param)=>console.log(param)}>
+      <Drop type={"COLUMN"}
+                direction={"horizontal"}
+                droppableId={"kanban"}>
+      <DropChild className='d-flex justify-content-start'>
       {
         data?.map((item,idx)=> {
           return (
-            <Drop type='column' direction='horizontal' droppableId={'kanban'}>
-              <Col lg='3' className='bg-light py-4 me-3'>
-              <div id={item._id}>
-              
-              <div className='d-flex align-items-center justify-content-between mb-5'>
-              <h2 className='text-center'>{item.kanbanName}</h2>
-              <DeleteModal id={item._id || ""} type='kanban' title={item?.kanbanName || ""} />
-              </div>
-              {item.alltask?.map(x=>
-                <CardItem _id={x?._id} taskCreator={x?.taskCreator} type={x.type} status={x.status} taskName={x.taskName}></CardItem>
-                )
-              }
-              <DetailModal />
-              
-              </div>
-              <CreateTask kanbanId = {item._id || ''} />
-              </Col>
-          </Drop>
+            <Drag key={item._id} draggableId={'kanban'+item._id} index={idx}>
+              <KanbanCol key={item._id} kanban={item} />
+            </Drag> 
           )
         }) 
       }
-     
-      </DragDropContext>
       <Col lg='2' className='bg-light py-3 me-1 d-flex'>
         <div className='d-flex align-items-center flex-column'>
         {isError && kanbanName ? <div className="text-danger">{error as string}</div>:null}
@@ -74,6 +97,10 @@ export const TaskBoard = ()=>{
         }
         </div>
       </Col>
+      </DropChild>
+       </Drop>
+      </DragDropContext>
+      
       </Row>
       </>
       }

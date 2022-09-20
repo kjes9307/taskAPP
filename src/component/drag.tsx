@@ -1,4 +1,4 @@
-import React, { ReactNode } from "react";
+import React, { ReactNode,useState,useEffect } from "react";
 import {
   Draggable,
   DraggableProps,
@@ -11,6 +11,20 @@ import {
 type DropProps = Omit<DroppableProps, "children"> & { children: ReactNode };
 
 export const Drop = ({ children, ...props }: DropProps) => {
+  const [enabled, setEnabled] = useState(false);
+
+  useEffect(() => {
+    const animation = requestAnimationFrame(() => setEnabled(true));
+
+    return () => {
+      cancelAnimationFrame(animation);
+      setEnabled(false);
+    };
+  }, []);
+
+  if (!enabled) {
+    return null;
+  }
   return (
     <Droppable {...props}>
       {(provided:any) => {
