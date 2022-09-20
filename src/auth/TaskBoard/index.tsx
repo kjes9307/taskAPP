@@ -5,6 +5,8 @@ import { CardItem ,DetailModal } from './cardItem';
 import { SearchPanel } from './searchPanel';
 import {CreateTask} from './createTask';
 import {DeleteModal} from './deleteItem';
+import { DragDropContext } from 'react-beautiful-dnd';
+import { Drop } from 'component/drag';
 export const TaskBoard = ()=>{
   const {data,isLoading} = useBoardData();
   const {mutateAsync:addKanbanAsync,isError,error} = useAddKanban()
@@ -30,27 +32,36 @@ export const TaskBoard = ()=>{
       <>
       <h1>TaskBoard</h1>
       <SearchPanel />
+      
       <Row className='d-flex flex-nowrap scroll-kanban'>
+      <DragDropContext onDragEnd={()=>{}}>
       
       {
-        data?.map((item)=> {
+        data?.map((item,idx)=> {
           return (
-          <Col lg='3' className='bg-light py-4 me-3'>
-          <div id={item._id}>
-          <div className='d-flex align-items-center justify-content-between mb-5'>
-          <h2 className='text-center'>{item.kanbanName}</h2>
-          <DeleteModal id={item._id || ""} type='kanban' title={item?.kanbanName || ""} />
-          </div>
-          {item.alltask?.map(x=>
-            <CardItem _id={x?._id} taskCreator={x?.taskCreator} type={x.type} status={x.status} taskName={x.taskName}></CardItem>
-            )
-          }
-          <DetailModal />
-          </div>
-          <CreateTask kanbanId = {item._id || ''} />
-          </Col>)
+            <Drop type='column' direction='horizontal' droppableId={'kanban'}>
+              <Col lg='3' className='bg-light py-4 me-3'>
+              <div id={item._id}>
+              
+              <div className='d-flex align-items-center justify-content-between mb-5'>
+              <h2 className='text-center'>{item.kanbanName}</h2>
+              <DeleteModal id={item._id || ""} type='kanban' title={item?.kanbanName || ""} />
+              </div>
+              {item.alltask?.map(x=>
+                <CardItem _id={x?._id} taskCreator={x?.taskCreator} type={x.type} status={x.status} taskName={x.taskName}></CardItem>
+                )
+              }
+              <DetailModal />
+              
+              </div>
+              <CreateTask kanbanId = {item._id || ''} />
+              </Col>
+          </Drop>
+          )
         }) 
       }
+     
+      </DragDropContext>
       <Col lg='2' className='bg-light py-3 me-1 d-flex'>
         <div className='d-flex align-items-center flex-column'>
         {isError && kanbanName ? <div className="text-danger">{error as string}</div>:null}

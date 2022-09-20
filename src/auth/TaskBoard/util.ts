@@ -16,6 +16,7 @@ export interface Iprops<K>{
   projectId?: string
   _id?: string
   creator?:string
+  item? : ColumnType
 }
 export interface ColumnType {
     _id?:string,

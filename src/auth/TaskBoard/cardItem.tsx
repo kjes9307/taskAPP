@@ -15,9 +15,7 @@ const  TypeSelector =()=> {
     </div>
   );
 }
-type Inputs = {
-  taskName: string,
-};
+
 const Mark = ({name,keyword}:{name:string,keyword:string}) =>{
   if(!keyword){ return <>{name}</>};
   const arr = name.split(keyword)
