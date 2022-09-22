@@ -89,7 +89,9 @@ export const useAddTask = () =>{
     data: {...params,projectId},
     method: "POST",
   }),{
-    onSuccess: () =>queryClient.invalidateQueries(`task/getKanBan`)
+    onSuccess: () =>{
+      queryClient.invalidateQueries(`task/getKanBan`)
+    }
   }
   ) 
 }
@@ -101,9 +103,12 @@ export const useEditTask = () =>{
     data: {...params},
     method: "PATCH",
   }),{
-    onSuccess: () =>queryClient.invalidateQueries(`task/getKanBan`)
-  }
-  ) 
+    onSuccess: () =>{
+      queryClient.invalidateQueries(`task/getTask`)
+      queryClient.invalidateQueries(`task/getKanBan`)
+
+    }
+}) 
 }
 export const useDeleteTask = () =>{
   const client = useHttp()

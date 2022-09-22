@@ -1,7 +1,8 @@
-import React, {useState} from 'react'
+import React, {useEffect, useState} from 'react'
 import {Card,Modal} from 'react-bootstrap'
 import { ColumnType,useTaskModel,useEditTask,useTaskSearchParam } from "./util"
 import { DeleteModal } from './deleteItem'
+import {TodoList} from "component/todoList"
 const  TypeSelector =()=> {
   const SetType = (e:React.MouseEvent)=>{
     e.stopPropagation()
@@ -67,47 +68,91 @@ export const DetailModal = () =>{
   const {taskModalOpen,close,data,isError,isLoading:isTaskLoading} = useTaskModel()
   const {taskName,_id,taskCreator,status} = {...data}
   const [open,setOpen] = useState(false)
-  const [value,setValue] = useState(taskName)
+  const [value,setValue] = useState('')
 
   const {mutateAsync,isLoading:isEditLoading} = useEditTask()
   
   const isLoading = isEditLoading || isTaskLoading ? true: false;
 
-  const handleInput = async(e:React.KeyboardEvent<HTMLInputElement>)=>{
+  const handleInput = async(e:React.KeyboardEvent<HTMLTextAreaElement>)=>{
     if(e.key==='Enter') {
       let data ={
         taskName:e.currentTarget.value,
         taskId: _id,
         status
       }
-      await mutateAsync(data)
+      console.log(data)
+      // await mutateAsync(data)
       setOpen(!open)
     }
   }
-
+  const handleSave = async()=>{
+    let data ={
+      taskName: value,
+      taskId: _id,
+      status
+    }
+    await mutateAsync(data)
+  }
+  useEffect(()=>{
+    setValue(taskName || "")
+    return () =>{
+      setValue('')
+      setOpen(false)
+    }
+  },[taskName])
   return (<Modal show={taskModalOpen} onHide={close}>
-    <div>
-    {isLoading?
-      <div className="text-center">
-        <div className="spinner-border" role="status">
-          <span className="visually-hidden">Loading...</span>
-        </div>
-      </div>:
-      null
-    } 
+    <Modal.Header closeButton>
+          <Modal.Title>
+            {status}
+          </Modal.Title>
+    </Modal.Header>
+      <div>
+      {isLoading?
+        <div className="text-center">
+          <div className="spinner-border" role="status">
+            <span className="visually-hidden">Loading...</span>
+          </div>
+        </div>:
+        null
+      } 
       <Modal.Body>
+      <div className='divider'>
+        <div><span className='text-secondary fs-6'>任務名</span></div>
         {!open?
-        <h5 onClick={()=>setOpen(!open)}>{taskName || ''}</h5>:
-        <div className='d-flex align-items-center'>
-        <input onKeyPress={(e)=>handleInput(e)} value={value} onChange={(e)=> setValue(e.target.value)} style={{height:24}}/>
-        <button className='ms-2 btn btn-primary p-0' style={{height:24,width:24}} onClick={()=>setOpen(!open)}>X</button>
-        </div>
+          <h1 className='fs-2' onClick={()=>setOpen(!open)}>{taskName || ''}</h1>:
+          <div>
+            <textarea 
+              onKeyPress={(e)=>handleInput(e)} 
+              value={value} 
+              onChange={(e)=> setValue(e.target.value)} 
+              className="text-modal w-100" 
+            />
+            <div className='d-flex justify-content-end mt-2'>
+              <button 
+                className='btn btn-outline-primary' 
+                onClick={()=>setOpen(!open)}>Cancel
+              </button>
+              <button 
+                className='btn btn-primary ms-2' 
+                onClick={handleSave}>Save
+              </button>
+            </div>
+          </div>
         }
-        
+      </div>
       </Modal.Body>
       <Modal.Body>
-      <div>{status}</div>
-      <div>{taskCreator?.name}</div>
+      <div className='divider'>
+        <div><span className='text-secondary fs-6'>創建者</span></div>
+        <div>{taskCreator?.name}</div>
+      </div>
+      </Modal.Body>
+      <Modal.Body>
+      <div className='divider'>
+        <div><span className='text-secondary fs-6'>代辦清單</span></div>
+        <TodoList />
+      </div>
       </Modal.Body>
       <Modal.Footer>
       
