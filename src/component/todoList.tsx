@@ -123,7 +123,7 @@ interface DataType {
       <div className='mt-2'>
           <textarea
             onKeyPress={(e)=>handleInput(e)} 
-            className='w-100 text-addItem'
+            className='w-100 text-addItem form-control'
             placeholder="新增待辦"
             onChange={(e) => setAddItem(e.target.value)}
             value={newItem}
@@ -225,14 +225,14 @@ interface DataType {
           onChange={(e) => check(e, item?.id || "")}
           type="checkbox"
           checked={item?.done}
-          className='checkList'
+          className='form-check-input'
         />
         {!mode?
           <span className='ms-2' onClick={()=>setModeEdit(!mode)}>{item?.name || null}</span>
          : 
          <>
           <textarea 
-            className='w-100 text-checklist ms-2' 
+            className='w-100 text-checklist ms-2 form-control' 
             value={value} 
             autoFocus
             onBlur={() => {
