@@ -160,10 +160,37 @@ export const DetailModal = () =>{
       <div className='w-30'>
         <Modal.Body>
           <div>
-          <label htmlFor="" className='text-secondary'>處理人員</label>
+          <span className='text-secondary'>處理人員</span>
+          <ul className='d-flex align-items-center justify-content-start list-unstyled mt-2'>
+            <li className='me-1'>
+            <img src="/images/andychen.jpeg" className="rounded-circle avatar-img" alt="avatar" />
+            </li>
+            <li>
+              <div 
+                className='avatar-img rounded-circle d-flex align-items-center justify-content-center'
+                style={{cursor:"pointer"}}
+                >
+                <span className="material-symbols-outlined">
+                add
+                </span>
+              </div>
+            </li>
+          </ul>
           </div>
-          <div>
-        <label htmlFor="" className='text-secondary'>照片上傳</label>
+        <div>
+          <span className='text-secondary'>照片上傳</span>
+          <ul className='d-flex align-items-center justify-content-start list-unstyled mt-2'>
+            <li>
+            <div 
+              className='upload-img d-flex align-items-center justify-content-center'
+              style={{cursor:"pointer"}}
+              >
+              <span className="material-symbols-outlined">
+              add
+              </span>
+            </div>
+            </li>
+          </ul>
         </div>
         <div>
         <label htmlFor="" className='text-secondary'>討論</label>
