@@ -92,15 +92,15 @@ interface DataType {
       <>
         <TodoProvider>
           <div className="w-100">
-            <Footer />
-            <Contain />
             <Header />
+            <Contain />
+            <Footer />
           </div>
         </TodoProvider>
       </>
     );
   };
-  export const Header = () => {
+  export const Footer = () => {
     const [newItem, setAddItem] = useState("");
     const { addItem } = useProvider();
     const isVoid = (value: unknown) =>
@@ -254,7 +254,7 @@ interface DataType {
       </div>
     );
   };
-  export const Footer = () => {
+  export const Header = () => {
     const { todo: todoList, count: Count } = useProvider();
 
     let percent = (Count / todoList?.length)*100 || 0
