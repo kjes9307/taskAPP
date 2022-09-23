@@ -123,7 +123,7 @@ interface DataType {
       <div className='mt-2'>
           <textarea
             onKeyPress={(e)=>handleInput(e)} 
-            className='w-100'
+            className='w-100 text-addItem'
             placeholder="新增待辦"
             onChange={(e) => setAddItem(e.target.value)}
             value={newItem}
@@ -142,7 +142,7 @@ interface DataType {
           defaultNav?.map((item,idx)=>{
             return (
               <li className="nav-item" onClick={()=> setNav(idx)}>
-                <div className={nav === idx? `nav-link active d-flex align-items-center justify-content-between`: `nav-link d-flex align-items-center justify-content-between`}>
+                <div className={nav === idx? `nav-link active text-primary d-flex align-items-center justify-content-between`: `nav-link text-dark d-flex align-items-center justify-content-between`}>
                   {item}
                   <span 
                     className="material-symbols-outlined" 
@@ -220,7 +220,7 @@ interface DataType {
         onMouseEnter={() => mouseEvent(true)}
         onMouseLeave={() => mouseEvent(false)}
       >
-        <div className='d-flex'>
+        <div className='d-flex w-80'>
         <input
           onChange={(e) => check(e, item?.id || "")}
           type="checkbox"
@@ -231,7 +231,6 @@ interface DataType {
           <span className='ms-2' onClick={()=>setModeEdit(!mode)}>{item?.name || null}</span>
          : 
          <>
-         <div>
           <textarea 
             className='w-100 text-checklist ms-2' 
             value={value} 
@@ -239,9 +238,14 @@ interface DataType {
             onBlur={() => {
               setModeEdit(!mode)
             }}
-            onChange={(e)=> handChange(e)}></textarea>
-         </div>
-       </>
+            onKeyDown={(e)=>{
+              if(e.key==="Enter"){
+                setModeEdit(!mode)
+              }
+            }}
+            onChange={(e)=> handChange(e)}>
+            </textarea>
+          </>
         }
         </div>
         <div onClick={() => deleteTodo(item?.id as string)}>
@@ -251,13 +255,8 @@ interface DataType {
     );
   };
   export const Footer = () => {
-    // console.log("@footer")
-    const { checkAllItem, todo: todoList, count: Count } = useProvider();
-  
-    const checkAll = (e: React.ChangeEvent<HTMLInputElement>) => {
-      if (window.confirm(e.target.checked === true ? "全選?" : "捨棄選取?"))
-        checkAllItem(e.target.checked);
-    };
+    const { todo: todoList, count: Count } = useProvider();
+
     let percent = (Count / todoList?.length)*100 || 0
     return (
         <ProgressBar now={percent} className='mt-2 mb-2' />

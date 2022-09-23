@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Card,Modal} from 'react-bootstrap'
+import {Card,Modal,Container,Row,Col} from 'react-bootstrap'
 import { ColumnType,useTaskModel,useEditTask,useTaskSearchParam } from "./util"
 import { DeleteModal } from './deleteItem'
 import {TodoList} from "component/todoList"
@@ -74,17 +74,13 @@ export const DetailModal = () =>{
   
   const isLoading = isEditLoading || isTaskLoading ? true: false;
 
-  const handleInput = async(e:React.KeyboardEvent<HTMLTextAreaElement>)=>{
-    if(e.key==='Enter') {
+  const handleType = async(e:React.ChangeEvent<HTMLSelectElement>)=>{
       let data ={
-        taskName:e.currentTarget.value,
         taskId: _id,
-        status
+        status: e.currentTarget.value
       }
       console.log(data)
-      // await mutateAsync(data)
-      setOpen(!open)
-    }
+      await mutateAsync(data)
   }
   const handleSave = async()=>{
     let data ={
@@ -101,11 +97,16 @@ export const DetailModal = () =>{
       setOpen(false)
     }
   },[taskName])
-  return (<Modal show={taskModalOpen} onHide={close}>
-    <Modal.Header closeButton>
-          <Modal.Title>
-            {status}
-          </Modal.Title>
+  return (<Modal show={taskModalOpen} onHide={close} size='xl'>
+    <Modal.Header className='d-flex justify-content-between'>
+          <h2 className='fs-3'>
+            Task Type :
+          </h2>
+          <select value={status} onChange={(e)=>{handleType(e)}} className="form-select form-select-lg mb-3 w-25" aria-label=".form-select-lg example">
+            <option value="idle">idle</option>
+            <option value="ongoing">ongoing</option>
+            <option value="done">done</option>
+          </select>
     </Modal.Header>
       <div>
       {isLoading?
@@ -116,14 +117,15 @@ export const DetailModal = () =>{
         </div>:
         null
       } 
+      <div className='d-flex'>
+      <div className='w-70'>
       <Modal.Body>
       <div className='divider'>
-        <div><span className='text-secondary fs-6'>任務名</span></div>
+        <div><span className='text-secondary fs-6'>任務名:</span></div>
         {!open?
           <h1 className='fs-2' onClick={()=>setOpen(!open)}>{taskName || ''}</h1>:
           <div>
             <textarea 
-              onKeyPress={(e)=>handleInput(e)} 
               value={value} 
               onChange={(e)=> setValue(e.target.value)} 
               className="text-modal w-100" 
@@ -141,21 +143,36 @@ export const DetailModal = () =>{
           </div>
         }
       </div>
-      </Modal.Body>
-      <Modal.Body>
-      <div className='divider'>
-        <div><span className='text-secondary fs-6'>創建者</span></div>
-        <div>{taskCreator?.name}</div>
+        </Modal.Body>
+        <Modal.Body>
+        <div className='divider'>
+          <div><span className='text-secondary fs-6'>創建者:</span></div>
+          <div>{taskCreator?.name}</div>
+        </div>
+        </Modal.Body>
+        <Modal.Body>
+        <div className='divider'>
+          <div><span className='text-secondary fs-6'>代辦清單:</span></div>
+          <TodoList />
+        </div>
+        </Modal.Body>
       </div>
-      </Modal.Body>
-      <Modal.Body>
-      <div className='divider'>
-        <div><span className='text-secondary fs-6'>代辦清單</span></div>
-        <TodoList />
+      <div className='w-30'>
+        <Modal.Body>
+          <div>
+          <label htmlFor="" className='text-secondary'>處理人員</label>
+          </div>
+          <div>
+        <label htmlFor="" className='text-secondary'>照片上傳</label>
+        </div>
+        <div>
+        <label htmlFor="" className='text-secondary'>討論</label>
+        </div>
+        </Modal.Body>
       </div>
-      </Modal.Body>
+      </div>
       <Modal.Footer>
-      
+        
       </Modal.Footer>
       </div>
     </Modal>)

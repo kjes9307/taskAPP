@@ -1,14 +1,28 @@
 .text-modal{
-    min-height: 74px;
+    height: 56px;
+    min-height: 48px;
 }
 .text-checklist{
-    min-height: 40px;
+    height: 32px;
+    min-height: 32px;
+}
+.text-addItem{
+    height: 36px;
+    min-height: 32px;
 }
 .divider{
     border-bottom: 1px solid #dee2e6;
     padding-bottom: 8px;
 }
-
+.w-80{
+    width: 80%;
+}
+.w-70{
+    width: 60%;
+}
+.w-30{
+    width: 40%;
+}
     // input[type=checkbox]:checked {
     //     color: #F8B52E !important;
     //     background-color: #444;
