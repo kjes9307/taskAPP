@@ -1,18 +1,21 @@
 .text-modal{
-    height: 56px;
+    max-height: 72px;
     min-height: 48px;
 }
 .text-checklist{
-    height: 32px;
-    min-height: 32px;
+    min-height: 24px;
+    max-height: 32px;
 }
 .text-addItem{
-    height: 36px;
     min-height: 32px;
+    max-height: 60px;
 }
 .divider{
     border-bottom: 1px solid #dee2e6;
     padding-bottom: 8px;
+}
+.w-90{
+    width: 90%;
 }
 .w-80{
     width: 80%;
@@ -27,6 +30,11 @@
     background-color: #D54100 !important;
     border: #D54100 !important;
 }
+.comment-avatar{
+    width: 40px;
+    height: 40px;
+    object-fit: cover;
+}
 .avatar-img{
     width: 45px;
     height: 45px;
@@ -38,4 +46,15 @@
     height: 100px;
     object-fit: cover;
     border: dashed #dee2e6 !important;
+}
+.triangle{
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    transform: translate(-100%,25%);
+    width: 20px;
+    height: 20px;
+    border-style: solid;
+    border-width: 12px 12px 12px 12px;
+    border-color: transparent #dee2e6 transparent  transparent
 }

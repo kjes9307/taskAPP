@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Card,Modal,Container,Row,Col} from 'react-bootstrap'
+import {Card,Modal,Container,Row,Col,Toast } from 'react-bootstrap'
 import { ColumnType,useTaskModel,useEditTask,useTaskSearchParam } from "./util"
 import { DeleteModal } from './deleteItem'
 import {TodoList} from "component/todoList"
@@ -193,7 +193,22 @@ export const DetailModal = () =>{
           </ul>
         </div>
         <div>
-        <label htmlFor="" className='text-secondary'>討論</label>
+        <span className='text-secondary'>討論</span>
+        <div className='d-flex align-items-start mt-2'> 
+          <img src="/images/andychen.jpeg" className="rounded-circle comment-avatar" alt="avatar" />
+          <Toast className='w-90 border shadow-none position-relative ms-3'>
+            <Toast.Header closeButton={false}>
+              <strong className="me-auto">Andy Chen</strong>
+              <small>11mins ago</small>
+            </Toast.Header>
+            <Toast.Body>Hello, world! This is a toast message.</Toast.Body>
+            <div className='triangle'></div>
+          </Toast>
+        </div>
+        <textarea 
+          placeholder='輸入評論'
+          className='form-control text-addItem mt-3'>
+          </textarea>
         </div>
         </Modal.Body>
       </div>
