@@ -3,16 +3,55 @@ import {Card,Modal,Container,Row,Col,Toast } from 'react-bootstrap'
 import { ColumnType,useTaskModel,useEditTask,useTaskSearchParam } from "./util"
 import { DeleteModal } from './deleteItem'
 import {TodoList} from "component/todoList"
+import {IselectType} from "component/selectType"
 const  TypeSelector =()=> {
-  const SetType = (e:React.MouseEvent)=>{
+  const type =[
+    {
+      textType: "text-dark",
+      spanName : "psychology_alt",
+      name: "Idle",
+      index: 0
+    },
+    {
+        textType: "text-danger",
+        spanName : "bug_report",
+        name: "Bug",
+        index: 1
+    },
+    {
+        textType: "text-info",
+        spanName : "task",
+        name: "Task",
+        index: 2
+    },
+    {
+        textType: "text-success",
+        spanName : "lightbulb",
+        name: "Idea",
+        index: 3
+    },
+    {
+        textType: "text-warning",
+        spanName : "description",
+        name: "Note",
+        index: 4
+    }
+    ,
+    {
+        textType: "text-sp",
+        spanName : "turn_sharp_right",
+        name: "Improvement",
+        index: 5
+    }
+  ]
+  const handleOpen = (e:React.MouseEvent) =>{
     e.stopPropagation()
-
-  }
+}
   return (
-    <div onClick={(e)=>SetType(e)} className="position-absolute top-0 start-0 translate-middle bg-brand-color text-dark d-flex align-items-center" style={{width:24,height:24,zIndex:10}}>
-      <span className="material-symbols-outlined">
-      question_mark
-      </span>
+    <div onClick={(e)=> handleOpen(e)} className="position-absolute top-0 start-0 translate-middle" >
+      <IselectType type={type} 
+        defaultIndex={0} 
+        onSelect={(index)=>{console.log(index)}} />
     </div>
   );
 }
@@ -44,7 +83,7 @@ export const CardItem = (props:ColumnType) =>{
     }
     return (
       <>
-      <Card  className="mx-auto mb-3 position-relative p-0" >
+      <Card className="mx-auto mb-3 p-0 z-1" >
         <Card.Body style={{ cursor:"pointer" }} onClick={()=>startEdit(_id || '')}>
         <div className='d-flex align-items-start justify-content-between'>
           <div>
