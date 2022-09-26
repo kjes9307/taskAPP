@@ -86,7 +86,7 @@ export const CardItem = (props:ColumnType) =>{
     }
     return (
       <div className='position-relative px-2'>
-      <Card className="mx-auto mb-3 p-0" >
+      <Card className="mb-3 p-0" >
         <Card.Body style={{ cursor:"pointer" }} onClick={()=>startEdit(_id || '')}>
         <div className='d-flex align-items-start justify-content-between'>
           <div>

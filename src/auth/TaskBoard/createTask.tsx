@@ -6,7 +6,7 @@ export const CreateTask = (props:{kanbanId:string}) =>{
     const [task,setTask] = useState('')
     const {mutateAsync:asyncAddTask} = useAddTask()
     const [mode,setMode] = useState(false)
-    const handleSubmit = async(e:React.KeyboardEvent<HTMLInputElement>) =>{
+    const handleSubmit = async(e:React.KeyboardEvent<HTMLTextAreaElement>) =>{
         if(e.key==="Enter"){
             await asyncAddTask({kanbanId,taskName:task || ''})
             setMode(false);
@@ -22,16 +22,34 @@ export const CreateTask = (props:{kanbanId:string}) =>{
 
     if(!mode){
         return (
-            <div onClick={()=>setMode(!mode)}>add Task +</div>
+            <div 
+                className='avatar-img rounded-circle d-flex align-items-center justify-content-center mb-2'
+                style={{cursor:"pointer",width:30,height:30}}
+                onClick={()=>setMode(!mode)}
+                >
+                <span className="material-symbols-outlined">
+                    add
+                </span>
+            </div>
         )
     }
 
     return (
-        <>
-        <Card style={{ cursor:"pointer" }} className="mx-auto mb-3" >
-            <input value={task} placeholder="輸入任務" onChange={(e)=> setTask(e.target.value)} onKeyPress={(e)=>handleSubmit(e)} className="w-100" />
-            {/* <Button  onClick={()=> setMode(!mode)}>close</Button> */}
-        </Card>
-        </>
+        <div className='mb-3 mx-2 rounded'>
+            <Card style={{ cursor:"pointer" }} >
+                <Card.Body>
+                    <textarea 
+                        value={task} 
+                        placeholder="Write something...." 
+                        onChange={(e)=> setTask(e.target.value)} 
+                        onKeyPress={(e)=>handleSubmit(e)}
+                        style={{height:30,maxHeight:60}}
+                    />
+                    <div className="d-flex justify-content-end">
+                        <Button className='ms-1' size='sm' onClick={()=> setMode(!mode)}>close</Button>
+                    </div>
+                </Card.Body>
+            </Card>
+        </div>
     )
 }

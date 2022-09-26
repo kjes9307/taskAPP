@@ -1,23 +1,27 @@
 import { Container,Row,Col,Spinner  } from 'react-bootstrap';
 import React,{ useState } from 'react';
+import classNames from "classnames";
+import { DragDropContext } from 'react-beautiful-dnd';
+import { Drop, DropChild ,Drag } from 'component/drag';
 import {useBoardData,useAddKanban, ColumnType,Iprops} from './util'
 import { CardItem ,DetailModal } from './cardItem';
 import { SearchPanel } from './searchPanel';
 import {CreateTask} from './createTask';
 import {DeleteModal} from './deleteItem';
-import { DragDropContext } from 'react-beautiful-dnd';
-import { Drop, DropChild ,Drag } from 'component/drag';
+
 
 export const KanbanCol = React.forwardRef<HTMLDivElement,{kanban:Iprops<ColumnType>}>(({kanban,...props},ref) =>{
   
   return (
-    <Col lg='3' className='bg-light py-4 me-3' ref={ref} {...props} >
-      <div id={kanban._id} >
-      
-      <div className='d-flex align-items-center justify-content-between mb-5'>
-      <h2 className='text-center'>{kanban.kanbanName}</h2>
-      <DeleteModal id={kanban._id || ""} type='kanban' title={kanban?.kanbanName || ""} />
-      </div>
+    <Col lg='3' className='bg-light me-3' ref={ref} {...props} >
+      <div id={kanban._id}>
+        <div className='d-flex align-items-center justify-content-between mb-2 bg-primary bg-gradient text-white p-1'>
+          <h3 className='text-center fs-3 mb-0'>{kanban.kanbanName}</h3>
+          <DeleteModal id={kanban._id || ""} type='kanban' title={kanban?.kanbanName || ""} />
+        </div>
+        <div className='d-flex align-items-center justify-content-center'>
+          <CreateTask kanbanId = {kanban._id || ''} />
+        </div>
       <Drop
           type={"ROW"}
           direction={"vertical"}
@@ -40,7 +44,6 @@ export const KanbanCol = React.forwardRef<HTMLDivElement,{kanban:Iprops<ColumnTy
       </Drop>
       <DetailModal />
       </div>
-      <CreateTask kanbanId = {kanban._id || ''} />
     </Col>
   )
 })
@@ -57,6 +60,8 @@ export const TaskBoard = ()=>{
       setKanban('')
     }
   }
+  const addClaseName = classNames('d-flex flex-column',{"justify-content-center": !edit ? true:false})
+  const titleClass = classNames( 'd-flex','me-1')
   return (
     <>
     
@@ -85,14 +90,25 @@ export const TaskBoard = ()=>{
           )
         }) 
       }
-      <Col lg='2' className='bg-light py-3 me-1 d-flex'>
-        <div className='d-flex align-items-center flex-column'>
+      <Col lg='2' className={titleClass}>
+        <div className={addClaseName}>
         {isError && kanbanName ? <div className="text-danger">{error as string}</div>:null}
         {
-          !edit?<h2 className='text-left' style={{cursor:"pointer"}} onClick={()=>setEdit(!edit)}>+</h2>:
-          <div className='d-flex align-items-center'>
-          <input className='w-100' value={kanbanName} onKeyPress={e=>handleKeyPress(e)} onChange={(e)=> setKanban(e.target.value)}/>
-          <button className='ms-1' onClick={()=> {setKanban('');setEdit(!edit)}}>X</button>
+          !edit?
+            <div>
+              <span className='text-left fs-2' style={{cursor:"pointer"}} onClick={()=>setEdit(!edit)}>+</span>
+            </div>
+          :
+          <div>
+            <input 
+              autoFocus
+              placeholder='Add name...'
+              className='w-80 border-0 border-bottom p-2 input-outline' 
+              value={kanbanName} 
+              onKeyPress={e=>handleKeyPress(e)} 
+              onChange={(e)=> setKanban(e.target.value)}
+              onBlur={()=> {setKanban('');setEdit(!edit)}}
+            />
           </div>
         }
         </div>
