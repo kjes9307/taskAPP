@@ -7,6 +7,7 @@ export interface typeSelectProps<K> {
     defaultIndex?: number;
     className?: string;
     onSelect?: (index:number) => void;
+    style?: React.CSSProperties
     type: K[]
 }
 export type ItemSelect ={
@@ -16,7 +17,7 @@ export type ItemSelect ={
     name?:string
 }
 export const IselectType = (props:typeSelectProps<ItemSelect>) =>{
-    const { className, type, defaultIndex, onSelect } = props;
+    const { className, type, defaultIndex, onSelect,style } = props;
     const [value,setOption] = useState(defaultIndex || 0)
     const [open,setOpen] = useState(false)
     
@@ -32,7 +33,7 @@ export const IselectType = (props:typeSelectProps<ItemSelect>) =>{
     const classes_open = classNames(!open ? `d-none` : "d-block typedown-menu")
     const class_active=classNames('type-option d-flex align-items-center')
     return (
-        <div className={layout_class} data-testid="test-select">
+        <div className={layout_class} data-testid="test-select" style={style}>
             <div onClick={()=>setOpen(!open)}>
                 {
                     type?.map(x=>{

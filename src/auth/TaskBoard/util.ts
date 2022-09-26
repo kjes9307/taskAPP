@@ -20,10 +20,12 @@ export interface Iprops<K>{
 }
 export interface ColumnType {
     _id?:string,
+    idx?:number,
     taskName?: string,
     status?: string,
     type?: string,
     kanbanId?:string
+    length?:number
     taskCreator?: {[key:string]:string}
 }
 

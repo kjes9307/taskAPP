@@ -4,7 +4,7 @@ import { ColumnType,useTaskModel,useEditTask,useTaskSearchParam } from "./util"
 import { DeleteModal } from './deleteItem'
 import {TodoList} from "component/todoList"
 import {IselectType} from "component/selectType"
-const  TypeSelector =()=> {
+const  TypeSelector =(props:{idx:number,length:number})=> {
   const type =[
     {
       textType: "text-dark",
@@ -44,6 +44,7 @@ const  TypeSelector =()=> {
         index: 5
     }
   ]
+  const {idx,length} = props
   const handleOpen = (e:React.MouseEvent) =>{
     e.stopPropagation()
 }
@@ -51,7 +52,8 @@ const  TypeSelector =()=> {
     <div onClick={(e)=> handleOpen(e)}>
       <IselectType type={type} 
         defaultIndex={0} 
-        className="position-absolute top-0 start-0 translate-middle z-20" 
+        className="position-absolute top-0 start-0 translate-middle" 
+        style={{zIndex: length-idx + 10}}
         onSelect={(index)=>{console.log(index)}} />
     </div>
   );
@@ -74,7 +76,7 @@ const Mark = ({name,keyword}:{name:string,keyword:string}) =>{
   </>
 }
 export const CardItem = (props:ColumnType) =>{
-    const {taskName,status,_id} = props
+    const {taskName,status,_id,idx,length} = props
     const {startEdit} = useTaskModel()
     const [param]= useTaskSearchParam()
     const {taskName:keyword} = param
@@ -98,7 +100,7 @@ export const CardItem = (props:ColumnType) =>{
         </div>
         </Card.Body>
       </Card>
-      <TypeSelector />
+      <TypeSelector idx={idx || 0} length={length || 0} />
       </>
    
     )
