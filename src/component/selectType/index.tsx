@@ -27,7 +27,7 @@ export const IselectType = (props:typeSelectProps<ItemSelect>) =>{
         setOption(id)
         setOpen(!open)
     }
-    const layout_class = classNames("position-relative z-10 d-block typeselect",className)
+    const layout_class = classNames("d-block typeselect",className)
     const classes = classNames('material-symbols-outlined')
     const classes_open = classNames(!open ? `d-none` : "d-block typedown-menu")
     const class_active=classNames('type-option d-flex align-items-center')

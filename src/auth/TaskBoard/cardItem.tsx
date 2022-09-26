@@ -48,9 +48,10 @@ const  TypeSelector =()=> {
     e.stopPropagation()
 }
   return (
-    <div onClick={(e)=> handleOpen(e)} className="position-absolute top-0 start-0 translate-middle" >
+    <div onClick={(e)=> handleOpen(e)}>
       <IselectType type={type} 
         defaultIndex={0} 
+        className="position-absolute top-0 start-0 translate-middle z-20" 
         onSelect={(index)=>{console.log(index)}} />
     </div>
   );
@@ -83,7 +84,7 @@ export const CardItem = (props:ColumnType) =>{
     }
     return (
       <>
-      <Card className="mx-auto mb-3 p-0 z-1" >
+      <Card className="mx-auto mb-3 p-0" >
         <Card.Body style={{ cursor:"pointer" }} onClick={()=>startEdit(_id || '')}>
         <div className='d-flex align-items-start justify-content-between'>
           <div>
@@ -93,11 +94,11 @@ export const CardItem = (props:ColumnType) =>{
           <div className='d-flex align-items-center justify-content-center' style={{width:30,height:30 ,zIndex:10}} onClick={(e)=> handleShow(e)}>
           <DeleteModal id={_id || ""} type='task' title={taskName || ""} />
           </div>
-          <TypeSelector />
+          
         </div>
         </Card.Body>
       </Card>
-      
+      <TypeSelector />
       </>
    
     )
