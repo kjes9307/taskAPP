@@ -30,7 +30,7 @@ export const KanbanCol = React.forwardRef<HTMLDivElement,{kanban:Iprops<ColumnTy
                 index={idx}
                 draggableId={"task" + x?._id as string}
               >
-                <div className='position-relative'>
+                <div>
                 <CardItem idx={idx} length={kanban.alltask?.length} _id={x?._id} taskCreator={x?.taskCreator} type={x.type} status={x.status} taskName={x.taskName}></CardItem>
                 </div>
               </Drag>

@@ -29,24 +29,26 @@ export const IselectType = (props:typeSelectProps<ItemSelect>) =>{
         setOpen(!open)
     }
     const layout_class = classNames("d-block typeselect",className)
-    const classes = classNames('material-symbols-outlined')
+    const classes = classNames('material-symbols-outlined text-light')
     const classes_open = classNames(!open ? `d-none` : "d-block typedown-menu")
     const class_active=classNames('type-option d-flex align-items-center')
     return (
         <div className={layout_class} data-testid="test-select" style={style}>
-            <div onClick={()=>setOpen(!open)}>
+            
                 {
                     type?.map(x=>{
                         if(x.index===value){
                             return (
-                                <span key={x.index} className={classes+` ${x.textType}`}>
+                                <div onClick={()=>setOpen(!open)} className={"typeselect"+` ${x.textType}`}>
+                                <span key={x.index} className={classes}>
                                 {x.spanName}
                                 </span>
+                                </div>
                             )
                         }
                     })
                 }
-            </div>
+         
             <div className={classes_open}>
             {type?.map((x)=>{
                 return (
@@ -55,7 +57,7 @@ export const IselectType = (props:typeSelectProps<ItemSelect>) =>{
                         onClick={()=>handleClick(x.index as number)}
                         className={x.index===value?`${class_active} active`:`${class_active}`}
                     >
-                        <span className={`material-symbols-outlined me-2 ${x.textType}`}>
+                        <span className={`material-symbols-outlined me-2 text-light ${x.textType}`}>
                         {x.spanName}
                         </span>
                         <span>

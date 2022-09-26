@@ -7,38 +7,38 @@ import {IselectType} from "component/selectType"
 const  TypeSelector =(props:{idx:number,length:number})=> {
   const type =[
     {
-      textType: "text-dark",
+      textType: "bg-dark",
       spanName : "psychology_alt",
       name: "Idle",
       index: 0
     },
     {
-        textType: "text-danger",
+        textType: "bg-danger",
         spanName : "bug_report",
         name: "Bug",
         index: 1
     },
     {
-        textType: "text-info",
+        textType: "bg-info",
         spanName : "task",
         name: "Task",
         index: 2
     },
     {
-        textType: "text-success",
+        textType: "bg-success",
         spanName : "lightbulb",
         name: "Idea",
         index: 3
     },
     {
-        textType: "text-warning",
+        textType: "bg-warning",
         spanName : "description",
         name: "Note",
         index: 4
     }
     ,
     {
-        textType: "text-sp",
+        textType: "bg-sp",
         spanName : "turn_sharp_right",
         name: "Improvement",
         index: 5
@@ -52,7 +52,7 @@ const  TypeSelector =(props:{idx:number,length:number})=> {
     <div onClick={(e)=> handleOpen(e)}>
       <IselectType type={type} 
         defaultIndex={0} 
-        className="position-absolute top-0 start-0 translate-middle" 
+        className="position-absolute top-0 start-0" 
         style={{zIndex: length-idx + 10}}
         onSelect={(index)=>{console.log(index)}} />
     </div>
@@ -85,7 +85,7 @@ export const CardItem = (props:ColumnType) =>{
   
     }
     return (
-      <>
+      <div className='position-relative px-2'>
       <Card className="mx-auto mb-3 p-0" >
         <Card.Body style={{ cursor:"pointer" }} onClick={()=>startEdit(_id || '')}>
         <div className='d-flex align-items-start justify-content-between'>
@@ -101,7 +101,7 @@ export const CardItem = (props:ColumnType) =>{
         </Card.Body>
       </Card>
       <TypeSelector idx={idx || 0} length={length || 0} />
-      </>
+      </div>
    
     )
 }
