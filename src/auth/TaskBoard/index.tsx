@@ -1,5 +1,5 @@
-import { Container,Row,Col,Spinner  } from 'react-bootstrap';
-import React,{ useState } from 'react';
+import { Container,Row,Col,Spinner } from 'react-bootstrap';
+import React,{ useState, useRef } from 'react';
 import classNames from "classnames";
 import { DragDropContext } from 'react-beautiful-dnd';
 import { Drop, DropChild ,Drag } from 'component/drag';
@@ -52,6 +52,7 @@ export const TaskBoard = ()=>{
   const {mutateAsync:addKanbanAsync,isError,error} = useAddKanban()
   const [kanbanName,setKanban] = useState('')
   const [edit,setEdit] = useState(false);
+  const test = useRef<HTMLElement>(null);
   const handleKeyPress = async(e:React.KeyboardEvent<HTMLInputElement>)=>{
     if(e.key==='Enter') {
       let data = {kanbanName,allTask: []}
@@ -62,6 +63,10 @@ export const TaskBoard = ()=>{
   }
   const addClaseName = classNames('d-flex flex-column',{"justify-content-center": !edit ? true:false})
   const titleClass = classNames( 'd-flex','me-1')
+  const slideLeft = () => {
+    let html = test.current as HTMLElement
+    html.scrollLeft = html.scrollLeft+500
+  };
   return (
     <>
     
@@ -74,8 +79,7 @@ export const TaskBoard = ()=>{
       <>
       <h1>TaskBoard</h1>
       <SearchPanel />
-      
-      <Row className='d-flex flex-nowrap scroll-kanban'>
+      <Row className='d-flex flex-nowrap scroll-kanban' ref={test} >
       <DragDropContext onDragEnd={(param)=>console.log(param)}>
       <Drop type={"COLUMN"}
                 direction={"horizontal"}
@@ -103,7 +107,7 @@ export const TaskBoard = ()=>{
             <input 
               autoFocus
               placeholder='Add name...'
-              className='w-80 border-0 border-bottom p-2 input-outline' 
+              className='border-0 border-bottom p-2 input-outline' 
               value={kanbanName} 
               onKeyPress={e=>handleKeyPress(e)} 
               onChange={(e)=> setKanban(e.target.value)}
