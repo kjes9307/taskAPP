@@ -134,6 +134,7 @@ export const DetailModal = () =>{
     }
     await mutateAsync(data)
   }
+  // For Edit Mode
   useEffect(()=>{
     setValue(taskName || "")
     return () =>{
@@ -141,13 +142,6 @@ export const DetailModal = () =>{
       setOpen(false)
     }
   },[taskName])
-  useEffect(()=>{
-    console.log("Trigger")
-    setList(taskTodoList || [])
-    return () =>{
-      setList([])
-    }
-  },[taskTodoList])
   return (<Modal show={taskModalOpen} onHide={close} size='xl'>
     <Modal.Header className='d-flex justify-content-between'>
           <h2 className='fs-3'>
