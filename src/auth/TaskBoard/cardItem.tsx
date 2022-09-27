@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Card,Modal,Container,Row,Col,Toast } from 'react-bootstrap'
-import { ColumnType,useTaskModel,useEditTask,useTaskSearchParam } from "./util"
+import { ColumnType,listData,useTaskModel,useEditTask,useTaskSearchParam } from "./util"
 import { DeleteModal } from './deleteItem'
 import {TodoList} from "component/todoList"
 import {IselectType} from "component/selectType"
@@ -107,8 +107,8 @@ export const CardItem = (props:ColumnType) =>{
 }
 export const DetailModal = () =>{
   
-  const {taskModalOpen,close,data,isError,isLoading:isTaskLoading} = useTaskModel()
-  const {taskName,_id,taskCreator,status} = {...data}
+  const {taskModalOpen,close,data,isError,isLoading:isTaskLoading,taskEdit:TaskId} = useTaskModel()
+  const {taskName,_id,taskCreator,status,taskTodoList} = {...data}
   const [open,setOpen] = useState(false)
   const [value,setValue] = useState('')
 
@@ -195,7 +195,7 @@ export const DetailModal = () =>{
         <Modal.Body>
         <div className='divider'>
           <div><span className='text-secondary fs-6'>代辦清單:</span></div>
-          <TodoList />
+          <TodoList TaskId={TaskId} taskTodoList={taskTodoList as listData[]} />
         </div>
         </Modal.Body>
       </div>

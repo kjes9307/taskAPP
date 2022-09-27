@@ -1,20 +1,26 @@
 import React, { useState, useEffect, ReactNode } from 'react';
 import {ProgressBar } from "react-bootstrap"
-import { v4 as uuid } from 'uuid'
-const id: string = uuid();
+// 需求分析
+// 送出API => 需要task ID
+// taskList狀態 => 完成 代辦 刪除
+type listData = {
+  name?:string,
+  done?: false|true
+  _id?:string
+}
 interface DataType {
     id?: string;
     name?: string;
     done?: boolean;
-    todoList?: DataType[];
+    todoList?: listData[];
     status?: boolean;
     item?: DataType;
   }
   const todoContext = React.createContext<
     | {
-        todo: DataType[];
+        todo: listData[];
         count: number;
-        addItem: (e: DataType) => void;
+        addItem: (e: listData) => void;
         updateItem: (id: string, status: boolean) => void;
         editItem: (id: string, newName: string) => void;
         checkAllItem: (status: boolean) => void;
@@ -23,22 +29,18 @@ interface DataType {
     | undefined
   >(undefined);
   
-  const TodoProvider = ({ children }: { children: ReactNode }) => {
-    let initArray: DataType[] = [
-      { id: uuid(), name: "Example", done: false },
-      { id: uuid(), name: "Task2", done: true }
-    ];
-    const [todo, setTodo] = useState(initArray);
+  const TodoProvider = ({ children,list,taskId }: { children: ReactNode,list:listData[],taskId:string }) => {
+  
+    const [todo, setTodo] = useState<listData[]>(list);
     const [count, setCount] = useState(0);
-    const addItem = (obj: DataType) => {
-      obj["id"] = uuid();
+    const addItem = (obj:listData) => {
       obj["done"] = false;
       setTodo([...todo, obj]);
     };
     const updateItem = (id: string, status: boolean) => {
       const nowTodo = [...todo]; // 變數記憶體位置改變 才比對的到?
       nowTodo.forEach((x) => {
-        if (x.id === id) x.done = status;
+        if (x._id === id) x.done = status;
       });
       setTodo(nowTodo);
     };
@@ -46,13 +48,13 @@ interface DataType {
       console.log(id,newName)
       const nowTodo = [...todo];
       nowTodo.forEach((x) => {
-        if (x.id === id) x.name = newName;
+        if (x._id === id) x.name = newName;
       });
       setTodo(nowTodo);
     }
     const delItem = (id: string) => {
       let newTodo = todo.filter((x) => {
-        return x.id !== id;
+        return x._id !== id;
       });
       setTodo(newTodo);
     };
@@ -87,10 +89,11 @@ interface DataType {
     }
     return context;
   };
-  export const TodoList = () => {
+  export const TodoList = (props:{TaskId:string,taskTodoList:listData[] }) => {
+    const {TaskId, taskTodoList} = props
     return (
       <>
-        <TodoProvider>
+        <TodoProvider taskId={TaskId} list={taskTodoList}>
           <div className="w-100">
             <Header />
             <Contain />
@@ -172,7 +175,7 @@ interface DataType {
         {todoList?.length !== 0 ? (
           todoList?.map((item) => {
             return (
-              <li key={item.id} className="list-group-item py-1 px-0">
+              <li key={item._id} className="list-group-item py-1 px-0">
                 <Item item={item} />
               </li>
             );

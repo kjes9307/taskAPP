@@ -10,6 +10,11 @@ export const useProjectIdInUrl = () => {
   const id = arr[2];
   return id;
 };
+export type listData = {
+  name:string,
+  done: false|true
+  _id:string
+}
 export interface Iprops<K>{
   alltask?: K[] | []
   kanbanName?: string
@@ -25,6 +30,7 @@ export interface ColumnType {
     status?: string,
     type?: string,
     kanbanId?:string
+    taskTodoList?: listData[]
     length?:number
     taskCreator?: {[key:string]:string}
 }
@@ -148,7 +154,8 @@ export const useTaskModel = () =>{
     data,
     isLoading,
     isError,
-    error
+    error,
+    taskEdit
   }
 }
 export interface SortProps {
