@@ -21,7 +21,7 @@ export const useAddList = (_id:string) =>{
     ) 
 }
 
-export const useEditList = (props:listData) =>{
+export const useEditList = () =>{
     const client = useHttp()
     const queryClient = useQueryClient()
     return useMutation((params:listData) =>  client(`task/editTodo/`, {

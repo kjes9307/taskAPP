@@ -1,5 +1,6 @@
 import React, { useState, useEffect, ReactNode } from 'react';
 import {ProgressBar } from "react-bootstrap"
+import { useDebounce } from 'utils';
 import {useAddList,useEditList} from './util'
 // 需求分析
 // 送出API => 需要task ID
@@ -52,7 +53,6 @@ interface DataType {
         if (x._id === _id) x.name = newName;
       });
       setTodo(nowTodo);
-      // await editListAsync({_id,name:newName})
     }
     const delItem = (id: string) => {
       let newTodo = todo.filter((x) => {
@@ -94,7 +94,6 @@ interface DataType {
   };
   export const TodoList = (props:{TaskId:string,taskTodoList:listData[] }) => {
     const {TaskId, taskTodoList} = props
-    console.log("render")
     return (
       <>
         <TodoProvider taskId={TaskId} list={taskTodoList}>
@@ -198,7 +197,9 @@ interface DataType {
     const [mode, setModeEdit] = useState(false)
     const [value,setNewName] = useState('')
     const { updateItem, delItem, editItem } = useProvider();
-  
+    const {mutateAsync:editListAsync}=useEditList()
+    const [ edit, setEdit] = useState<string|null>(null)
+    const debounceValue= useDebounce(edit,900)
     const mouseEvent = (event: boolean) => {
       showDisplay(event);
     };
@@ -214,10 +215,20 @@ interface DataType {
     const handChange = (e:React.ChangeEvent<HTMLTextAreaElement>) =>{
       setNewName(e.target.value);
       editItem(item?._id as string,e.target.value)
+      setEdit(e.target.value)
+    }
+    const sumbitEdit = async() =>{
+      await editListAsync({_id : item?._id, name: debounceValue as string})
     }
     useEffect(()=>{
       setNewName(item?.name || '')
     },[])
+    useEffect(()=>{
+      if(debounceValue){
+        console.log("@debounce test")
+        sumbitEdit()
+      }
+    },[debounceValue])
     return (
       <div
         className='d-flex align-items-center justify-content-between'

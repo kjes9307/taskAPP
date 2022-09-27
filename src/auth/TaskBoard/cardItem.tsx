@@ -109,7 +109,6 @@ export const DetailModal = () =>{
   
   const {taskModalOpen,close,data,isError,isLoading:isTaskLoading,taskEdit:TaskId} = useTaskModel()
   const {taskName,_id,taskCreator,status,taskTodoList} = {...data}
-  console.log(taskTodoList)
   const [open,setOpen] = useState(false)
   const [value,setValue] = useState('')
 
