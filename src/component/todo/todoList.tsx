@@ -1,5 +1,6 @@
 import React, { useState, useEffect, ReactNode } from 'react';
 import {ProgressBar } from "react-bootstrap"
+import {useAddList,useEditList} from './util'
 // 需求分析
 // 送出API => 需要task ID
 // taskList狀態 => 完成 代辦 刪除
@@ -9,7 +10,7 @@ type listData = {
   _id?:string
 }
 interface DataType {
-    id?: string;
+    _id?: string;
     name?: string;
     done?: boolean;
     todoList?: listData[];
@@ -22,7 +23,7 @@ interface DataType {
         count: number;
         addItem: (e: listData) => void;
         updateItem: (id: string, status: boolean) => void;
-        editItem: (id: string, newName: string) => void;
+        editItem: (_id: string, newName: string) => void;
         checkAllItem: (status: boolean) => void;
         delItem: (id: string) => void;
       }
@@ -30,12 +31,14 @@ interface DataType {
   >(undefined);
   
   const TodoProvider = ({ children,list,taskId }: { children: ReactNode,list:listData[],taskId:string }) => {
-  
+    const {mutateAsync:addListAsync}=useAddList(taskId)
     const [todo, setTodo] = useState<listData[]>(list);
     const [count, setCount] = useState(0);
-    const addItem = (obj:listData) => {
+    const addItem = async(obj:listData) => {
       obj["done"] = false;
+      console.log(obj)
       setTodo([...todo, obj]);
+      await addListAsync(obj)
     };
     const updateItem = (id: string, status: boolean) => {
       const nowTodo = [...todo]; // 變數記憶體位置改變 才比對的到?
@@ -44,13 +47,13 @@ interface DataType {
       });
       setTodo(nowTodo);
     };
-    const editItem = (id:string,newName:string)=>{
-      console.log(id,newName)
+    const editItem = async(_id:string,newName:string)=>{
       const nowTodo = [...todo];
       nowTodo.forEach((x) => {
-        if (x._id === id) x.name = newName;
+        if (x._id === _id) x.name = newName;
       });
       setTodo(nowTodo);
+      // await editListAsync({_id,name:newName})
     }
     const delItem = (id: string) => {
       let newTodo = todo.filter((x) => {
@@ -208,7 +211,7 @@ interface DataType {
     };
     const handChange = (e:React.ChangeEvent<HTMLTextAreaElement>) =>{
       setNewName(e.target.value);
-      editItem(item?.id as string,e.target.value)
+      editItem(item?._id as string,e.target.value)
     }
     const { item } = props;
     useEffect(()=>{
@@ -225,7 +228,7 @@ interface DataType {
       >
         <div className='d-flex w-80'>
         <input
-          onChange={(e) => check(e, item?.id || "")}
+          onChange={(e) => check(e, item?._id || "")}
           type="checkbox"
           checked={item?.done}
           className='form-check-input'
@@ -251,7 +254,7 @@ interface DataType {
           </>
         }
         </div>
-        <div onClick={() => deleteTodo(item?.id as string)}>
+        <div onClick={() => deleteTodo(item?._id as string)}>
           X
         </div>
       </div>
