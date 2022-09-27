@@ -67,9 +67,11 @@ interface DataType {
       });
       setTodo(nowTodo);
     };
-  
+    // After app receives data , useEffect func updates empty array directly
+    useEffect(()=>{
+      setTodo(list)
+    },[list])
     useEffect(() => {
-      console.log("@count");
       let Count = todo?.reduce((pre, cur) => {
         return pre + (cur.done === true ? 1 : 0);
       }, 0);
