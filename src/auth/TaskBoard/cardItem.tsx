@@ -109,8 +109,10 @@ export const DetailModal = () =>{
   
   const {taskModalOpen,close,data,isError,isLoading:isTaskLoading,taskEdit:TaskId} = useTaskModel()
   const {taskName,_id,taskCreator,status,taskTodoList} = {...data}
+  console.log(taskTodoList)
   const [open,setOpen] = useState(false)
   const [value,setValue] = useState('')
+  const [list,setList] = useState(taskTodoList || [])
 
   const {mutateAsync,isLoading:isEditLoading} = useEditTask()
   
@@ -139,6 +141,13 @@ export const DetailModal = () =>{
       setOpen(false)
     }
   },[taskName])
+  useEffect(()=>{
+    console.log("Trigger")
+    setList(taskTodoList || [])
+    return () =>{
+      setList([])
+    }
+  },[taskTodoList])
   return (<Modal show={taskModalOpen} onHide={close} size='xl'>
     <Modal.Header className='d-flex justify-content-between'>
           <h2 className='fs-3'>
@@ -195,7 +204,7 @@ export const DetailModal = () =>{
         <Modal.Body>
         <div className='divider'>
           <div><span className='text-secondary fs-6'>代辦清單:</span></div>
-          <TodoList TaskId={TaskId} taskTodoList={taskTodoList as listData[]} />
+          <TodoList TaskId={TaskId} taskTodoList={list} />
         </div>
         </Modal.Body>
       </div>
