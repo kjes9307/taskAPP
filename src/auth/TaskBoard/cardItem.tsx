@@ -112,7 +112,6 @@ export const DetailModal = () =>{
   console.log(taskTodoList)
   const [open,setOpen] = useState(false)
   const [value,setValue] = useState('')
-  const [list,setList] = useState(taskTodoList || [])
 
   const {mutateAsync,isLoading:isEditLoading} = useEditTask()
   
@@ -198,7 +197,7 @@ export const DetailModal = () =>{
         <Modal.Body>
         <div className='divider'>
           <div><span className='text-secondary fs-6'>代辦清單:</span></div>
-          <TodoList TaskId={TaskId} taskTodoList={list} />
+          <TodoList TaskId={TaskId} taskTodoList={taskTodoList || []} />
         </div>
         </Modal.Body>
       </div>

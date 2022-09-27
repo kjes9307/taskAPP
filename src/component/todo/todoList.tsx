@@ -36,7 +36,6 @@ interface DataType {
     const [count, setCount] = useState(0);
     const addItem = async(obj:listData) => {
       obj["done"] = false;
-      console.log(obj)
       setTodo([...todo, obj]);
       await addListAsync(obj)
     };
@@ -47,7 +46,7 @@ interface DataType {
       });
       setTodo(nowTodo);
     };
-    const editItem = async(_id:string,newName:string)=>{
+    const editItem = (_id:string,newName:string)=>{
       const nowTodo = [...todo];
       nowTodo.forEach((x) => {
         if (x._id === _id) x.name = newName;
@@ -86,7 +85,6 @@ interface DataType {
   };
   const useProvider = () => {
     const context = React.useContext(todoContext);
-    // console.log(context);
     if (!context) {
       throw new Error("要在Provider中使用");
     }
@@ -94,6 +92,7 @@ interface DataType {
   };
   export const TodoList = (props:{TaskId:string,taskTodoList:listData[] }) => {
     const {TaskId, taskTodoList} = props
+    console.log("render")
     return (
       <>
         <TodoProvider taskId={TaskId} list={taskTodoList}>
@@ -192,6 +191,7 @@ interface DataType {
     );
   };
   export const Item = (props: DataType) => {
+    const { item } = props;
     const [display, showDisplay] = useState(false);
     const [mode, setModeEdit] = useState(false)
     const [value,setNewName] = useState('')
@@ -213,7 +213,6 @@ interface DataType {
       setNewName(e.target.value);
       editItem(item?._id as string,e.target.value)
     }
-    const { item } = props;
     useEffect(()=>{
       setNewName(item?.name || '')
     },[])
