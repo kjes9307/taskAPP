@@ -159,6 +159,15 @@ interface DataType {
       }
       setNavArr(Object.keys(items))
     }
+    const addTab = () => {
+      if(defaultNav.length===0){
+        setNavArr(['0'])
+      }else{
+        let num = parseInt(defaultNav[defaultNav.length-1])
+        let newNum = num+1
+        setNavArr([...defaultNav,`${newNum}`])
+      }
+    }
     useEffect(()=>{
       deleteDuplicateBySet()
       return ()=>{
@@ -169,7 +178,7 @@ interface DataType {
       <>
       <ul className="nav nav-tabs d-flex align-items-center">
         {
-          defaultNav?.map((item,idx)=>{
+          defaultNav?.map((item)=>{
             return (
               <li key={item} className="nav-item" onClick={()=> {setNav(item);pageHandler(item)}}>
                 <div className={nav === item? `nav-link active text-primary d-flex align-items-center justify-content-between`: `nav-link text-dark d-flex align-items-center justify-content-between`}>
@@ -193,7 +202,7 @@ interface DataType {
         <span 
           className="material-symbols-outlined" 
           style={{cursor:"pointer"}}
-          onClick={()=> setNavArr([...defaultNav,"CheckList"])}
+          onClick={addTab}
           >
           add
         </span>
