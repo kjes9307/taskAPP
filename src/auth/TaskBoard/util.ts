@@ -14,6 +14,7 @@ export type listData = {
   name:string,
   done: false|true
   _id:string
+  tab: string
 }
 export interface Iprops<K>{
   alltask?: K[] | []

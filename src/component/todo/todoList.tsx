@@ -1,7 +1,7 @@
 import React, { useState, useEffect, ReactNode } from 'react';
 import {ProgressBar } from "react-bootstrap"
 import { useDebounce } from 'utils';
-import {useAddList,useEditList} from './util'
+import {useAddList,useEditList,useDeleteList} from './util'
 // 需求分析
 // 送出API => 需要task ID
 // taskList狀態 => 完成 代辦 刪除
@@ -9,6 +9,7 @@ type listData = {
   name?:string,
   done?: false|true
   _id?:string
+  tab?:string
 }
 interface DataType {
     _id?: string;
@@ -27,16 +28,23 @@ interface DataType {
         editItem: (_id: string, newName: string) => void;
         checkAllItem: (status: boolean) => void;
         delItem: (id: string) => void;
+        pageHandler: (tab:string)=> void;
       }
     | undefined
   >(undefined);
   
   const TodoProvider = ({ children,list,taskId }: { children: ReactNode,list:listData[],taskId:string }) => {
     const {mutateAsync:addListAsync}=useAddList(taskId)
+    const {mutateAsync:delListAsync}=useDeleteList()
     const [todo, setTodo] = useState<listData[]>(list);
+    const [listPage,setPage] = useState('0')
     const [count, setCount] = useState(0);
+    const pageHandler = (tab:string) =>{
+      setPage(tab)
+    }
     const addItem = async(obj:listData) => {
       obj["done"] = false;
+      obj["tab"] = listPage
       setTodo([...todo, obj]);
       await addListAsync(obj)
     };
@@ -54,11 +62,12 @@ interface DataType {
       });
       setTodo(nowTodo);
     }
-    const delItem = (id: string) => {
+    const delItem = async(id: string) => {
       let newTodo = todo.filter((x) => {
         return x._id !== id;
       });
       setTodo(newTodo);
+      await delListAsync({_id:id})
     };
     const checkAllItem = (status: boolean) => {
       const nowTodo = [...todo];
@@ -79,7 +88,7 @@ interface DataType {
     }, [todo]);
     return (
       <todoContext.Provider
-        value={{ todo, count, addItem, updateItem, checkAllItem, delItem,editItem }}
+        value={{ todo, count, addItem, updateItem, checkAllItem, delItem,editItem,pageHandler }}
       >
         {children}
       </todoContext.Provider>
@@ -138,18 +147,33 @@ interface DataType {
     );
   };
   export const Contain = () => {
-    const { todo: todoList } = useProvider();
-    const [nav,setNav] = useState(0)
-    const [defaultNav,setNavArr] = useState(['CheckList'])
+    const { todo: todoList,pageHandler } = useProvider();
+    const [nav,setNav] = useState('0')
+    const [defaultNav,setNavArr] = useState<string[]|[]>([])
+    const deleteDuplicateBySet = () =>{
+      let items = {} as {[key:string]:unknown}
+      for(var i = 0 ; i<todoList.length ; i++){
+          if(!items.hasOwnProperty(todoList[i].tab as string)){
+              items[`${todoList[i].tab}`] = 1
+          }
+      }
+      setNavArr(Object.keys(items))
+    }
+    useEffect(()=>{
+      deleteDuplicateBySet()
+      return ()=>{
+        setNavArr([])
+      }
+    },[todoList])
     return (
       <>
       <ul className="nav nav-tabs d-flex align-items-center">
         {
           defaultNav?.map((item,idx)=>{
             return (
-              <li className="nav-item" onClick={()=> setNav(idx)}>
-                <div className={nav === idx? `nav-link active text-primary d-flex align-items-center justify-content-between`: `nav-link text-dark d-flex align-items-center justify-content-between`}>
-                  {item}
+              <li key={item} className="nav-item" onClick={()=> {setNav(item);pageHandler(item)}}>
+                <div className={nav === item? `nav-link active text-primary d-flex align-items-center justify-content-between`: `nav-link text-dark d-flex align-items-center justify-content-between`}>
+                  Checklist{item}
                   <span 
                     className="material-symbols-outlined" 
                     style={{cursor:"pointer"}}
@@ -177,11 +201,13 @@ interface DataType {
       <ul className='list-group list-group-flush'>
         {todoList?.length !== 0 ? (
           todoList?.map((item) => {
+            if(item.tab === nav){
             return (
               <li key={item._id} className="list-group-item py-1 px-0">
                 <Item item={item} />
               </li>
             );
+            }
           })
         ) : (
           <li className="list-group-item">No data</li>
@@ -208,9 +234,7 @@ interface DataType {
       updateItem(id, event.target.checked);
     };
     const deleteTodo = (id: string) => {
-      if (window.confirm("確定") === true) {
         delItem(id);
-      }
     };
     const handChange = (e:React.ChangeEvent<HTMLTextAreaElement>) =>{
       setNewName(e.target.value);

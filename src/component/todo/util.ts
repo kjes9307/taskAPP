@@ -24,7 +24,7 @@ export const useAddList = (_id:string) =>{
 export const useEditList = () =>{
     const client = useHttp()
     const queryClient = useQueryClient()
-    return useMutation((params:listData) =>  client(`task/editTodo/`, {
+    return useMutation((params:listData) =>  client(`task/editTodo`, {
       data: {...params},
       method: "PATCH",
     }),{
@@ -33,4 +33,17 @@ export const useEditList = () =>{
       }
     }
     ) 
+}
+export const useDeleteList = () =>{
+  const client = useHttp()
+  const queryClient = useQueryClient()
+  return useMutation((params:listData) =>  client(`task/deleteTodo`, {
+    data: {...params},
+    method: "DELETE",
+  }),{
+    onSuccess: () =>{
+      queryClient.invalidateQueries(`task/getTask`)
+    }
+  }
+  ) 
 }
