@@ -29,7 +29,7 @@ export interface ColumnType {
     idx?:number,
     taskName?: string,
     status?: string,
-    type?: string,
+    type?: number,
     kanbanId?:string
     taskTodoList?: listData[]
     length?:number

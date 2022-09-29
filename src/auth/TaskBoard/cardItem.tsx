@@ -1,16 +1,16 @@
 import React, {useEffect, useState} from 'react'
 import {Card,Modal,Container,Row,Col,Toast } from 'react-bootstrap'
-import { ColumnType,listData,useTaskModel,useEditTask,useTaskSearchParam } from "./util"
+import { ColumnType,useTaskModel,useEditTask,useTaskSearchParam } from "./util"
 import { DeleteModal } from './deleteItem'
 import {TodoList} from "component/todo/todoList"
 import {IselectType} from "component/selectType"
-const  TypeSelector =(props:{idx:number,length:number})=> {
+const  TypeSelector =(props:{idx:number,length:number,id:string,type:number})=> {
   const type =[
     {
-      textType: "bg-dark",
-      spanName : "psychology_alt",
-      name: "Idle",
-      index: 0
+        textType: "bg-dark",
+        spanName : "psychology_alt",
+        name: "Idle",
+        index: 0
     },
     {
         textType: "bg-danger",
@@ -44,17 +44,25 @@ const  TypeSelector =(props:{idx:number,length:number})=> {
         index: 5
     }
   ]
-  const {idx,length} = props
+  const {mutateAsync} = useEditTask()
+  const {idx,length,id,type:typeChecked} = props
   const handleOpen = (e:React.MouseEvent) =>{
     e.stopPropagation()
-}
+  }
+  const taskType = async(index:number,id:string) =>{
+    let data ={
+      taskId: id,
+      type: index
+    }
+    await mutateAsync(data)
+  }
   return (
     <div onClick={(e)=> handleOpen(e)}>
       <IselectType type={type} 
-        defaultIndex={0} 
+        defaultIndex={typeChecked} 
         className="position-absolute top-0 start-0" 
         style={{zIndex: length-idx + 10}}
-        onSelect={(index)=>{console.log(index)}} />
+        onSelect={(index)=>{taskType(index,id)}} />
     </div>
   );
 }
@@ -76,7 +84,7 @@ const Mark = ({name,keyword}:{name:string,keyword:string}) =>{
   </>
 }
 export const CardItem = (props:ColumnType) =>{
-    const {taskName,status,_id,idx,length} = props
+    const {taskName,status,_id,idx,length,type} = props
     const {startEdit} = useTaskModel()
     const [param]= useTaskSearchParam()
     const {taskName:keyword} = param
@@ -100,8 +108,8 @@ export const CardItem = (props:ColumnType) =>{
         </div>
         </Card.Body>
       </Card>
-      <TypeSelector idx={idx || 0} length={length || 0} />
-      </div>
+      <TypeSelector type={type || 0} id={_id || ""} idx={idx || 0} length={length || 0} />
+      </div> 
    
     )
 }
