@@ -7,6 +7,7 @@ import {useAsync} from 'utils/use-async';
 interface UserResponse{
     token:string;
     name:string
+    id?:string
 }
 export interface AuthForm {
     email: string;

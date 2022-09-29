@@ -11,7 +11,7 @@ export interface CommentProp  {
     task:string
 }
 export interface Comment{
-    comment:string
+    comment?:string
     postid?:string
 }
 export const useEditComment = () =>{
@@ -35,6 +35,20 @@ export const useAddComment = () =>{
   return useMutation((params:Comment) =>  client(`task/addComment`, {
     data: {...params},
     method: "POST",
+  }),{
+    onSuccess: () =>{
+      queryClient.invalidateQueries(`task/getTask`)
+    }
+}) 
+}
+
+export const useDeleteComment = () =>{
+  const client = useHttp()
+  const queryClient = useQueryClient()
+
+  return useMutation((params:Comment) =>  client(`task/deleteComment`, {
+    data: {...params},
+    method: "DELETE",
   }),{
     onSuccess: () =>{
       queryClient.invalidateQueries(`task/getTask`)

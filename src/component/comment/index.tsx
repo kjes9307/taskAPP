@@ -1,18 +1,25 @@
 import { useState, useEffect} from 'react'
 import { Toast } from 'react-bootstrap'
-import { CommentProp , useEditComment } from './util';
+import { CommentProp , useEditComment , useDeleteComment } from './util';
 import { useDebounce } from 'utils'
+import { useAuth } from 'context/userContext';
+
 export const Comment = (props:CommentProp) =>{
     const {user,comment,_id:postid} = props
+    const {user:userInfo} = useAuth()
     const [mode,setEdit] = useState(false)
     const [newcomment,setComment] = useState<string|null>(null)
     const commentValue=useDebounce(newcomment,800)
     const {mutateAsync:editCommentAsync}=useEditComment()
+    const {mutateAsync:deleteCommentAsync}=useDeleteComment()
     const handComment = async() =>{
         await editCommentAsync({ 
           comment: commentValue as string ,
           postid: postid 
         })
+    }
+    const deleteComment = async() => {
+      await deleteCommentAsync({postid})
     }
     useEffect(()=>{
       setComment(comment)
@@ -35,19 +42,34 @@ export const Comment = (props:CommentProp) =>{
               <small>11mins ago</small>
             </Toast.Header>
             <Toast.Body>
-              {mode === false?<span onClick={()=>setEdit(true)}>{comment}</span>:
-              <textarea 
-                className='border-0 border-bottom input-outline w-100 text-addItem' 
-                value={newcomment || ''} 
-                autoFocus
-                onBlur={()=>setEdit(false)} 
-                onChange={(e)=> setComment(e.target.value)}
-                onKeyDown={(e)=>{
-                  if(e.key==="Enter"){
-                    setEdit(false)
-                  }
-                }}
-              />
+              {mode === false?
+                <div className='d-flex justify-content-between'>
+                  <span onClick={()=>setEdit(true)}>{comment}</span>
+                  {
+                    userInfo?.id === user._id 
+                      &&
+                    <span 
+                      className="material-symbols-outlined opacity-0 mouseHover"                   
+                      style={{cursor:"pointer"}}
+                      onClick={deleteComment}
+                    >
+                      close
+                    </span>
+                  } 
+                </div>
+                :
+                <textarea 
+                  className='border-0 border-bottom input-outline w-100 text-addItem' 
+                  value={newcomment || ''} 
+                  autoFocus
+                  onBlur={()=>setEdit(false)} 
+                  onChange={(e)=> setComment(e.target.value)}
+                  onKeyDown={(e)=>{
+                    if(e.key==="Enter"){
+                      setEdit(false)
+                    }
+                  }}
+                />
               }
             </Toast.Body>
             <div className='triangle'></div>
