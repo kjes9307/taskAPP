@@ -26,4 +26,18 @@ export const useEditComment = () =>{
         queryClient.invalidateQueries(`task/getTask`)
       }
   }) 
-  }
+}
+
+export const useAddComment = () =>{
+  const client = useHttp()
+  const queryClient = useQueryClient()
+
+  return useMutation((params:Comment) =>  client(`task/addComment`, {
+    data: {...params},
+    method: "POST",
+  }),{
+    onSuccess: () =>{
+      queryClient.invalidateQueries(`task/getTask`)
+    }
+}) 
+}

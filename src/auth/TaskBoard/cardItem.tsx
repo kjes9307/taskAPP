@@ -4,6 +4,7 @@ import { ColumnType,useTaskModel,useEditTask,useTaskSearchParam } from "./util"
 import { DeleteModal } from './deleteItem'
 import {TodoList} from "component/todo/todoList"
 import { Comment } from 'component/comment'
+import { useAddComment } from 'component/comment/util'
 import {IselectType} from "component/selectType"
 const  TypeSelector =(props:{idx:number,length:number,id:string,type:number})=> {
   const type =[
@@ -118,8 +119,10 @@ export const DetailModal = () =>{
   const {taskModalOpen,close,data,isError,isLoading:isTaskLoading,taskEdit:TaskId} = useTaskModel()
   const {taskName,_id,taskCreator,status,taskTodoList,comments} = {...data}
   const {mutateAsync,isLoading:isEditLoading} = useEditTask()
+  const {mutateAsync:addCommentAsync}=useAddComment()
   const [open,setOpen] = useState(false)
   const [value,setValue] = useState('')
+  const [comment,setComment] = useState('')
   const isLoading = isEditLoading || isTaskLoading ? true: false;
 
   const handleType = async(e:React.ChangeEvent<HTMLSelectElement>)=>{
@@ -137,6 +140,13 @@ export const DetailModal = () =>{
       status
     }
     await mutateAsync(data)
+  }
+  const handleSubmit = async(e:React.KeyboardEvent<HTMLTextAreaElement>) =>{
+    let data = {comment,task: _id}
+    if(e.key==="Enter"){
+        await addCommentAsync(data)
+        setComment('')
+    }
   }
   // For Edit Mode 要顯示
   useEffect(()=>{
@@ -255,9 +265,13 @@ export const DetailModal = () =>{
         }
         </div>
         <textarea 
+          value={comment}
           placeholder='輸入評論'
-          className='form-control text-addItem mt-3'>
-          </textarea>
+          className='form-control text-addItem mt-3'
+          onChange={(e)=> setComment(e.target.value)}
+          onKeyPress={(e)=>handleSubmit(e)}
+        >
+        </textarea>
         </div>
         </Modal.Body>
       </div>

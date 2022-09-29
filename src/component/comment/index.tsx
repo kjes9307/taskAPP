@@ -16,6 +16,10 @@ export const Comment = (props:CommentProp) =>{
     }
     useEffect(()=>{
       setComment(comment)
+      setEdit(false)
+      return ()=>{
+        setComment(null)
+      }
     },[])
     useEffect(()=>{
         if(commentValue){
@@ -31,16 +35,16 @@ export const Comment = (props:CommentProp) =>{
               <small>11mins ago</small>
             </Toast.Header>
             <Toast.Body>
-              {mode?<span onClick={()=>setEdit(!mode)}>{comment}</span>:
+              {mode === false?<span onClick={()=>setEdit(true)}>{comment}</span>:
               <textarea 
                 className='border-0 border-bottom input-outline w-100 text-addItem' 
                 value={newcomment || ''} 
                 autoFocus
-                onBlur={()=>setEdit(!mode)} 
+                onBlur={()=>setEdit(false)} 
                 onChange={(e)=> setComment(e.target.value)}
                 onKeyDown={(e)=>{
                   if(e.key==="Enter"){
-                    setEdit(!mode)
+                    setEdit(false)
                   }
                 }}
               />
