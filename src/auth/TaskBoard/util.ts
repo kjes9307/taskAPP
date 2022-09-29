@@ -33,6 +33,7 @@ export interface ColumnType {
     kanbanId?:string
     taskTodoList?: listData[]
     length?:number
+    comments?: [{ _id:string,comment:string, user:{_id:string,name:string,photo:string}}]
     taskCreator?: {[key:string]:string}
 }
 

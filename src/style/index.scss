@@ -37,7 +37,9 @@ $utilities: map-merge(
     display: none ;
   }
 }
-
+.input-outline:focus{
+  outline: none;
+}
 
 
 

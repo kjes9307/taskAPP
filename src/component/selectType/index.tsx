@@ -39,7 +39,7 @@ export const IselectType = (props:typeSelectProps<ItemSelect>) =>{
                     type?.map(x=>{
                         if(x.index===value){
                             return (
-                                <div onClick={()=>setOpen(!open)} className={"typeselect"+` ${x.textType}`}>
+                                <div key={x.index} onClick={()=>setOpen(!open)} className={"typeselect"+` ${x.textType}`}>
                                 <span key={x.index} className={classes}>
                                 {x.spanName}
                                 </span>

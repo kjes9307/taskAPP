@@ -3,6 +3,7 @@ import {Card,Modal,Container,Row,Col,Toast } from 'react-bootstrap'
 import { ColumnType,useTaskModel,useEditTask,useTaskSearchParam } from "./util"
 import { DeleteModal } from './deleteItem'
 import {TodoList} from "component/todo/todoList"
+import { Comment } from 'component/comment'
 import {IselectType} from "component/selectType"
 const  TypeSelector =(props:{idx:number,length:number,id:string,type:number})=> {
   const type =[
@@ -114,14 +115,11 @@ export const CardItem = (props:ColumnType) =>{
     )
 }
 export const DetailModal = () =>{
-  
   const {taskModalOpen,close,data,isError,isLoading:isTaskLoading,taskEdit:TaskId} = useTaskModel()
-  const {taskName,_id,taskCreator,status,taskTodoList} = {...data}
+  const {taskName,_id,taskCreator,status,taskTodoList,comments} = {...data}
+  const {mutateAsync,isLoading:isEditLoading} = useEditTask()
   const [open,setOpen] = useState(false)
   const [value,setValue] = useState('')
-
-  const {mutateAsync,isLoading:isEditLoading} = useEditTask()
-  
   const isLoading = isEditLoading || isTaskLoading ? true: false;
 
   const handleType = async(e:React.ChangeEvent<HTMLSelectElement>)=>{
@@ -140,7 +138,7 @@ export const DetailModal = () =>{
     }
     await mutateAsync(data)
   }
-  // For Edit Mode
+  // For Edit Mode 要顯示
   useEffect(()=>{
     setValue(taskName || "")
     return () =>{
@@ -245,16 +243,16 @@ export const DetailModal = () =>{
         </div>
         <div>
         <span className='text-secondary'>討論</span>
-        <div className='d-flex align-items-start mt-2'> 
-          <img src="/images/andychen.jpeg" className="rounded-circle comment-avatar" alt="avatar" />
-          <Toast className='w-90 border shadow-none position-relative ms-3'>
-            <Toast.Header closeButton={false}>
-              <strong className="me-auto">Andy Chen</strong>
-              <small>11mins ago</small>
-            </Toast.Header>
-            <Toast.Body>Hello, world! This is a toast message.</Toast.Body>
-            <div className='triangle'></div>
-          </Toast>
+        <div className='mt-2'> 
+        {
+          comments?.map(item=>{
+            return (
+              <div key={item._id}>
+                <Comment task={_id as string} {...item} />
+              </div>
+            )
+          })
+        }
         </div>
         <textarea 
           placeholder='輸入評論'
