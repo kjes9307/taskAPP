@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState, useRef, RefObject } from "react";
 
 
 export const useMount = (callback: () => void) => {
@@ -104,3 +104,18 @@ export const useTitle = (title : string , keepOnMount: boolean = true) =>{
     }
   },[])
 }
+
+export const useClickOutside= (ref: RefObject<HTMLElement>, handler: Function) =>{
+  useEffect(() => {
+      const listener = (event: MouseEvent) => {
+          if(!ref.current || ref.current.contains(event.target as HTMLElement)){
+              return
+          }
+          handler(event)
+      }
+      document.addEventListener('click',listener)
+      return () => {
+          document.removeEventListener('click', listener)
+      }
+  }, [ref, handler])
+}  

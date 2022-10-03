@@ -1,8 +1,8 @@
 import React, { FC, useState, ChangeEvent,KeyboardEvent, ReactElement, useEffect, useRef} from "react";
 import classNames from "classnames";
-import { Input,InputProps } from 'component/input'
+import  { Input,InputProps } from '../input'
 import Icon from 'component/Icon'
-import {useDebounce} from 'utils'
+import {useDebounce,useClickOutside} from 'utils'
 interface DataSourceObject {
     value: string;
 }
@@ -12,14 +12,16 @@ export interface AutoCompleteProps extends Omit<InputProps, 'onSelect'> {
     fetchSuggestions: (str: string) => DataSourceType[] | Promise<DataSourceType[]>; // 下拉選單
     onSelect?: (item: DataSourceType) => void; //選中誰
     renderOption?: (item: DataSourceType) => ReactElement;
+    onClose?: ()=> void
 }
 
-export const AutoComplete: FC<AutoCompleteProps> = (props) => {
+export const SearchComplete: FC<AutoCompleteProps> = (props) => {
     const {
         fetchSuggestions,
         onSelect,
         value,
         renderOption,
+        onClose,
         ...restProps
     } = props
     // 組件控制值
@@ -28,6 +30,7 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
     const [ loading, setLoading ] = useState(false)
     const [ highlightIndex, setHighlightIndex ] = useState(-1)
     const triggerSearch = useRef(false)
+    const componentRef = useRef<HTMLDivElement>(null)
 
     const devalue = useDebounce(inputValue,700)
     // console.log("@",suggestions) 
@@ -71,7 +74,6 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
         setHighlightIndex(index);
     }
     const handleKeyDown = (e: KeyboardEvent<HTMLInputElement>) => {
-        console.log(e)
         switch(e.keyCode) {
             case 13:
                 if(suggestions[highlightIndex]) {
@@ -95,7 +97,7 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
     //2 受1.1影響 展示fetchSuggestions提供的搜索清單
      const generateDropdown = () => {
         return (
-            <ul>
+            <ul className="list-unstyled">
                 {suggestions.map((item, index) => {
                     const cnames = classNames('suggestion-item', {
                         'item-highlighted' : index === highlightIndex 
@@ -119,20 +121,30 @@ export const AutoComplete: FC<AutoCompleteProps> = (props) => {
         }
         triggerSearch.current = false;
     }
+    useClickOutside(componentRef, () => { setSuggestions([]);})
+
     useEffect(()=>{
         rendetSearch(devalue as string)
         setHighlightIndex(-1)
     },[devalue])
     return (
-        <div className="viking-auto-complete">
-            <Input
-                value={inputValue}
-                {...restProps}
-                onKeyDown={handleKeyDown}
-                onChange={handleChange}
-            />
+        <div 
+            className="position-relative" 
+            ref={componentRef}
+        >
+            <div className="position-absolute search-data">
+                <Input
+                    value={inputValue}
+                    {...restProps}
+                    onKeyDown={handleKeyDown}
+                    onChange={handleChange}
+                    placeholder="Search Member..."
+                />
+            </div>
+            <div className="position-absolute show-search select-person">
             { loading && <ul><Icon icon="spinner" spin/></ul>}
             {( suggestions.length > 0) && generateDropdown()}
+            </div>  
         </div>
     )
 }
