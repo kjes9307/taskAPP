@@ -1,19 +1,9 @@
 import { useState } from "react"
 import Icon from 'component/Icon'
 import {SearchComplete,DataSourceType} from 'component/searchComplete'
-import {useGetMember} from './util'
 import './style.scss'
 export const SelectPerson = () =>{
     const [open,setOpen] = useState(false)   
-    const [query,setQuery] = useState('')
-    const handleFetch = async(query: string) => {
-        setQuery(query)
-        return await fetch(`http://localhost:3000/user/getUser?q=${query}`)
-                .then(res => res.json())
-                .then(({data}) => {
-                    return  data.slice(0, 10).map((item: any) => ({ value: item.name, ...item}))
-                })
-    }
     const handSelect = (e:DataSourceType) =>{
         console.log(e)
     }
@@ -21,6 +11,7 @@ export const SelectPerson = () =>{
         photo: string;
         name: string;
         login?:string;
+        value?: string;
     }
     const renderCustom = (item: DataSourceType<UserProps>) => {
         return (
@@ -41,6 +32,7 @@ export const SelectPerson = () =>{
             </div>
         )
     }
+
     return (
         <div className="d-flex">
             <div>
@@ -56,11 +48,11 @@ export const SelectPerson = () =>{
             <div className="d-block bg-white ms-1">
                 { open &&
                     <SearchComplete
-                        fetchSuggestions={handleFetch}
                         onSelect={handSelect}
                         renderOption = {renderCustom}
                         icon='magnifying-glass'
-                    />
+                        onClick={()=> setOpen(!open)} 
+                        />
                 }
             </div>
         </div>

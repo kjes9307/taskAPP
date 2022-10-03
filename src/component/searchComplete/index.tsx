@@ -1,38 +1,40 @@
-import React, { FC, useState, ChangeEvent,KeyboardEvent, ReactElement, useEffect, useRef} from "react";
+import { FC, useState, ChangeEvent,KeyboardEvent, ReactElement, useEffect, useRef, RefObject} from "react";
 import classNames from "classnames";
 import  { Input,InputProps } from '../input'
 import Icon from 'component/Icon'
 import {useDebounce,useClickOutside} from 'utils'
+import {useGetMember} from './util'
+
 interface DataSourceObject {
     value: string;
 }
 export type DataSourceType<T = {}> =  Partial<T & DataSourceObject>
 
-export interface AutoCompleteProps extends Omit<InputProps, 'onSelect'> {
-    fetchSuggestions: (str: string) => DataSourceType[] | Promise<DataSourceType[]>; // 下拉選單
+export interface CompleteProps extends Omit<InputProps, 'onSelect'> {
     onSelect?: (item: DataSourceType) => void; //選中誰
     renderOption?: (item: DataSourceType) => ReactElement;
-    onClose?: ()=> void
+    onClick?: ()=> void
+    ref?:RefObject<HTMLElement>
 }
 
-export const SearchComplete: FC<AutoCompleteProps> = (props) => {
+export const SearchComplete: FC<CompleteProps> = (props) => {
     const {
-        fetchSuggestions,
         onSelect,
         value,
         renderOption,
-        onClose,
+        onClick,
         ...restProps
     } = props
     // 組件控制值
-    const [ inputValue, setInputValue ] = useState<string|number|undefined>('')
+    const [ inputValue, setInputValue ] = useState<string>('')
     const [ suggestions, setSuggestions ] = useState<DataSourceType[]>([])
-    const [ loading, setLoading ] = useState(false)
     const [ highlightIndex, setHighlightIndex ] = useState(-1)
     const triggerSearch = useRef(false)
     const componentRef = useRef<HTMLDivElement>(null)
 
     const devalue = useDebounce(inputValue,700)
+    const {data:fetchData,isError,isLoading} = useGetMember(devalue) 
+
     // console.log("@",suggestions) 
     //1 改變輸入值
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -45,17 +47,10 @@ export const SearchComplete: FC<AutoCompleteProps> = (props) => {
         if(value &&  triggerSearch.current) {
             // 1.1 狀態改變 下拉選單更新
             // 1.2 fetchSuggestions 引入外部清單
-            const results = fetchSuggestions(value); // array or promise
-            if(results instanceof Promise){
-                console.log('trigged')
-                setLoading(true)
-                results.then(data => {
-                    setLoading(false)
-                    setSuggestions(data)
-                })
-            }else{
-                setSuggestions(results);
-            }
+            const results = fetchData; // array or promise
+            console.log('trigged')
+            setSuggestions(results);
+
         }else {
             setSuggestions([]);
         }
@@ -113,7 +108,7 @@ export const SearchComplete: FC<AutoCompleteProps> = (props) => {
     }
     // 3 展示清單元素被點擊時 展示元素訊息
     const handleSelect = (item: DataSourceType) => {
-        setInputValue(item.value)
+        setInputValue(item.value as string)
         setSuggestions([])
         if ( onSelect ) {
             // 將元素訊息向外傳遞
@@ -126,7 +121,7 @@ export const SearchComplete: FC<AutoCompleteProps> = (props) => {
     useEffect(()=>{
         rendetSearch(devalue as string)
         setHighlightIndex(-1)
-    },[devalue])
+    },[devalue,fetchData])
     return (
         <div 
             className="position-relative" 
@@ -142,8 +137,8 @@ export const SearchComplete: FC<AutoCompleteProps> = (props) => {
                 />
             </div>
             <div className="position-absolute show-search select-person">
-            { loading && <ul><Icon icon="spinner" spin/></ul>}
-            {( suggestions.length > 0) && generateDropdown()}
+            { isLoading && <ul><Icon icon="spinner" spin/></ul>}
+            {( suggestions?.length > 0) && generateDropdown()}
             </div>  
         </div>
     )
