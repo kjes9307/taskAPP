@@ -82,3 +82,25 @@ export const errorBox = ({error}:{error:unknown}) =>{
   }
   return null;
 }
+
+export const useTitle = (title : string , keepOnMount: boolean = true) =>{
+  const oldTitle = document.title;
+  // const oldTitle = useRef(document.title).current
+  // 加仔葉面  oldTitle = React App
+  // 加仔后 oldTitle = 新title
+
+  useEffect(()=>{
+    document.title=title
+  },[title])
+
+  useEffect(()=>{
+    return () =>{
+      if(!keepOnMount){
+        // 沒指定依賴 就會讀頁面初始加載值
+        // console.log("卸載調用",oldTitle)
+        // 拿到最新值 1. 依賴 2. function update 3. useRef
+        document.title = oldTitle
+      }
+    }
+  },[])
+}
