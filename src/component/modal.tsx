@@ -13,11 +13,9 @@ export const ProjectModal = (props: {
     const {
       register,
       handleSubmit,
-      resetField ,
       setValue ,
-      formState: { errors },
     } = useForm<Inputs>();
-    const {projectModalOpen,open,close,detailData,isLoading}=useProjectModal()
+    const {projectModalOpen,close,detailData,isLoading}=useProjectModal()
     const title = detailData? "Edit Item" : "Create Item";
     const useMutateProj = detailData ? useEditName : useAddName
     if(detailData){
@@ -28,7 +26,7 @@ export const ProjectModal = (props: {
     
 
     // 異步操作 之後才能去控制關閉或刷新
-    const {mutateAsync,error,isLoading:asyncLoading} = useMutateProj(useProjectsQueryKey())
+    const {mutateAsync} = useMutateProj(useProjectsQueryKey())
     
     const onSubmit: SubmitHandler<Inputs> = (values) => {
       mutateAsync({...detailData?.[0],...values}).then(()=>{

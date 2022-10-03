@@ -45,7 +45,7 @@ export const Input: FC<InputProps> = (props) => {
     if('value' in props) {
         // 同時有defaultValue & value 刪除defaultValue
         delete restProps.defaultValue
-        // restProps.value = fixControlledValue(props.value)
+        restProps.value = fixControlledValue(props.value)
 
     }
     return (

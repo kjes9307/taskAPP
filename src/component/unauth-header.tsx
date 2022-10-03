@@ -14,7 +14,7 @@ export const UnAuthHeader = () =>{
                     <li className="list-unstyled ms-7"><a href="/login" className="text-decoration-none fs-6 brand-color click">登入</a></li>
                 </ul>
                 <div className="toggle-dropdown position-absolute top-0 end-0 d-block d-sm-none" onClick={()=> setOpen()}>
-                    <a href="#" className="ham-icon brand-color">
+                    <a href="/" className="ham-icon brand-color">
                         <i className="fas fa-bars fa-2x"></i>
                     </a>
                     <ul className="dropdown-self px-0">
