@@ -7,6 +7,7 @@ import { Comment } from 'component/comment'
 import { useAddComment } from 'component/comment/util'
 import {IselectType} from "component/selectType"
 import { SelectPerson } from 'component/selectPerson'
+import Icon from 'component/Icon'
 const  TypeSelector =(props:{idx:number,length:number,id:string,type:number})=> {
   const type =[
     {
@@ -220,13 +221,20 @@ export const DetailModal = () =>{
       <div className='w-30'>
         <Modal.Body>
           <div>
-          <span className='text-secondary'>處理人員</span>
+            <div className='d-flex align-items-center'>
+              <span className='text-secondary'>處理人員</span>
+              <SelectPerson />
+            </div>
           <ul className='d-flex align-items-center justify-content-start list-unstyled mt-2'>
             <li className='me-1'>
             <img src="/images/andychen.jpeg" className="rounded-circle avatar-img" alt="avatar" />
             </li>
             <li>
-              <SelectPerson />
+              <Icon
+                theme='dark' 
+                size='1x'
+                className='rounded-circle p-2  Icon-border'  
+                icon='people-group' />
             </li>
           </ul>
           </div>

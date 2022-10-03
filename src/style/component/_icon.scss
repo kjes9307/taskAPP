@@ -6,8 +6,10 @@
 }
 .Icon-move{
   transition: transform .25s ease-in-out;
-  border: dashed #dee2e6 !important;
 }
 .Icon-move:hover{
   transform: rotate(5deg);
+}
+.Icon-border{
+  border: dashed #dee2e6 !important;
 }

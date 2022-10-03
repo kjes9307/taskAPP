@@ -1,16 +1,18 @@
-import { useState } from "react"
+import { useState,useRef } from "react"
 import Icon from 'component/Icon'
 import {SearchComplete,DataSourceType} from 'component/searchComplete'
 import {useGetMember} from './util'
 import './style.scss'
+import { useEffect } from "react"
 export const SelectPerson = () =>{
-    const [open,setOpen] = useState(false)
-    const [query,setQuery] = useState('')
-    const {data,isLoading} =useGetMember(query)
-    const handleFetch = (query: string) => {
-        setQuery(query)
-        console.log(data)
-        return data
+    const [open,setOpen] = useState(false)   
+    const handleFetch = async(query: string) => {
+        return await fetch(`http://localhost:3000/user/getUser?q=${query}`)
+                .then(res => res.json())
+                // 回傳資料=> data:{data:{}} => data transformer
+                .then(({data}) => {
+                    return  data.slice(0, 10).map((item: any) => ({ value: item.name, ...item}))
+                })
     }
     const handSelect = (e:DataSourceType) =>{
         console.log(e)
@@ -28,7 +30,7 @@ export const SelectPerson = () =>{
              <img src={item.photo} alt='user-avatar' className="user-avatar test rounded-circle" />
             : 
             <Icon 
-                className='Icon-move rounded-circle' 
+                className='Icon-border rounded-circle' 
                 icon='circle-question' 
                 theme='dark' 
                 size='1x' 
