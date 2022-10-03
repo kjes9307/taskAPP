@@ -2,13 +2,15 @@
     max-height: 300px;
     min-height: 100px;
     overflow-y: auto;
+    z-index: 100;
+    background-color: #fff;
 }
 .search-data{
     top:0px;
     left:0px;
 }
 .show-search{
-    top:50px;
+    top:30px;
     left: 0px;
 }
 .user-avatar{

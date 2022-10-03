@@ -1,17 +1,17 @@
 import { useState } from "react"
 import Icon from 'component/Icon'
 import {SearchComplete,DataSourceType} from 'component/searchComplete'
+import {useGetMember} from './util'
 import './style.scss'
 export const SelectPerson = () =>{
     const [open,setOpen] = useState(false)
-    const handleFetch = async (query: string) => {
-        return await fetch(`http://localhost:3000/user/getUser?q=${query}`)
-                .then(res => res.json())
-                // 回傳資料=> data:{data:{}} => data transformer
-                .then(({data}) => {
-                    return  data.slice(0, 10).map((item: any) => ({ value: item.name, ...item}))
-                })
-      }
+    const [query,setQuery] = useState('')
+    const {data,isLoading} =useGetMember(query)
+    const handleFetch = (query: string) => {
+        setQuery(query)
+        console.log(data)
+        return data
+    }
     const handSelect = (e:DataSourceType) =>{
         console.log(e)
     }
@@ -28,7 +28,7 @@ export const SelectPerson = () =>{
              <img src={item.photo} alt='user-avatar' className="user-avatar test rounded-circle" />
             : 
             <Icon 
-                className='test rounded-circle' 
+                className='Icon-move rounded-circle' 
                 icon='circle-question' 
                 theme='dark' 
                 size='1x' 
@@ -40,18 +40,18 @@ export const SelectPerson = () =>{
         )
     }
     return (
-        <>
+        <div className="d-flex">
             <div>
             <Icon 
                 onClick={()=> setOpen(!open)} 
-                className='test rounded-circle p-1' 
+                className='Icon-move rounded-circle p-2' 
                 icon='user-plus' 
                 theme='dark' 
                 size='1x' 
                 style={{cursor:"pointer"}} 
             />
             </div>
-            <div className="d-block">
+            <div className="d-block bg-white ms-1">
                 { open &&
                     <SearchComplete
                         fetchSuggestions={handleFetch}
@@ -61,6 +61,6 @@ export const SelectPerson = () =>{
                     />
                 }
             </div>
-        </>
+        </div>
     )
 }

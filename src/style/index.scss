@@ -11,6 +11,8 @@
 @import "./pages/task";
 @import "./component/menu";
 @import "./component/modal";
+@import "./component/icon";
+@import "./component/input";
 $utilities: map-merge(
   $utilities, (
     "font-size": map-merge(

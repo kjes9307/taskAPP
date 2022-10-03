@@ -1,0 +1,13 @@
+
+@each $key, $val in $theme-colors {
+    .icon-#{$key}{
+        color : $val;
+    }
+}
+.Icon-move{
+  transition: transform .25s ease-in-out;
+  border: dashed #dee2e6 !important;
+}
+.Icon-move:hover{
+  transform: rotate(5deg);
+}

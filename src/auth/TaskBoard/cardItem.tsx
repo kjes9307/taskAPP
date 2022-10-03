@@ -6,6 +6,7 @@ import {TodoList} from "component/todo/todoList"
 import { Comment } from 'component/comment'
 import { useAddComment } from 'component/comment/util'
 import {IselectType} from "component/selectType"
+import { SelectPerson } from 'component/selectPerson'
 const  TypeSelector =(props:{idx:number,length:number,id:string,type:number})=> {
   const type =[
     {
@@ -225,14 +226,7 @@ export const DetailModal = () =>{
             <img src="/images/andychen.jpeg" className="rounded-circle avatar-img" alt="avatar" />
             </li>
             <li>
-              <div 
-                className='avatar-img rounded-circle d-flex align-items-center justify-content-center'
-                style={{cursor:"pointer"}}
-                >
-                <span className="material-symbols-outlined">
-                add
-                </span>
-              </div>
+              <SelectPerson />
             </li>
           </ul>
           </div>
