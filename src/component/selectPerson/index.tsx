@@ -1,15 +1,15 @@
-import { useState,useRef } from "react"
+import { useState } from "react"
 import Icon from 'component/Icon'
 import {SearchComplete,DataSourceType} from 'component/searchComplete'
 import {useGetMember} from './util'
 import './style.scss'
-import { useEffect } from "react"
 export const SelectPerson = () =>{
     const [open,setOpen] = useState(false)   
+    const [query,setQuery] = useState('')
     const handleFetch = async(query: string) => {
+        setQuery(query)
         return await fetch(`http://localhost:3000/user/getUser?q=${query}`)
                 .then(res => res.json())
-                // 回傳資料=> data:{data:{}} => data transformer
                 .then(({data}) => {
                     return  data.slice(0, 10).map((item: any) => ({ value: item.name, ...item}))
                 })

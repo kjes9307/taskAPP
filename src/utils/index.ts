@@ -102,7 +102,7 @@ export const useTitle = (title : string , keepOnMount: boolean = true) =>{
         document.title = oldTitle
       }
     }
-  },[])
+  },[keepOnMount,oldTitle])
 }
 
 export const useClickOutside= (ref: RefObject<HTMLElement>, handler: Function) =>{

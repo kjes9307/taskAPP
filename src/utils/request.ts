@@ -17,14 +17,13 @@ export const http = (endStr:string,{data,token,headers,...config}:httpConfig ={}
         },
         ...config // 若有參數則覆蓋前面
     }
-    // console.log(data)
+    
     // get 的data 是在url , post patch delete 在body
     if (initConfig.method.toUpperCase() === "GET") {
-        endStr += `?${qs.stringify(data)}`;
+        endStr += data && Object.keys(data).length>0? `?${qs.stringify(data)}`:``;
       } else {
         initConfig.body = JSON.stringify(data || {});
       }
-    
     return window.fetch(`${url}/${endStr}`,initConfig)
     .then(async res=>{
       if (res.status === 401) {

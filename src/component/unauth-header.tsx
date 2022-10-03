@@ -11,7 +11,7 @@ export const UnAuthHeader = () =>{
                 </h1>
                 <ul className="d-none d-sm-block d-sm-flex mb-0">
                     <li className="list-unstyled "><a href="/" className="text-decoration-none fs-6 brand-color click">首頁</a></li>
-                    <li className="list-unstyled ms-7"><a href="#" className="text-decoration-none fs-6 brand-color click">登入</a></li>
+                    <li className="list-unstyled ms-7"><a href="/login" className="text-decoration-none fs-6 brand-color click">登入</a></li>
                 </ul>
                 <div className="toggle-dropdown position-absolute top-0 end-0 d-block d-sm-none" onClick={()=> setOpen()}>
                     <a href="#" className="ham-icon brand-color">
@@ -23,7 +23,7 @@ export const UnAuthHeader = () =>{
                             <span className="material-symbols-outlined text-secondary">
                                 person
                             </span>
-                            <a href="#" className="text-decoration-none text-secondary fs-5">
+                            <a href="/login" className="text-decoration-none text-secondary fs-5">
                                 登入
                             </a>
                         </li>
