@@ -129,7 +129,6 @@ export const DetailModal = () =>{
   const [member, showMember] = useState('');
   const isLoading = isEditLoading || isTaskLoading ? true: false;
   const mouseEvent = (event: string) => {
-    console.log(event)
     showMember(event);
   };
   const handleType = async(e:React.ChangeEvent<HTMLSelectElement>)=>{
@@ -234,8 +233,7 @@ export const DetailModal = () =>{
               return (
                 <li 
                   key={x._id} 
-                  className='mx-1 d-flex align-items-center justify-content-center avatar-img Icon-border rounded-circle'
-                  style={{cursor:"pointer"}}
+                  className='position-relative mx-1 d-flex align-items-center justify-content-center avatar-img Icon-border rounded-circle'
                   onMouseEnter={() => mouseEvent(x.name)}
                   onMouseLeave={() => mouseEvent('')}
                 >
@@ -247,6 +245,7 @@ export const DetailModal = () =>{
                     className='p-1'  
                     icon='person-circle-question' />
                 }
+                <div className='member-delete'></div>
               </li>)
             })}
           </ul>

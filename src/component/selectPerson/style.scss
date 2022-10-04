@@ -23,3 +23,23 @@
     max-width: 250px;
     overflow-x: hidden;
 }
+.member-delete{
+    // border: 1px solid black;
+    border-radius: 50%;
+    position: absolute;
+    right:0px;
+    top:0px;
+    height: 12px;
+    width: 14px;
+    font-size: 6px;
+    padding: 1px;
+    transform: translate(0%,-50%);
+}
+.member-delete::after{
+    content: "x";
+    position: absolute;
+    top:0px;
+    right: 0px;
+    transform: translate(-50%,-25%);
+    color: red;
+}
