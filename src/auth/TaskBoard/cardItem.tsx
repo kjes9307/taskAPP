@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Card,Modal} from 'react-bootstrap'
-import { ColumnType,useTaskModel,useEditTask,useTaskSearchParam } from "./util"
+import { ColumnType,useTaskModel,useEditTask,useTaskSearchParam,useTaskMemberList } from "./util"
 import { DeleteModal } from './deleteItem'
 import {TodoList} from "component/todo/todoList"
 import { Comment } from 'component/comment'
@@ -120,6 +120,7 @@ export const CardItem = (props:ColumnType) =>{
 export const DetailModal = () =>{
   const {taskModalOpen,close,data,isError,isLoading:isTaskLoading,taskEdit:TaskId} = useTaskModel()
   const {taskName,_id,taskCreator,status,taskTodoList,comments} = {...data}
+  const {data:memberList} = useTaskMemberList(_id || '')
   const {mutateAsync,isLoading:isEditLoading} = useEditTask()
   const {mutateAsync:addCommentAsync}=useAddComment()
   const [open,setOpen] = useState(false)
@@ -226,14 +227,16 @@ export const DetailModal = () =>{
               <SelectPerson />
             </div>
           <ul className='d-flex align-items-center justify-content-start list-unstyled mt-2'>
-            <li className='me-1'>
-            <img src="/images/andychen.jpeg" className="rounded-circle avatar-img" alt="avatar" />
-            </li>
+            {memberList?.member?.map(x=>{
+              return <li key={x._id} className='me-1'>
+              <img src={x.photo} className="rounded-circle avatar-img" alt="avatar" />
+              </li>
+            })}
             <li>
               <Icon
                 theme='dark' 
                 size='1x'
-                className='rounded-circle p-2  Icon-border'  
+                className='rounded-circle p-2 Icon-border'  
                 icon='people-group' />
             </li>
           </ul>

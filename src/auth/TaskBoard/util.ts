@@ -179,3 +179,20 @@ export const useReorderTask = () => {
     });
   });
 };
+export type memberlistData = {
+  member:{
+    name:string,
+    _id:string,
+    photo:string
+  }[],
+  _id:string,
+  projectId:string
+}
+export const useTaskMemberList = (query:string) =>{
+  const client = useHttp() ;
+  return useQuery(['task/getMembe',query],()=>client(`task/getMember/${query}`),
+  {
+    enabled: Boolean(query),
+    select: (data) => data[0] as memberlistData
+  })
+}
