@@ -1,16 +1,25 @@
 import { useState } from "react"
 import Icon from 'component/Icon'
+import {useAddMember} from './util'
 import {SearchComplete,DataSourceType} from 'component/searchComplete'
 import './style.scss'
-export const SelectPerson = () =>{
+type SelectPerson = {
+    projectId : string
+}
+export const SelectPerson = (props:SelectPerson) =>{
     const [open,setOpen] = useState(false)   
-    const handSelect = (e:DataSourceType) =>{
-        console.log(e)
+    const {projectId} = props
+    const {mutateAsync:addMemberAsync} = useAddMember()
+    const handSelect = async(e:DataSourceType<UserProps>) =>{
+        const {_id:userId} = e ;
+        if(userId&&projectId){
+            await addMemberAsync({userId,projectId})
+        }
     }
     interface UserProps {
         photo: string;
         name: string;
-        login?:string;
+        _id?:string;
         value?: string;
     }
     const renderCustom = (item: DataSourceType<UserProps>) => {

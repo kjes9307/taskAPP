@@ -133,7 +133,6 @@ export const DetailModal = () =>{
         taskId: _id,
         status: e.currentTarget.value
       }
-      console.log(data)
       await mutateAsync(data)
   }
   const handleSave = async()=>{
@@ -224,21 +223,27 @@ export const DetailModal = () =>{
           <div>
             <div className='d-flex align-items-center'>
               <span className='text-secondary'>處理人員</span>
-              <SelectPerson />
+              <SelectPerson projectId={_id as string} />
             </div>
+          <span></span>
           <ul className='d-flex align-items-center justify-content-start list-unstyled mt-2'>
             {memberList?.member?.map(x=>{
-              return <li key={x._id} className='me-1'>
-              <img src={x.photo} className="rounded-circle avatar-img" alt="avatar" />
-              </li>
+              return (
+                <li 
+                  key={x._id} 
+                  className='m-1 d-flex align-items-center justify-content-center avatar-img Icon-border rounded-circle'
+                  style={{cursor:"pointer"}}
+                >
+                {x.photo?
+                  <img src={x.photo} className="rounded-circle" alt="avatar" />
+                : <Icon
+                    theme='dark' 
+                    size='2x'
+                    className='p-1'  
+                    icon='person-circle-question' />
+                }
+              </li>)
             })}
-            <li>
-              <Icon
-                theme='dark' 
-                size='1x'
-                className='rounded-circle p-2 Icon-border'  
-                icon='people-group' />
-            </li>
           </ul>
           </div>
         <div>

@@ -190,7 +190,7 @@ export type memberlistData = {
 }
 export const useTaskMemberList = (query:string) =>{
   const client = useHttp() ;
-  return useQuery(['task/getMembe',query],()=>client(`task/getMember/${query}`),
+  return useQuery(['task/getMember',query],()=>client(`task/getMember/${query}`),
   {
     enabled: Boolean(query),
     select: (data) => data[0] as memberlistData
