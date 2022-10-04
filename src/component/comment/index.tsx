@@ -3,7 +3,7 @@ import { Toast } from 'react-bootstrap'
 import { CommentProp , useEditComment , useDeleteComment } from './util';
 import { useDebounce } from 'utils'
 import { useAuth } from 'context/userContext';
-
+import Icon from "component/Icon"
 export const Comment = (props:CommentProp) =>{
     const {user,comment,_id:postid} = props
     const {user:userInfo} = useAuth()
@@ -35,7 +35,10 @@ export const Comment = (props:CommentProp) =>{
       },[commentValue])
     return(
         <div className='d-flex align-items-start mt-2'>
-         <img src={user.photo} className="rounded-circle comment-avatar" alt="avatar" />
+        {user.photo?
+         <img src={user.photo} className="rounded-circle comment-avatar" alt="avatar" />:
+         <Icon icon='user' className="rounded-circle comment-avatar" />
+        }
           <Toast className='w-100 border shadow-none position-relative ms-3'>
             <Toast.Header closeButton={false}>
               <strong className="me-auto fs-6">{user.name}</strong>

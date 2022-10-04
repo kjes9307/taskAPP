@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react'
 import {Card,Modal} from 'react-bootstrap'
 import { ColumnType,useTaskModel,useEditTask,useTaskSearchParam,useTaskMemberList } from "./util"
+import {useDelMember} from 'component/selectPerson/util'
 import { DeleteModal } from './deleteItem'
 import {TodoList} from "component/todo/todoList"
 import { Comment } from 'component/comment'
@@ -123,6 +124,8 @@ export const DetailModal = () =>{
   const {data:memberList} = useTaskMemberList(_id || '')
   const {mutateAsync,isLoading:isEditLoading} = useEditTask()
   const {mutateAsync:addCommentAsync}=useAddComment()
+  const {mutateAsync:deleteDelMembertAsync}=useDelMember()
+
   const [open,setOpen] = useState(false)
   const [value,setValue] = useState('')
   const [comment,setComment] = useState('')
@@ -131,6 +134,13 @@ export const DetailModal = () =>{
   const mouseEvent = (event: string) => {
     showMember(event);
   };
+  const handleDeleteMember =async(props:{projectId:string,userId:string})=>{
+    const {projectId,userId} = props
+    if(projectId && userId){
+      await deleteDelMembertAsync({projectId,userId})
+    }
+
+  }
   const handleType = async(e:React.ChangeEvent<HTMLSelectElement>)=>{
       let data ={
         taskId: _id,
@@ -245,7 +255,12 @@ export const DetailModal = () =>{
                     className='p-1'  
                     icon='person-circle-question' />
                 }
-                <div className='member-delete'></div>
+                <div 
+                  className='member-delete' 
+                  style={{cursor:'pointer'}}
+                  onClick={()=> handleDeleteMember({projectId:_id as string , userId: x._id})}
+                >
+                </div>
               </li>)
             })}
           </ul>

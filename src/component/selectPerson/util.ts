@@ -16,4 +16,17 @@ export const useAddMember = () =>{
         queryClient.invalidateQueries(`task/getMember`)
       }
   }) 
-  }
+}
+export const useDelMember = () =>{
+    const client = useHttp()
+    const queryClient = useQueryClient()
+  
+    return useMutation((params:Member) =>  client(`task/delMember`, {
+      data: {...params},
+      method: "DELETE",
+    }),{
+      onSuccess: () =>{
+        queryClient.invalidateQueries(`task/getMember`)
+      }
+  }) 
+}
