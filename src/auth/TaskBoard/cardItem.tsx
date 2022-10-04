@@ -126,8 +126,12 @@ export const DetailModal = () =>{
   const [open,setOpen] = useState(false)
   const [value,setValue] = useState('')
   const [comment,setComment] = useState('')
+  const [member, showMember] = useState('');
   const isLoading = isEditLoading || isTaskLoading ? true: false;
-
+  const mouseEvent = (event: string) => {
+    console.log(event)
+    showMember(event);
+  };
   const handleType = async(e:React.ChangeEvent<HTMLSelectElement>)=>{
       let data ={
         taskId: _id,
@@ -225,14 +229,15 @@ export const DetailModal = () =>{
               <span className='text-secondary'>處理人員</span>
               <SelectPerson projectId={_id as string} />
             </div>
-          <span></span>
-          <ul className='d-flex align-items-center justify-content-start list-unstyled mt-2'>
+          <ul className='d-flex align-items-center justify-content-start list-unstyled mt-2 mb-0'>
             {memberList?.member?.map(x=>{
               return (
                 <li 
                   key={x._id} 
-                  className='m-1 d-flex align-items-center justify-content-center avatar-img Icon-border rounded-circle'
+                  className='mx-1 d-flex align-items-center justify-content-center avatar-img Icon-border rounded-circle'
                   style={{cursor:"pointer"}}
+                  onMouseEnter={() => mouseEvent(x.name)}
+                  onMouseLeave={() => mouseEvent('')}
                 >
                 {x.photo?
                   <img src={x.photo} className="rounded-circle" alt="avatar" />
@@ -245,6 +250,7 @@ export const DetailModal = () =>{
               </li>)
             })}
           </ul>
+          <div className='text-warning mb-1' style={{height:20}}>{member !== ''? member:null}</div>
           </div>
         <div>
           <span className='text-secondary'>照片上傳</span>
