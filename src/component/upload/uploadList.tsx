@@ -1,5 +1,6 @@
-import { FC,useState } from "react";
+import { FC,useState,useRef,useEffect,RefObject } from "react";
 import ReactCrop , {Crop,PixelCrop} from 'react-image-crop'
+import axios from 'axios';
 import 'react-image-crop/dist/ReactCrop.css'
 import { UploadFile } from './index'
 import Icon from 'component/Icon'
@@ -10,14 +11,19 @@ interface UploadListProps {
     fileList: UploadFile[];
     onRemove: (_file: UploadFile) => void;
 }
+// canvasRef , imgUrl , cropPixel
+
 const EditImage = (props:{img:UploadFile,show:boolean,handleClose:()=>void}) => {
     const {
         img,
         show,
         handleClose
     } = props
+    const canvasRef = useRef<HTMLCanvasElement|null>(null)
+    const imgRef = useRef<HTMLImageElement|null>(null)
+
     const [crop, setCrop] = useState<Crop>({
-        unit: '%',
+        unit: 'px',
         x: 25,
         y: 25,
         width: 50,
@@ -25,19 +31,78 @@ const EditImage = (props:{img:UploadFile,show:boolean,handleClose:()=>void}) => 
       })
     const onHandleCrop = (e:PixelCrop) =>{
         setCrop(e)
-        console.log(e)
     } 
+    const handleImgFile =() =>{
+        if(canvasRef.current&&canvasRef){
+        const canvas = canvasRef.current
+        // let file = canvas.toBlob('image/png',1)
+        // const formData = new FormData()
+        // formData.append('fileKey', file)
+        // axios.post('http://localhost:3000/user/uploadImg', formData, {
+        //     headers: {
+        //     'Content-Type': 'multipart/form-data'
+        //     },
+        // }).then(resp => {
+        //     console.log(resp)
+        // }).catch(err => {
+        //     console.error(err)
+        // })
+        }
+        
+    }
+    function image64toCanvasRef (canvaRef:RefObject<HTMLCanvasElement>, image64:string, pixelCrop:Crop,imgRef:RefObject<HTMLImageElement>) {
+        if(canvaRef && canvaRef.current && image64){
+            const canvas = canvaRef.current 
+            canvas.width = pixelCrop.width
+            canvas.height = pixelCrop.height
+            let scaleX:number;
+            let scaleY:number;
+            if(imgRef&&imgRef.current){
+                scaleX = imgRef.current.naturalWidth / imgRef.current.width;
+                scaleY = imgRef.current.naturalHeight / imgRef.current.height;
+            }
+            const ctx = canvas.getContext('2d')
+            if(!ctx) return;
+            const image = new Image()
+            image.src = image64
+            image.onload = function () {
+                ctx.drawImage(
+                    image,
+                    pixelCrop.x * scaleX,
+                    pixelCrop.y * scaleY,
+                    pixelCrop.width * scaleX,
+                    pixelCrop.height * scaleY,
+                    0,
+                    0,
+                    pixelCrop.width,
+                    pixelCrop.height 
+                )
+            }
+        }
+    }
+    useEffect(()=>{
+        if (canvasRef.current) {
+            image64toCanvasRef(canvasRef,img?.data_url as string,crop,imgRef)
+        }
+    },[crop])
     return (
       <>
-        <Modal show={show} onHide={handleClose}>
+        <Modal size='xl' show={show} onHide={handleClose}>
           <Modal.Body>
-          <ReactCrop crop={crop} aspect={4/3} onChange={e => onHandleCrop(e)}>
-            <img src={img?.data_url} className="crop-img" />
+        <div className="d-flex justify-content-between align-items-center">
+        <ReactCrop crop={crop} aspect={4/3} onChange={e => onHandleCrop(e)}>
+                <img ref={imgRef} src={img?.data_url} className="crop-img" />
           </ReactCrop>
+        <canvas ref={canvasRef} style={{objectFit:"contain",width:320,height:240}}></canvas>
+
+        </div>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               Close
+            </Button>
+            <Button onClick={handleImgFile}>
+                OK
             </Button>
           </Modal.Footer>
         </Modal>
