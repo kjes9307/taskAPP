@@ -1,6 +1,6 @@
 import { ChangeEvent, FC ,useRef, useState} from 'react'
 import axios from 'axios';
-// import {UploadList} from './uploadList'
+import {UploadList} from './uploadList'
 import Icon from 'component/Icon'
 
 // 檢查大小 檔案類型 
@@ -194,10 +194,10 @@ export const UploadFile: FC<UploadProps> = (props) =>{
                 accept={accept}
                 multiple={multiple}
             />
-            {/* <UploadList
+            <UploadList
                 fileList={fileList}
                 onRemove={handleRemove}
-            /> */}
+            />
         </div>
     )
 }
