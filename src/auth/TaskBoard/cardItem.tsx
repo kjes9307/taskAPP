@@ -282,7 +282,7 @@ export const DetailModal = () =>{
               </li>)
             })}
           </ul>
-          <div className='text-warning mb-1' style={{height:20}}>{member !== ''? member:null}</div>
+          <div className='text-warning mb-1' style={{height:20}}>{member !== ''&& memberList && memberList.member?.length>0? member:null}</div>
           </div>
         <div>
           <span className='text-secondary'>照片上傳</span>
