@@ -109,55 +109,48 @@ export const UploadFile: FC<UploadProps> = (props) =>{
         myReader.readAsDataURL(file)
    }
    // 4. 上傳&axios&監測更新
-   const post = (file: File) => {
-    let _file: UploadFile = {
-        uid: Date.now() + 'upload-file',
-        status : 'ready',
-        name: file.name,
-        size: file.size,
-        percent: 0,
-        raw: file
-    }
-    setFileList([_file, ...fileList])
-    const formData = new FormData()
-    formData.append(fileKey || 'fileKey', file)
-    axios.post(action, formData, {
-        headers: {
-        ...headers,
-        'Content-Type': 'multipart/form-data'
-        },
-        onUploadProgress: (e) => {
-            console.log(e)
-            let percentage = Math.round((e.loaded * 100) / e.total) || 0;
-            // 希望在上傳過程用state監測
-            if(percentage < 100){
-                updateFileList(_file, { percent: percentage, status: 'uploading'})
-                if (onProgress){
-                    onProgress(percentage, file)
+   const post = (uploadFile: UploadFile) => {
+        if(uploadFile.raw){
+            let file = uploadFile.raw;
+            const formData = new FormData()
+            formData.append(fileKey || 'fileKey', file)
+            axios.post(action, formData, {
+                headers: {
+                ...headers,
+                'Content-Type': 'multipart/form-data'
+                },
+                onUploadProgress: (e) => {
+                    let percentage = Math.round((e.loaded * 100) / e.total) || 0;
+                    // 希望在上傳過程用state監測
+                    if(percentage < 100){
+                        updateFileList(uploadFile, { percent: percentage, status: 'uploading'})
+                        if (onProgress){
+                            onProgress(percentage, file)
+                        }
+                    }
                 }
-            }
-        }
-    }).then(resp => {
-        console.log(resp)
-        updateFileList(_file,{status: 'success', response: resp.data})
+            }).then(resp => {
+                console.log(resp)
+                updateFileList(uploadFile,{status: 'success', response: resp.data})
 
-        if(onSuccess){
-            onSuccess(resp.data, file)
-        }
-        if(onChange) {
-            onChange(file);
-        }
-    }).catch(err => {
-        console.error(err)
-        updateFileList(_file, {status: 'error', error: err})
+                if(onSuccess){
+                    onSuccess(resp.data, file)
+                }
+                if(onChange) {
+                    onChange(file);
+                }
+            }).catch(err => {
+                console.error(err)
+                updateFileList(uploadFile, {status: 'error', error: err})
 
-        if(onError){
-            onError(err, file)
+                if(onError){
+                    onError(err, file)
+                }
+                if(onChange) {
+                    onChange(file);
+                }
+            })
         }
-        if(onChange) {
-            onChange(file);
-        }
-    })
     }
     const updateFileList = (updateFile: UploadFile, updateObj: Partial<UploadFile>) => {
         setFileList( prevList => {
@@ -199,6 +192,8 @@ export const UploadFile: FC<UploadProps> = (props) =>{
             <UploadList
                 fileList={fileList}
                 onRemove={handleRemove}
+                updateFileList={updateFileList}
+                post={post}
             />
         </div>
     )

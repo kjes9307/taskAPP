@@ -8,15 +8,19 @@ import {ProgressBar,Modal,Button,Container,Row,Col} from 'react-bootstrap'
 import './style.scss'
 
 interface UploadListProps {
+    post : (uploadFile: UploadFile) => void
     fileList: UploadFile[];
     onRemove: (_file: UploadFile) => void;
+    updateFileList: (updateFile: UploadFile, updateObj: Partial<UploadFile>) => void
 }
 
-const EditImage = (props:{img:UploadFile,show:boolean,handleClose:()=>void}) => {
+const EditImage = (props:{post : (uploadFile: UploadFile) => void,img:UploadFile,show:boolean,handleClose:()=>void,updateFileList: (updateFile: UploadFile, updateObj: Partial<UploadFile>) => void}) => {
     const {
         img,
         show,
-        handleClose
+        handleClose,
+        updateFileList,
+        post
     } = props
     const [imgType,setType] = useState('')
     const [imgCategory,setCategory] = useState('')
@@ -43,16 +47,10 @@ const EditImage = (props:{img:UploadFile,show:boolean,handleClose:()=>void}) => 
                 array.push(blobStr.charCodeAt(i))
             }
             const file = new File([new Uint8Array(array)],`uploadFile.${imgCategory}` ,{ type: imgType })
-            const formData = new FormData()
-            formData.append('fileKey', file)
-            // axios.post('http://localhost:3000/user/uploadImg',formData,{
-            //     headers: {
-            //         'Content-Type': 'multipart/form-data'
-            //     }}).then(resp => {
-            //     console.log(resp)
-            // }).catch(err => {
-            //     console.error(err)
-            // })
+            handleClose()
+            img.raw = file
+            updateFileList(img,{status:'ready'})
+            post(img)
         }
         
     }
@@ -115,7 +113,7 @@ const EditImage = (props:{img:UploadFile,show:boolean,handleClose:()=>void}) => 
     },[crop])
     return (
       <>
-        <Modal size='xl' show={show} onHide={handleClose}>
+        <Modal centered size='lg' show={show} onHide={handleClose}>
             <Modal.Header closeButton>
                 <h1>
                     相片裁剪
@@ -168,6 +166,8 @@ export const UploadList: FC<UploadListProps> = (props) => {
     const {
         fileList,
         onRemove,
+        updateFileList,
+        post
     }  = props
     const [show, setShow] = useState(false);
     const [img,setData] = useState<UploadFile|undefined>(undefined);
@@ -199,7 +199,7 @@ export const UploadList: FC<UploadListProps> = (props) => {
                                 now={item.percent || 0}
                             />
                         }
-                        <EditImage show={show} img={img as UploadFile} handleClose={handleClose} />
+                        <EditImage post={post} updateFileList={updateFileList} show={show} img={img as UploadFile} handleClose={handleClose} />
                     </li>
                 )
             })}
