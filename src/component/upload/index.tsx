@@ -98,11 +98,13 @@ export const UploadFile: FC<UploadProps> = (props) =>{
             raw: file,
             data_url:""
         }
-        console.log(_file.raw)
         const myReader = new FileReader()
         myReader.addEventListener('load',()=>{
             _file.data_url=myReader.result as string
             setFileList(prevList => [_file, ...prevList])
+        },false)
+        myReader.addEventListener('error',()=>{
+            console.log("load image failed?")
         },false)
         myReader.readAsDataURL(file)
    }

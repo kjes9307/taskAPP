@@ -19,9 +19,10 @@ const EditImage = (props:{img:UploadFile,show:boolean,handleClose:()=>void}) => 
         show,
         handleClose
     } = props
+    const [imgType,setType] = useState('')
+    const [imgCategory,setCategory] = useState('')
     const canvasRef = useRef<HTMLCanvasElement|null>(null)
     const imgRef = useRef<HTMLImageElement|null>(null)
-
     const [crop, setCrop] = useState<Crop>({
         unit: 'px',
         x: 25,
@@ -35,18 +36,23 @@ const EditImage = (props:{img:UploadFile,show:boolean,handleClose:()=>void}) => 
     const handleImgFile =() =>{
         if(canvasRef.current&&canvasRef){
         const canvas = canvasRef.current
-        // let file = canvas.toBlob('image/png',1)
-        // const formData = new FormData()
-        // formData.append('fileKey', file)
-        // axios.post('http://localhost:3000/user/uploadImg', formData, {
-        //     headers: {
-        //     'Content-Type': 'multipart/form-data'
-        //     },
-        // }).then(resp => {
-        //     console.log(resp)
-        // }).catch(err => {
-        //     console.error(err)
-        // })
+        let dataURL = canvas.toDataURL(imgType,0.5)
+        let blobStr = window.atob(dataURL.split(',')[1])
+        const array = []
+        for (let i = 0; i < blobStr.length; i++) {
+            array.push(blobStr.charCodeAt(i))
+        }
+        const file = new File([new Uint8Array(array)],`uploadFile.${imgCategory}` ,{ type: imgType })
+        const formData = new FormData()
+        formData.append('fileKey', file)
+        axios.post('http://localhost:3000/user/uploadImgCanva',formData,{
+            headers: {
+                'Content-Type': 'multipart/form-data'
+            }}).then(resp => {
+            console.log(resp)
+        }).catch(err => {
+            console.error(err)
+        })
         }
         
     }
@@ -80,6 +86,21 @@ const EditImage = (props:{img:UploadFile,show:boolean,handleClose:()=>void}) => 
             }
         }
     }
+    useEffect(()=>{
+        if(img?.data_url){
+            let data = img?.data_url
+            let imageType = data?.split(',')[0]
+            let str1 = imageType.split(';')[0]
+            let str2 = str1.split(":")[1]
+            let imageCategory = str2?.split('/')[1]
+            setCategory(imageCategory)
+            setType(str2)
+        }
+        return () =>{
+            setCategory('')
+            setType('')
+        }
+    },[img?.data_url])
     useEffect(()=>{
         if (canvasRef.current) {
             image64toCanvasRef(canvasRef,img?.data_url as string,crop,imgRef)
