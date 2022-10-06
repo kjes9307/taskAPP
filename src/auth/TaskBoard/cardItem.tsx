@@ -9,6 +9,8 @@ import { useAddComment } from 'component/comment/util'
 import {IselectType} from "component/selectType"
 import { SelectPerson } from 'component/selectPerson'
 import Icon from 'component/Icon'
+import { UploadFile } from 'component/upload';
+
 const  TypeSelector =(props:{idx:number,length:number,id:string,type:number})=> {
   const type =[
     {
@@ -163,6 +165,21 @@ export const DetailModal = () =>{
         setComment('')
     }
   }
+  const checkFileSize = (file: File) => {
+    const fileType = ['image/png','image/jpg','image/jpeg']
+    if(!fileType.includes(file.type)){
+      alert("Type not correct")
+      return false
+    }
+   
+    let fileSize = 1024*1024*1
+    if(Math.round((file.size / fileSize)*10) > 10){
+        alert('file too big')
+        return false;
+    }
+    return true;
+  
+}
   // For Edit Mode 要顯示
   useEffect(()=>{
     setValue(taskName || "")
@@ -171,6 +188,7 @@ export const DetailModal = () =>{
       setOpen(false)
     }
   },[taskName])
+  const apiUrl = process.env.REACT_APP_API_URL;
   return (<Modal show={taskModalOpen} onHide={close} size='xl'>
     <Modal.Header className='d-flex justify-content-between'>
           <h2 className='fs-3'>
@@ -268,18 +286,13 @@ export const DetailModal = () =>{
           </div>
         <div>
           <span className='text-secondary'>照片上傳</span>
-          <ul className='d-flex align-items-center justify-content-start list-unstyled mt-2'>
-            <li>
-            <div 
-              className='upload-img d-flex align-items-center justify-content-center'
-              style={{cursor:"pointer"}}
-              >
-              <span className="material-symbols-outlined">
-              add
-              </span>
-            </div>
-            </li>
-          </ul>
+          <UploadFile
+            action={`${apiUrl}/user/uploadImg`} 
+            onProgress={(e)=>console.log(e)} 
+            beforeUpload={checkFileSize}
+            accept='.jpg,.jpeg,.png'
+            multiple={false}
+          />
         </div>
         <div>
         <span className='text-secondary'>討論</span>

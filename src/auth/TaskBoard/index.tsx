@@ -8,7 +8,6 @@ import { CardItem ,DetailModal } from './cardItem';
 import { SearchPanel } from './searchPanel';
 import {CreateTask} from './createTask';
 import {DeleteModal} from './deleteItem';
-import { UploadFile } from 'component/upload';
 
 export const KanbanCol = React.forwardRef<HTMLDivElement,{kanban:Iprops<ColumnType>}>(({kanban,...props},ref) =>{
   
@@ -67,21 +66,7 @@ export const TaskBoard = ()=>{
     let html = test.current as HTMLElement
     html.scrollLeft = html.scrollLeft+500
   };
-  const checkFileSize = (file: File) => {
-    const fileType = ['image/png','image/jpg','image/jpeg']
-    if(!fileType.includes(file.type)){
-      alert("Type not correct")
-      return false
-    }
-   
-    let fileSize = 1024*1024*1
-    if(Math.round((file.size / fileSize)*10) > 10){
-        alert('file too big')
-        return false;
-    }
-    return true;
   
-}
   return (
     <>
     
@@ -92,13 +77,6 @@ export const TaskBoard = ()=>{
       </Spinner>
       :
       <>
-      <UploadFile
-        action="http://localhost:3000/user/uploadImg" 
-        onProgress={(e)=>console.log(e)} 
-        beforeUpload={checkFileSize}
-        accept='.jpg,.jpeg,.png'
-        multiple={false}
-      />
       <h1>TaskBoard</h1>
       <SearchPanel />
       <Row className='d-flex flex-nowrap scroll-kanban' ref={test} >
