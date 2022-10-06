@@ -2,7 +2,6 @@ import { ChangeEvent, FC ,useRef, useState} from 'react'
 import axios from 'axios';
 import {UploadList} from './uploadList'
 import Icon from 'component/Icon'
-
 // 檢查大小 檔案類型 
 // 可訂製header
 // 設定檔案上傳key值
@@ -52,8 +51,6 @@ export const UploadFile: FC<UploadProps> = (props) =>{
     } = props
     const fileInput = useRef<HTMLInputElement>(null)
     const [ fileList, setFileList ] = useState<UploadFile[]>(defaultFileList || [])
-    const [file,setFile] = useState<string|null>(null)
-
     // 0 . 觸發上傳
     const handleClick = () => {
         // button 觸發 input上傳

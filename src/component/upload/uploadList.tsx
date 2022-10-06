@@ -1,6 +1,5 @@
 import { FC,useState,useRef,useEffect,RefObject } from "react";
 import ReactCrop , {Crop,PixelCrop} from 'react-image-crop'
-import axios from 'axios';
 import 'react-image-crop/dist/ReactCrop.css'
 import { UploadFile } from './index'
 import Icon from 'component/Icon'

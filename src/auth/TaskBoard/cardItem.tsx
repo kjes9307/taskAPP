@@ -10,6 +10,7 @@ import {IselectType} from "component/selectType"
 import { SelectPerson } from 'component/selectPerson'
 import Icon from 'component/Icon'
 import { UploadFile } from 'component/upload';
+import { useAuth } from 'context/userContext';
 
 const  TypeSelector =(props:{idx:number,length:number,id:string,type:number})=> {
   const type =[
@@ -127,7 +128,7 @@ export const DetailModal = () =>{
   const {mutateAsync,isLoading:isEditLoading} = useEditTask()
   const {mutateAsync:addCommentAsync}=useAddComment()
   const {mutateAsync:deleteDelMembertAsync}=useDelMember()
-
+  const { user } = useAuth();
   const [open,setOpen] = useState(false)
   const [value,setValue] = useState('')
   const [comment,setComment] = useState('')
@@ -292,6 +293,7 @@ export const DetailModal = () =>{
             beforeUpload={checkFileSize}
             accept='.jpg,.jpeg,.png'
             multiple={false}
+            headers={{Authorization: user?.token? `Bearer ${user?.token}` : ''}}
           />
         </div>
         <div>
