@@ -4,14 +4,13 @@ import axios from 'axios';
 import 'react-image-crop/dist/ReactCrop.css'
 import { UploadFile } from './index'
 import Icon from 'component/Icon'
-import {ProgressBar,Modal,Button} from 'react-bootstrap'
+import {ProgressBar,Modal,Button,Container,Row,Col} from 'react-bootstrap'
 import './style.scss'
 
 interface UploadListProps {
     fileList: UploadFile[];
     onRemove: (_file: UploadFile) => void;
 }
-// canvasRef , imgUrl , cropPixel
 
 const EditImage = (props:{img:UploadFile,show:boolean,handleClose:()=>void}) => {
     const {
@@ -23,8 +22,9 @@ const EditImage = (props:{img:UploadFile,show:boolean,handleClose:()=>void}) => 
     const [imgCategory,setCategory] = useState('')
     const canvasRef = useRef<HTMLCanvasElement|null>(null)
     const imgRef = useRef<HTMLImageElement|null>(null)
+    const [imgMode,setImgMode] = useState<string|undefined>('contain')
     const [crop, setCrop] = useState<Crop>({
-        unit: 'px',
+        unit: '%',
         x: 25,
         y: 25,
         width: 50,
@@ -35,24 +35,24 @@ const EditImage = (props:{img:UploadFile,show:boolean,handleClose:()=>void}) => 
     } 
     const handleImgFile =() =>{
         if(canvasRef.current&&canvasRef){
-        const canvas = canvasRef.current
-        let dataURL = canvas.toDataURL(imgType,0.5)
-        let blobStr = window.atob(dataURL.split(',')[1])
-        const array = []
-        for (let i = 0; i < blobStr.length; i++) {
-            array.push(blobStr.charCodeAt(i))
-        }
-        const file = new File([new Uint8Array(array)],`uploadFile.${imgCategory}` ,{ type: imgType })
-        const formData = new FormData()
-        formData.append('fileKey', file)
-        axios.post('http://localhost:3000/user/uploadImgCanva',formData,{
-            headers: {
-                'Content-Type': 'multipart/form-data'
-            }}).then(resp => {
-            console.log(resp)
-        }).catch(err => {
-            console.error(err)
-        })
+            const canvas = canvasRef.current
+            let dataURL = canvas.toDataURL(imgType,0.5)
+            let blobStr = window.atob(dataURL.split(',')[1])
+            const array = []
+            for (let i = 0; i < blobStr.length; i++) {
+                array.push(blobStr.charCodeAt(i))
+            }
+            const file = new File([new Uint8Array(array)],`uploadFile.${imgCategory}` ,{ type: imgType })
+            const formData = new FormData()
+            formData.append('fileKey', file)
+            // axios.post('http://localhost:3000/user/uploadImg',formData,{
+            //     headers: {
+            //         'Content-Type': 'multipart/form-data'
+            //     }}).then(resp => {
+            //     console.log(resp)
+            // }).catch(err => {
+            //     console.error(err)
+            // })
         }
         
     }
@@ -87,6 +87,13 @@ const EditImage = (props:{img:UploadFile,show:boolean,handleClose:()=>void}) => 
         }
     }
     useEffect(()=>{
+        setCrop({
+            unit: '%',
+            x: 25,
+            y: 25,
+            width: 50,
+            height: 50
+        })
         if(img?.data_url){
             let data = img?.data_url
             let imageType = data?.split(',')[0]
@@ -109,21 +116,47 @@ const EditImage = (props:{img:UploadFile,show:boolean,handleClose:()=>void}) => 
     return (
       <>
         <Modal size='xl' show={show} onHide={handleClose}>
+            <Modal.Header closeButton>
+                <h1>
+                    相片裁剪
+                </h1>
+            </Modal.Header>
           <Modal.Body>
-        <div className="d-flex justify-content-between align-items-center">
-        <ReactCrop crop={crop} aspect={4/3} onChange={e => onHandleCrop(e)}>
-                <img ref={imgRef} src={img?.data_url} className="crop-img" />
-          </ReactCrop>
-        <canvas ref={canvasRef} style={{objectFit:"contain",width:320,height:240}}></canvas>
-
-        </div>
+          <Container>
+            <Row className="d-flex justify-content-center">
+                <Col md='6' className="d-flex align-items-center justify-content-center">
+                    <ReactCrop crop={crop} aspect={4/3} onChange={e => onHandleCrop(e)}>
+                        <img ref={imgRef} src={img?.data_url} className={`crop-img obj-${imgMode}`}/>
+                    </ReactCrop>
+                </Col>
+                <Col md='6'>
+                    <div className="d-flex flex-column align-items-center justify-content-start">
+                        <h3>Preview Image</h3>
+                        <canvas 
+                            ref={canvasRef} 
+                            className='border file-preview p-1' 
+                            style={{
+                                objectFit:"contain",
+                                width:320,
+                                height:320
+                            }}
+                        >
+                        </canvas>
+                    </div>
+                    <div className="d-flex justify-content-center mt-2">
+                        <Button className="btn-primary" size='sm' onClick={()=>setImgMode('contain')}>contain</Button>
+                        <Button className="btn-primary ms-1" size='sm' onClick={()=>setImgMode('cover')}>cover</Button>
+                    </div>
+                </Col>
+            </Row>
+           </Container>
           </Modal.Body>
           <Modal.Footer>
             <Button variant="secondary" onClick={handleClose}>
               Close
             </Button>
             <Button onClick={handleImgFile}>
-                OK
+                Upload modified Image
             </Button>
           </Modal.Footer>
         </Modal>
@@ -144,17 +177,17 @@ export const UploadList: FC<UploadListProps> = (props) => {
         setData(data)
     }
     return (
-        <ul className="list-unstyled">
+        <ul className="list-unstyled position-relative d-inline-block">
             {fileList.map(item => {
                 return (
                     <li key={item.uid}>
-                        <span className={`file-name file-name-${item.status} me-2`}>
+                        <span className={`file-name file-name-${item.status}`}>
                             <Icon icon="file-alt" theme="secondary" />
-                            {item.name}
+                            {item.name.slice(0,10)+'.'+item.name.split('.')[1]}
                         </span>
                         <span className = "file-status">
                             {(item.status === 'uploading' || item.status === 'ready') && <Icon icon="spinner" spin theme="primary" />}
-                            {item.status === 'success' && <Icon icon="check-circle" theme="warning" />}
+                            {item.status === 'success' && <Icon icon="check-circle" theme="success" />}
                             {item.status === 'error' && <Icon icon="times-circle" theme="danger" />}
                             {item.status === 'onPreview' && <Icon icon="eye" theme="dark" onClick={()=>handImageData(item)} />}
                         </span>
