@@ -2,6 +2,7 @@ import { ChangeEvent, FC ,useRef, useState} from 'react'
 import axios from 'axios';
 import {UploadList} from './uploadList'
 import Icon from 'component/Icon'
+import {taskPhotoData} from 'auth/TaskBoard/util'
 // 檢查大小 檔案類型 
 // 可訂製header
 // 設定檔案上傳key值
@@ -19,6 +20,7 @@ interface UploadProps {
     headers?: {[key:string]:any}
     multiple?:boolean
     fileKey?:string; 
+    photoList?:taskPhotoData
 }
 
 export type UploadFileStatus = 'ready' | 'uploading' | 'success' | 'error' | 'onPreview'
@@ -47,7 +49,8 @@ export const UploadFile: FC<UploadProps> = (props) =>{
         accept,
         headers,
         multiple,
-        fileKey
+        fileKey,
+        photoList
     } = props
     const fileInput = useRef<HTMLInputElement>(null)
     const [ fileList, setFileList ] = useState<UploadFile[]>(defaultFileList || [])
@@ -131,7 +134,7 @@ export const UploadFile: FC<UploadProps> = (props) =>{
                 updateFileList(uploadFile,{status: 'success', response: resp.data})
 
                 if(onSuccess){
-                    onSuccess(resp.data, file)
+                    onSuccess(resp.data.data, file)
                 }
                 if(onChange) {
                     onChange(file);
@@ -171,12 +174,20 @@ export const UploadFile: FC<UploadProps> = (props) =>{
     }
     return (
         <div>
-            <div 
-              onClick={handleClick}
-              className='d-flex align-items-center justify-content-center border'
-              style={{cursor:"pointer",width: 100,height:100,objectFit:"cover"}}
-              >
-              <Icon icon='plus' />
+            <div className='d-flex align-items-center flex-wrap'>
+                <div 
+                onClick={handleClick}
+                className='d-flex align-items-center justify-content-center border file-preview'
+                style={{cursor:"pointer",width: 50,height:50,objectFit:"cover"}}
+                >
+                <Icon icon='plus' />
+                </div>
+                {photoList?.images?.map(x=> (
+                    <div key={x} className='ms-2'>
+                        <img src={x} className='uploaded-img' alt="uploaded-image" />
+                    </div>
+                    ))
+                }
             </div>
             <input
                 style={{display: 'none'}}

@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Card,Modal} from 'react-bootstrap'
-import { ColumnType,useTaskModel,useEditTask,useTaskSearchParam,useTaskMemberList } from "./util"
+import { ColumnType,useTaskModel,useEditTask,useTaskSearchParam,useTaskMemberList,useAddPhoto,useGetPhoto } from "./util"
 import {useDelMember} from 'component/selectPerson/util'
 import { DeleteModal } from './deleteItem'
 import {TodoList} from "component/todo/todoList"
@@ -133,6 +133,8 @@ export const DetailModal = () =>{
   const [value,setValue] = useState('')
   const [comment,setComment] = useState('')
   const [member, showMember] = useState('');
+  const {mutateAsync:addPhotoAsync}=useAddPhoto()
+  const {data:photoList} = useGetPhoto(_id as string)
   const isLoading = isEditLoading || isTaskLoading ? true: false;
   const mouseEvent = (event: string) => {
     showMember(event);
@@ -180,7 +182,15 @@ export const DetailModal = () =>{
     }
     return true;
   
-}
+  }
+  const uploadSuccess = async(data_url:{[key:string]:string},file:File) =>{
+    const {url} = data_url
+    console.log(url,"上傳成功",file)
+    await addPhotoAsync({img_url:url,projectId:_id})
+  }
+  const uploadFailed = (msg:any) =>{
+    console.log(msg)
+  }
   // For Edit Mode 要顯示
   useEffect(()=>{
     setValue(taskName || "")
@@ -294,6 +304,9 @@ export const DetailModal = () =>{
             accept='.jpg,.jpeg,.png'
             multiple={false}
             headers={{Authorization: user?.token? `Bearer ${user?.token}` : ''}}
+            onSuccess={uploadSuccess}
+            onError={uploadFailed}
+            photoList={photoList}
           />
         </div>
         <div>

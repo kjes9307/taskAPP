@@ -196,3 +196,31 @@ export const useTaskMemberList = (query:string) =>{
     select: (data) => data[0] as memberlistData
   })
 }
+export type taskPhotoData = {
+  _id:string,
+  projectId:string
+  img_url?:string
+  images?: string[]
+}
+export const useAddPhoto = () =>{
+  const client = useHttp()
+  const queryClient = useQueryClient()
+
+  return useMutation((params:Partial<taskPhotoData>) =>  client(`task/addPhoto`, {
+    data: {...params},
+    method: "POST",
+  }),{
+    onSuccess: () =>{
+      queryClient.invalidateQueries(`task/getPhoto`)
+    }
+  }
+  ) 
+}
+export const useGetPhoto = (query:string) =>{
+  const client = useHttp()
+  return useQuery(['task/getPhoto',query],()=>client(`task/getPhoto/${query}`),
+  {
+    enabled: Boolean(query),
+    select: (data) => data[0] as taskPhotoData
+  })
+}
