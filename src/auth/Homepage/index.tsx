@@ -89,7 +89,7 @@ export const ContainItem = (props:ItemProps) =>{
     }
     return (
         <Col sm='6' md='4' lg='4'>
-        <div className="namecard">
+        <div className="namecard mt-3">
             <h2 className="name">{item?.name}
             <span>(#{index as number +1})</span>
             </h2>
@@ -97,8 +97,11 @@ export const ContainItem = (props:ItemProps) =>{
             <p></p>
             <div className="function-panel">
                 <Icon icon='heart' />
+                <Icon icon='trash' />
                 <Icon icon='pen' 
-                    onClick={()=>{}}
+                      onClick={()=> starEdit(item?._id || '')} 
+                      className='editCard'
+                      style={{cursor:"pointer"}}
                 />
                 {!open?
                 <Icon icon='door-closed' onMouseEnter={()=>setOpen(!open)} />:

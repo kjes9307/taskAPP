@@ -58,4 +58,10 @@
     right: 0px;
     transform: translate(-50%,-50%);
   }
+  .editCard{
+      transition: transform 0.25s ease-in-out;
+      &:hover{
+        transform: rotate(20deg);
+      }
+  }
  
