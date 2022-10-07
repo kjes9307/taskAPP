@@ -1,13 +1,55 @@
 import { Modal, Button,Container,Row,Col,ProgressBar } from "react-bootstrap";
 import {useProjectModal,useSearchTaskState} from 'component/useModal'
-import { useAddName,useEditName } from "utils/project";
+import { useAddName,useEditName,useDeleteName } from "utils/project";
 import { useForm, SubmitHandler  } from 'react-hook-form';
 import "./modal.scss"
 import Icon from 'component/Icon'
 type Inputs = {
   name: string,
 };
+export const DeleteModal = (props: {
+  deleteModalOpen: boolean;
+}) =>{
+  const {deleteModalOpen,close,deleteData}=useProjectModal()
+  const {mutateAsync:deleteProjectAsync}=useDeleteName()
+  const {
+    register,
+    setValue ,
+  } = useForm<Inputs>();
+  if(deleteData){
+    setValue("name",deleteData?.[0].name || 'nodata')
+  }
+  const onHandleDelete = () =>{
+    if(deleteData){
+      deleteProjectAsync({...deleteData?.[0]})
+      close()
+    }
+  }
+  return (
+    <>
+    <Modal show={deleteModalOpen} onHide={close}>
+      <Container>
+      <Row>
+        <Col sm='12'>
+      <Modal.Title className="d-flex justify-content-between flex-row-reverse m-2">
+        <Icon icon='x' className="font-color" onClick={close} style={{cursor:"pointer"}} />
+        <h1 className="font-color">Delete</h1>
+      </Modal.Title>
+        <Modal.Body className="pt-0">
+            <label className="font-color" htmlFor="taskName">刪除項目</label>
+              <div className="d-flex justify-content-between">
+                <input id='taskName'  {...register("name")} className='input-outline input-layout border-0 border-bottom' />  
+                <Button size="sm" className="ms-3 text-white" onClick={onHandleDelete}>刪除</Button>
+              </div>
+          </Modal.Body>
+        </Col>
+      </Row>
+      </Container>
+    </Modal>
+  </>
+  )
 
+}
 export const ProjectModal = (props: {
     projectModalOpen: boolean;
   }) => {

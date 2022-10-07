@@ -44,19 +44,28 @@ export const useProjectModal = () => {
   const [{ editId }, setEdit] = useUrlQueryParam([
     "editId",
   ]);
+  const [{ deleteId }, setDelete] = useUrlQueryParam([
+    "deleteId",
+  ]);
+  const {data:deleteData} = useProjectDetail(String(deleteId))
   const {data:detailData,isLoading} = useProjectDetail(String(editId))
   const open = () => setProjectCreate({ projectCreate: true });
   const close = () => {
     setProjectCreate({ projectCreate: undefined });
     setEdit({editId: undefined })
+    setDelete({deleteId:undefined})
   }
   // 接到edit 中項目的id 並設置道url上
   const starEdit = (id:string) => setEdit({ editId : id })
+  const starDelete = (id:string) => setDelete({ deleteId : id })
   return {
     projectModalOpen: projectCreate === "true" || Boolean(editId),
+    deleteModalOpen: Boolean(deleteId),
     open,
     close,
     starEdit,
+    starDelete,
+    deleteData,
     detailData,
     isLoading,
     editId

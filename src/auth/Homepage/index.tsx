@@ -80,7 +80,7 @@ export const ContainBox =(props: DataType) =>{
 export const ContainItem = (props:ItemProps) =>{
     const {item,index,creator} =props
     const [open,setOpen] = useState(false);
-    const {starEdit}=useProjectModal()
+    const {starEdit,starDelete}=useProjectModal()
     const navigate = useNavigate();
     const onHandleLink = (id:string) =>{
         if(id){
@@ -97,7 +97,7 @@ export const ContainItem = (props:ItemProps) =>{
             <p></p>
             <div className="function-panel">
                 <Icon icon='heart' />
-                <Icon icon='trash' />
+                <Icon icon='trash' onClick={()=> starDelete(item?._id || '')}  />
                 <Icon icon='pen' 
                       onClick={()=> starEdit(item?._id || '')} 
                       className='editCard'

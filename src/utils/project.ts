@@ -9,7 +9,21 @@ export const useProject = (param?:Partial<DataType>) =>{
     return useQuery<DataType[]>(['task/project',param],()=>client('task/project',{data:cleanObject(param || {})}))
 
 }
+export const useDeleteName = () => {
+    const client = useHttp();
+    const queryClient = useQueryClient()
 
+    return useMutation((params:Partial<DataType>) =>  client(`task/deleteProject/${params._id}`, {
+            data: params,
+            method: "DELETE",
+        })
+        ,{
+            onSuccess: () =>{
+              queryClient.invalidateQueries(`task/project`)
+            }
+        }
+    ) 
+};
 export const useEditName = () => {
     const client = useHttp();
     const queryClient = useQueryClient()
