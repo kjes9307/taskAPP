@@ -1,7 +1,6 @@
-import {useQuery,useMutation, QueryKey } from 'react-query';
+import {useQuery,useMutation, QueryKey ,useQueryClient } from 'react-query';
 import {cleanObject} from 'utils';
 import {useHttp} from 'utils/request';
-import { useAddConfig, useEditConfig } from './use-optimistic-options';
 import {DataType} from 'utils/type'
 // useQuery(key , promise)
 export const useProject = (param?:Partial<DataType>) =>{
@@ -11,23 +10,32 @@ export const useProject = (param?:Partial<DataType>) =>{
 
 }
 
-export const useEditName = (queryKey :QueryKey) => {
+export const useEditName = () => {
     const client = useHttp();
+    const queryClient = useQueryClient()
+
     return useMutation((params:Partial<DataType>) =>  client(`task/editProject/${params._id}`, {
             data: params,
             method: "PATCH",
-        }),
-        useEditConfig(queryKey)
+        })
+        ,{
+            onSuccess: () =>{
+              queryClient.invalidateQueries(`task/project`)
+            }
+        }
     ) 
 };
-export const useAddName = (queryKey :QueryKey) => {
+export const useAddName = () => {
     const client = useHttp();
-
-    return useMutation((params:Partial<DataType>) =>  client(`task/addTask`, {
+    const queryClient = useQueryClient()
+    return useMutation((params:Partial<DataType>) =>  client(`task/addProject`, {
             data: params,
             method: "POST",
-        }),
-        useAddConfig(queryKey)
+        }),{
+            onSuccess: () =>{
+              queryClient.invalidateQueries(`task/project`)
+            }
+        }
     ) 
 };
 export const useProjectDetail = (id?: string) => {

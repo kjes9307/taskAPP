@@ -1,7 +1,26 @@
 import { useUrlQueryParam } from "utils/url";
 import { useMemo } from "react";
 import { useProjectDetail } from "utils/project";
+import { useQuery } from "react-query";
+import { useHttp } from 'utils/request';
 
+type taskState = {
+  idle:number
+  ongoing:number
+  done: number
+  total: number
+}
+export const useSearchTaskState = () =>{
+  const [{ editId }] = useUrlQueryParam([
+    "editId",
+  ])
+  const client = useHttp() ;
+  return useQuery<taskState[]>(['task/getKanBanSingle',editId],()=>client(`task/getKanBanSingle/${editId}`),
+  {
+    enabled: Boolean(editId),
+    select: (data) => data || []
+  })
+}
 // 项目列表搜索的参数
 export const useProjectsSearchParams = () => {
   const [param, setParam] = useUrlQueryParam(["name", "personId"]);

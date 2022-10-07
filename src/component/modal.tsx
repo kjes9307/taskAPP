@@ -1,5 +1,5 @@
-import { Modal, Button,Container,Row,Col } from "react-bootstrap";
-import {useProjectModal,useProjectsQueryKey} from 'component/useModal'
+import { Modal, Button,Container,Row,Col,ProgressBar } from "react-bootstrap";
+import {useProjectModal,useSearchTaskState} from 'component/useModal'
 import { useAddName,useEditName } from "utils/project";
 import { useForm, SubmitHandler  } from 'react-hook-form';
 import "./modal.scss"
@@ -17,24 +17,26 @@ export const ProjectModal = (props: {
       setValue ,
     } = useForm<Inputs>();
     const {projectModalOpen,close,detailData,isLoading}=useProjectModal()
+    const {data:taskState} = useSearchTaskState()
     const title = detailData? "Edit" : "Create";
+    const subtiltle = detailData? "修改名稱" : "新增項目";
     const useMutateProj = detailData ? useEditName : useAddName
     if(detailData){
       setValue("name",detailData?.[0].name || 'nodata')
     }else{
       setValue('name','');
     }
-    
 
     // 異步操作 之後才能去控制關閉或刷新
-    const {mutateAsync} = useMutateProj(useProjectsQueryKey())
+    const {mutateAsync} = useMutateProj()
     
     const onSubmit: SubmitHandler<Inputs> = (values) => {
       mutateAsync({...detailData?.[0],...values}).then(()=>{
-        // close();
+        if(title==="Create"){
+          close();
+        }
       })
     }
-    
     return (
     <>
       <Modal show={projectModalOpen} onHide={close} contentClassName='modal-layout'>
@@ -52,13 +54,20 @@ export const ProjectModal = (props: {
           :
           <Modal.Body className="pt-0 pb-0">
             <form onSubmit={handleSubmit(onSubmit)}>
-            <label className="font-color" htmlFor="taskName">修改名稱</label>
+            <label className="font-color" htmlFor="taskName">{subtiltle}</label>
               <div className="d-flex justify-content-between">
                 <input id='taskName'  {...register("name")} className='input-outline input-layout border-0 border-bottom' />  
-                <Button type="submit" size="sm" className="ms-3 text-white">Edit</Button>
+                <Button type="submit" size="sm" className="ms-3 text-white">{title}</Button>
               </div>
             </form>
             <h6 className="font-color mt-2">卡片數量</h6>
+            <ul className='list-unstyled mt-4'>
+              <li className="mt-3 d-flex align-items-center justify-content-between"><Icon size='2x' icon='circle-check' />完成 {taskState?.[0].done}</li>
+              <li className="mt-3 d-flex align-items-center justify-content-between"><Icon size='2x' icon='person-digging' />進行中{taskState?.[0].ongoing}</li>
+              <li className="mt-3 d-flex align-items-center justify-content-between"><Icon size='2x' icon='pause' />閒置{taskState?.[0].idle}</li>
+              <li className="mt-3 d-flex align-items-center justify-content-between"><Icon size='2x' icon='list-check' />總共 {taskState?.[0].total}</li>
+            </ul>
+            <ProgressBar now={((taskState?.[0].done || 0) / (taskState?.[0].total || 1))*100}></ProgressBar>
           </Modal.Body>
         }
           </Col>
