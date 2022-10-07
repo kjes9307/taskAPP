@@ -1,13 +1,14 @@
-import {Container, Row, Col, Table, Form , InputGroup } from 'react-bootstrap';
-import React, {  useState }  from 'react'
-import {Link} from 'react-router-dom'
+import {Container, Row, Col, Form , InputGroup } from 'react-bootstrap';
+import { useState }  from 'react'
+import { useNavigate } from "react-router-dom";
 import { useDebounce  } from 'utils';
 import { useProjectsSearchParams } from 'utils/url';
 import { useProject } from 'utils/project';
 import {useUserInfo} from 'utils/user';
 import {useProjectModal} from 'component/useModal'
 import {DataType,ItemProps,IfuncProps} from 'utils/type';
-
+import Icon from 'component/Icon'
+import "./style.scss"
 export const SearchItem =(props:IfuncProps) =>{
     const [search,setOpen] = useState(false)
     const {open}=useProjectModal()
@@ -58,65 +59,61 @@ export const SearchItem =(props:IfuncProps) =>{
 export const ContainBox =(props: DataType) =>{
     const {todoList,userList} =props
     return (
-        <>
-        <Table hover className='text-dark'>
-            <thead>
-            <tr className='text-center'>
-                <th className='d-none d-sm-block'>ID</th>
-                <th>任務名稱</th>
-                <th>建立者</th>
-                <th>動作</th>
-            </tr>
-            </thead>
-            <tbody>
-                {
-                    todoList?.length !== 0 ? todoList?.map((item,idx)=>{
-                        
-                        return (
-                            <ContainItem 
-                              item={item} 
-                              key={item._id}
-                              index={idx}
-                              creator = {userList?.find(x=> x._id === item.personId)?.name || '未知'}
-                            />
-                        )
-                    })
-                    :<tr><th></th><td>No data</td><td></td></tr>
-                }
-            </tbody>
-        </Table>
-        </>
+            <Row>
+            {
+                todoList?.length !== 0 ? todoList?.map((item,idx)=>{
+                    
+                    return (
+                        <ContainItem 
+                            item={item} 
+                            key={item._id}
+                            index={idx}
+                            creator = {userList?.find(x=> x._id === item.personId)?.name || '未知'}
+                        />
+                    )
+                })
+                :null
+            }
+            </Row>
     )
 }
 export const ContainItem = (props:ItemProps) =>{
     const {item,index,creator} =props
+    const [open,setOpen] = useState(false);
     const {starEdit}=useProjectModal()
-    const checkedClass = item.pin ? "material-symbols-outlined brand-color" : "material-symbols-outlined "
+    const navigate = useNavigate();
+    const onHandleLink = (id:string) =>{
+        if(id){
+            navigate(`task/${id}/Event`)
+        }
+    }
     return (
-        <tr className="fs-6 text-center">
-            <th scope="row" className='d-none d-sm-block'>
-            #{index as number +1}</th>
-            <td><Link to={`task/${item._id}/Event`} className="text-decoration-none">{item?.name}</Link></td>
-            <td>{creator}</td>
-            <td>
-            <div className="d-flex justify-content-center">
-                <span 
-                    onClick={()=>console.log("checked",item._id)}
-                    className={checkedClass}
+        <Col sm='6' md='4' lg='4'>
+        <div className="namecard">
+            <h2 className="name">{item?.name}
+            <span>(#{index as number +1})</span>
+            </h2>
+            <h5 className="grad">{creator}</h5>
+            <p></p>
+            <div className="function-panel">
+                <Icon icon='heart' />
+                <Icon icon='pen' 
+                    onClick={()=>{}}
+                />
+                {!open?
+                <Icon icon='door-closed' onMouseEnter={()=>setOpen(!open)} />:
+                <Icon 
+                    icon='door-open' 
+                    onMouseLeave={()=>setOpen(!open)} 
+                    onClick={()=> onHandleLink(item?._id as string)}
                     style={{cursor:"pointer"}}
-                >
-                stars
-                </span>
-                <span 
-                    onClick={()=> starEdit(item?._id || '')}  
-                    className="material-symbols-outlined ms-4" 
-                    style={{cursor:"pointer"}}
-                >
-                    edit
-                </span>
+                />
+                }
             </div>
-            </td>
-        </tr>
+            <div className="circle c1"></div>
+            <div className="circle c2"></div>
+        </div>
+        </Col>
     )
 }
 export const Task = () =>{
@@ -130,11 +127,7 @@ export const Task = () =>{
         <>
         <Container fluid="md">  
         <SearchItem userList={userList || []} searchItem={searchItem} param={param} />
-            <Row className='justify-content-center'>
-                <Col md="12">
-                <ContainBox todoList={todo || []} userList={userList|| []} />
-                </Col>
-            </Row>         
+        <ContainBox todoList={todo || []} userList={userList|| []} />      
         </Container>
         </>
     )
