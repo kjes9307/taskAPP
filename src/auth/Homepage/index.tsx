@@ -15,7 +15,7 @@ export const SearchItem =(props:IfuncProps) =>{
         props.searchItem({...props.param,name: value})
     }
     return (
-        <section className='bg-brand-color py-1'>
+        <section className='py-1'>
             <Container fluid='md' >
                 <Row >
                     <Col md='5' className='d-flex align-items-center'>
@@ -128,15 +128,6 @@ export const Task = () =>{
     }
     return (
         <>
-        <Container fluid="md" className='mb-md-3 mb-lg-7'>
-        <section className='d-md-flex justify-content-md-between align-items-md-center flex-md-row-reverse bg-light'>
-            <img src="/images/campaign-creators-gMsnXqILjp4-unsplash.jpg" alt="" className='home-brand-img' />
-            <div className='text-secondary text-center mt-2'>
-                <h1>任務管理</h1>
-                <p>幫助您完成任務</p>
-            </div>
-        </section>
-        </Container>
         <Container fluid="md">  
         <SearchItem userList={userList || []} searchItem={searchItem} param={param} />
             <Row className='justify-content-center'>

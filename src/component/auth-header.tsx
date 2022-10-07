@@ -6,9 +6,9 @@ export const AuthHeader = () =>{
     const {user,appLogout} = useAuth()
     return (
     <>
-    <Navbar bg="white" expand="lg" className="mb-md-3 mb-lg-7">
+    <Navbar bg="white" expand="lg" className="mb-md-3">
       <Container fluid="md" >
-        <Link to="/" className='text-decoration-none brand-color bg-brand-font fs-2'>PROJECT</Link>
+        <Link to="/" className='text-decoration-none brand-color bg-brand-font fs-2'>DETAILS</Link>
         <Navbar.Toggle aria-controls="navbarScroll" className='border-0 fas fa-bars fa-2x brand-color' />
         <Navbar.Collapse id="navbarScroll">
           <Nav
@@ -16,7 +16,6 @@ export const AuthHeader = () =>{
             style={{ maxHeight: '100px' }}
             navbarScroll
           >
-            <Nav.Link href="#action1" className='text-secondary fs-6'>任務</Nav.Link>
             <NavDropdown title={user?.name} id="navbarScrollingDropdown" className='text-secondary customize ms-lg-3 fs-6'>
               <NavDropdown.Item href="#action2" className='text-secondary fs-6'>會員資料</NavDropdown.Item>
               <NavDropdown.Item className='text-secondary fs-6' onClick={appLogout}>登出</NavDropdown.Item>
