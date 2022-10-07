@@ -4,7 +4,6 @@ import 'react-image-crop/dist/ReactCrop.css'
 import { UploadFile } from './index'
 import Icon from 'component/Icon'
 import {ProgressBar,Modal,Button,Container,Row,Col} from 'react-bootstrap'
-import './style.scss'
 
 interface UploadListProps {
     post : (uploadFile: UploadFile) => void

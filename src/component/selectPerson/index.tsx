@@ -2,7 +2,6 @@ import { useState } from "react"
 import Icon from 'component/Icon'
 import {useAddMember} from './util'
 import {SearchComplete,DataSourceType} from 'component/searchComplete'
-import './style.scss'
 type SelectPerson = {
     projectId : string
 }

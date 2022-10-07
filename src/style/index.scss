@@ -13,6 +13,8 @@
 @import "./component/modal";
 @import "./component/icon";
 @import "./component/input";
+@import "./component/selectPerson";
+@import "./component/upload";
 $utilities: map-merge(
   $utilities, (
     "font-size": map-merge(
