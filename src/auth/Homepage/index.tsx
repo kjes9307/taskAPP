@@ -30,7 +30,7 @@ export const SearchItem =(props:IfuncProps) =>{
                     {/* value: 預設值 刷新的時候 不會反白  */}
                     <Form.Select 
                         value={props.param.personId? props.param.personId : '0'} 
-                        aria-label="Default select example" className='ms-3' 
+                        aria-label="Default select example" className='ms-3 font-color' 
                         onChange={(e)=>props.searchItem({...props.param,personId: e.target.value ==='0'? undefined : e.target.value })}
                     >
                     <option value={'0'}>建立者</option>

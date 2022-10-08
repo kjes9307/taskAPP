@@ -44,7 +44,7 @@ export const SearchPanel = () => {
     </Form.Group>
     <Form.Select 
         {...register("Status")} 
-        className="w-100p ms-3 h-25p" 
+        className="w-100p ms-3 h-25p font-color" 
         value={status || ''} 
         aria-label="Default select example"
         onChange={(e)=>setPanelParam({...param,status:e.target.value})}
@@ -56,7 +56,7 @@ export const SearchPanel = () => {
     </Form.Select>
     <Form.Select 
         {...register("type")} 
-        className="w-100p ms-3 h-25p" 
+        className="w-100p ms-3 h-25p font-color" 
         value={type || ''} 
         aria-label="Default select example"
         onChange={(e)=>setPanelParam({...param,type:e.target.value})}

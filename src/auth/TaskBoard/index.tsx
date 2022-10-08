@@ -77,7 +77,7 @@ export const TaskBoard = ()=>{
       </Spinner>
       :
       <>
-      <h1>Sticker</h1>
+      <h1 className='font-color'>Sticker</h1>
       <SearchPanel />
       <Row className='d-flex flex-nowrap scroll-kanban' ref={test} >
       <DragDropContext onDragEnd={(param)=>console.log(param)}>
