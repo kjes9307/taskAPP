@@ -107,7 +107,7 @@ export const CardItem = (props:ColumnType) =>{
         <div className='d-flex align-items-start justify-content-between'>
           <div>
           <Card.Title><Mark keyword={keyword as string} name={taskName  as string} /></Card.Title>
-          <Card.Subtitle className="mb-2 text-muted">{status}</Card.Subtitle>
+          <Card.Subtitle className="mb-2 font-color">{status}</Card.Subtitle>
           </div>
           <div className='d-flex align-items-center justify-content-center' style={{width:30,height:30 ,zIndex:10}} onClick={(e)=> handleShow(e)}>
           <DeleteModal id={_id || ""} type='task' title={taskName || ""} />
