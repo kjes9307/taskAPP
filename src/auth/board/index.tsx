@@ -7,7 +7,7 @@ export const Board = ()=>{
   return (
     <>
     <Container fluid='md'>
-    <Link to='Epic'>任務組</Link>
+    <Link to='Epic'>隊伍</Link>
     <Link to="Event" className='ms-3'>看板</Link>
     </Container>
     <Outlet />

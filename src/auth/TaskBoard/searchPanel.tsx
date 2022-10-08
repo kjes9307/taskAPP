@@ -71,8 +71,8 @@ export const SearchPanel = () => {
 
         </Form.Select>
       {/* <Select label="負責人" {...register("owner")} /> */}
-      <Button type="submit" children='Search' className="ms-4" />
-      <Button type="reset" children='Reset' className="ms-4" onClick={()=> reset()} />
+      <Button type="submit" children='Search' className="ms-4 text-white" />
+      <Button type="reset" children='Reset' className="ms-4 text-white" onClick={()=> reset()} />
       </div>
     </form>
     </Col>
