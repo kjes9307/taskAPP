@@ -1,6 +1,7 @@
 .typeselect{
     width: 24px;
     height: 24px;
+    border-radius: 25%;
 }
 .type-option{
     cursor: pointer;
@@ -27,3 +28,6 @@
 .z-10{
     z-index: 10;
 }
+.select-type-layout{
+    transform: translate(0%,-50%);
+  }

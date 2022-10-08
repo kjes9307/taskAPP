@@ -68,7 +68,7 @@ const  TypeSelector =(props:{idx:number,length:number,id:string,type:number})=> 
     <div onClick={(e)=> handleOpen(e)}>
       <IselectType type={type} 
         defaultIndex={typeChecked} 
-        className="position-absolute top-0 start-0" 
+        className="position-absolute top-0 start-0 select-type-layout" 
         style={{zIndex: length-idx + 10}}
         onSelect={(index)=>{taskType(index,id)}} />
     </div>
