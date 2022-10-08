@@ -28,7 +28,7 @@
 .login-img{
     @include desktop{
         width: 530px;
-        height: 736px;
+        height: auto;
     }
     object-fit: cover;
 }

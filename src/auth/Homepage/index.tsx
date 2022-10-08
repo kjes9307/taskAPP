@@ -20,7 +20,7 @@ export const SearchItem =(props:IfuncProps) =>{
             <Container fluid='md' >
                 <Row >
                     <Col md='5' className='d-flex align-items-center'>
-                    <h3>TaskTodo</h3>
+                    <h3 className='font-color'>Note</h3>
                     <span onClick={open} style={{cursor:"pointer"}} className="material-symbols-outlined ms-3">
                         add
                     </span>

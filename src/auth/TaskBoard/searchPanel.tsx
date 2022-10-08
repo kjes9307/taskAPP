@@ -62,9 +62,13 @@ export const SearchPanel = () => {
         onChange={(e)=>setPanelParam({...param,type:e.target.value})}
         >
         <option value=''>任務類型</option>
-        <option value="bug">bug</option>
-        <option value="issue">issue</option>
-        <option value="task">task</option>
+        <option value={0}>question</option>
+        <option value={1}>bug</option>
+        <option value={2}>task</option>
+        <option value={3}>idea</option>
+        <option value={4}>note</option>
+        <option value={5}>Improvement</option>
+
         </Form.Select>
       {/* <Select label="負責人" {...register("owner")} /> */}
       <Button type="submit" children='Search' className="ms-4" />

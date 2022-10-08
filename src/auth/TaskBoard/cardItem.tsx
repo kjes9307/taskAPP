@@ -17,7 +17,7 @@ const  TypeSelector =(props:{idx:number,length:number,id:string,type:number})=> 
     {
         textType: "bg-dark",
         spanName : "psychology_alt",
-        name: "Idle",
+        name: "question",
         index: 0
     },
     {
