@@ -1,6 +1,7 @@
 import {useState,useEffect} from 'react';
 import {Card,Button } from 'react-bootstrap'
 import { useAddTask } from './util';
+import Icon from 'component/Icon'
 export const CreateTask = (props:{kanbanId:string}) =>{
     const {kanbanId} = props
     const [task,setTask] = useState('')
@@ -27,15 +28,13 @@ export const CreateTask = (props:{kanbanId:string}) =>{
                 style={{cursor:"pointer",width:30,height:30}}
                 onClick={()=>setMode(!mode)}
                 >
-                <span className="material-symbols-outlined">
-                    add
-                </span>
+                <Icon icon='add' className='font-color' />
             </div>
         )
     }
 
     return (
-        <div className='mb-3 mx-2 rounded'>
+        <div className='mb-3 mx-2 rounded w-100'>
             <Card style={{ cursor:"pointer" }} >
                 <Card.Body>
                     <textarea 
@@ -44,9 +43,10 @@ export const CreateTask = (props:{kanbanId:string}) =>{
                         onChange={(e)=> setTask(e.target.value)} 
                         onKeyPress={(e)=>handleSubmit(e)}
                         style={{height:30,maxHeight:60}}
+                        className='border-0 border-bottom input-outline'
                     />
-                    <div className="d-flex justify-content-end">
-                        <Button className='ms-1' size='sm' onClick={()=> setMode(!mode)}>close</Button>
+                    <div className="d-flex justify-content-end mt-2">
+                        <Button className='btn-primary text-white' size='sm' onClick={()=> setMode(!mode)}>close</Button>
                     </div>
                 </Card.Body>
             </Card>

@@ -35,6 +35,7 @@ export interface ColumnType {
     length?:number
     comments?: [{ _id:string,comment:string, user:{_id:string,name:string,photo:string}}]
     taskCreator?: {[key:string]:string}
+    createAt?:Date;
 }
 
 export type Iparams={

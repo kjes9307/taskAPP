@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react'
 import {Card,Modal} from 'react-bootstrap'
+import moment from 'moment'
 import { ColumnType,useTaskModel,useEditTask,useTaskSearchParam,useTaskMemberList,useAddPhoto,useGetPhoto } from "./util"
 import {useDelMember} from 'component/selectPerson/util'
 import { DeleteModal } from './deleteItem'
@@ -92,7 +93,7 @@ const Mark = ({name,keyword}:{name:string,keyword:string}) =>{
   </>
 }
 export const CardItem = (props:ColumnType) =>{
-    const {taskName,status,_id,idx,length,type} = props
+    const {taskName,status,_id,idx,length,type,createAt} = props
     const {startEdit} = useTaskModel()
     const [param]= useTaskSearchParam()
     const {taskName:keyword} = param
@@ -104,7 +105,7 @@ export const CardItem = (props:ColumnType) =>{
       <div className='position-relative px-2'>
       <Card className="mb-3 p-0 cardItem" >
         <Card.Body style={{ cursor:"pointer" }} onClick={()=>startEdit(_id || '')}>
-        <div className='d-flex align-items-start justify-content-between'>
+        <div className='d-flex align-items-start justify-content-between border-bottom py-2'>
           <div>
           <h3><Mark keyword={keyword as string} name={taskName  as string} /></h3>
           <Card.Subtitle className="mb-2 font-color cardItem-sub">
@@ -116,8 +117,8 @@ export const CardItem = (props:ColumnType) =>{
           <div className='d-flex align-items-center justify-content-center' style={{width:30,height:30 ,zIndex:10}} onClick={(e)=> handleShow(e)}>
           <DeleteModal id={_id || ""} type='task' title={taskName || ""} />
           </div>
-          
         </div>
+        <div className='font-color cardItem-sub text-end mt-2'>{createAt && moment(createAt).format("YYYY.MM.DD HH:mm")}</div>
         </Card.Body>
       </Card>
       <TypeSelector type={type || 0} id={_id || ""} idx={idx || 0} length={length || 0} />
