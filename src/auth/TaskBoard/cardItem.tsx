@@ -67,7 +67,8 @@ const  TypeSelector =(props:{idx:number,length:number,id:string,type:number})=> 
   }
   return (
     <div onClick={(e)=> handleOpen(e)}>
-      <IselectType type={type} 
+      <IselectType 
+        type={type} 
         defaultIndex={typeChecked} 
         className="position-absolute top-0 start-0 select-type-layout" 
         style={{zIndex: length-idx + 10}}

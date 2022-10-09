@@ -126,7 +126,7 @@ export const RegisterForm = (props:switchModeParam) => {
           }
           </div>
       </div>
-      <Button variant="primary" type="submit" className="w-100 login-btn mb-2">
+      <Button variant="primary" type="submit" className="w-100 login-btn mb-2 text-white">
         註冊
       </Button>
       <h6 className="mb-0" style={{cursor:"pointer"}}>
