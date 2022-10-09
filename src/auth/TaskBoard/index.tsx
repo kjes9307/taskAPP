@@ -12,7 +12,7 @@ import {DeleteModal} from './deleteItem';
 export const KanbanCol = React.forwardRef<HTMLDivElement,{kanban:Iprops<ColumnType>}>(({kanban,...props},ref) =>{
   
   return (
-    <Col lg='3' className='bg-light me-3' ref={ref} {...props} >
+    <Col xs='12' sm='6' md='4' lg='3' className='bg-light me-3' ref={ref} {...props} >
       <div id={kanban._id}>
         <div className='d-flex align-items-center justify-content-between mb-2 bg-kanban text-white p-1'>
           <h3 className='text-center fs-3 mb-0 px-1'>{kanban.kanbanName}</h3>

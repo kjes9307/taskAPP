@@ -11,7 +11,7 @@ import { SelectPerson } from 'component/selectPerson'
 import Icon from 'component/Icon'
 import { UploadFile } from 'component/upload';
 import { useAuth } from 'context/userContext';
-
+import './card.scss'
 const  TypeSelector =(props:{idx:number,length:number,id:string,type:number})=> {
   const type =[
     {
@@ -102,12 +102,16 @@ export const CardItem = (props:ColumnType) =>{
     }
     return (
       <div className='position-relative px-2'>
-      <Card className="mb-3 p-0" >
+      <Card className="mb-3 p-0 cardItem" >
         <Card.Body style={{ cursor:"pointer" }} onClick={()=>startEdit(_id || '')}>
         <div className='d-flex align-items-start justify-content-between'>
           <div>
-          <Card.Title><Mark keyword={keyword as string} name={taskName  as string} /></Card.Title>
-          <Card.Subtitle className="mb-2 font-color">{status}</Card.Subtitle>
+          <h3><Mark keyword={keyword as string} name={taskName  as string} /></h3>
+          <Card.Subtitle className="mb-2 font-color cardItem-sub">
+            {status==='idle' && "等待。"}
+            {status==='ongoing' && "進行中。"}
+            {status==='done' && "完成。"}
+          </Card.Subtitle>
           </div>
           <div className='d-flex align-items-center justify-content-center' style={{width:30,height:30 ,zIndex:10}} onClick={(e)=> handleShow(e)}>
           <DeleteModal id={_id || ""} type='task' title={taskName || ""} />

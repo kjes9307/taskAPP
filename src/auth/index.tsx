@@ -3,7 +3,7 @@ import { ReactQueryDevtools } from 'react-query/devtools'
 import { Route, Routes } from "react-router";
 import { BrowserRouter } from "react-router-dom";
 
-import { ProjectModal,DeleteModal } from "component/modal"
+import { ProjectModal,DeleteNote } from "component/modal"
 
 import {AuthHeader} from 'component/auth-header';
 import {Task} from 'auth/Homepage'
@@ -25,7 +25,7 @@ export const Main =() =>{
                     </Route>
                 </Routes>
             <ProjectModal projectModalOpen={false} />
-            <DeleteModal deleteModalOpen={false} />
+            <DeleteNote deleteModalOpen={false} />
             <ReactQueryDevtools initialIsOpen={false} position='bottom-right' />
         </BrowserRouter>
     )

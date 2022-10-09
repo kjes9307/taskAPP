@@ -7,7 +7,7 @@ import Icon from 'component/Icon'
 type Inputs = {
   name: string,
 };
-export const DeleteModal = (props: {
+export const DeleteNote = (props: {
   deleteModalOpen: boolean;
 }) =>{
   const {deleteModalOpen,close,deleteData}=useProjectModal()

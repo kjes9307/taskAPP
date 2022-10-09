@@ -1,5 +1,5 @@
 import {useState} from 'react'
-import {Modal,Button} from 'react-bootstrap'
+import {Modal,Button,Container,Row,Col} from 'react-bootstrap'
 import { useDeleteTask,useDeleteKanban } from './util';
 export const DeleteModal = ({title,type,id}:{title:string,type:string,id:string})=>{
     const [show, setShow] = useState(false);
@@ -11,24 +11,33 @@ export const DeleteModal = ({title,type,id}:{title:string,type:string,id:string}
         await mutateAsync(id)
         setShow(false);
     }
-    let alert = type==='kanban' ? <Modal.Title>Delete : {title} 看板!?</Modal.Title> : <Modal.Title>Delete : {title} 任務!?</Modal.Title> 
+    let alert = type==='kanban' ? 
+      <h1 className="font-color">Delete </h1> : 
+      <h1 className="font-color">Delete </h1> 
     return (
       <>
         <span className="material-symbols-outlined" onClick={handleShow} style={{cursor:"pointer"}}>
         more_horiz
         </span>
         <Modal show={show} onHide={handleClose}>
-          <Modal.Header closeButton>
-            {alert}
-          </Modal.Header>
-          <Modal.Footer>
-            <Button variant="secondary" onClick={handleClose}>
-              Close
-            </Button>
-            <Button variant="primary" onClick={submit}>
-              Save Changes
-            </Button>
-          </Modal.Footer>
+        <Container>
+          <Row>
+            <Col sm='12'>
+              <Modal.Header className='border-0 py-0' closeButton>
+                {alert}
+              </Modal.Header>
+              <Modal.Body>
+                <span className='fs-5 font-color'>{type==='kanban'? `待刪除看板:`:`待刪除任務:`}</span>
+                <div className='d-flex justify-content-between align-items-center'>
+                  <input className='border-0 border-bottom input-outline' defaultValue={title} />
+                  <Button variant="btn btn-primary text-white" onClick={submit}>
+                    刪除
+                  </Button>
+                </div>
+              </Modal.Body>      
+            </Col>
+          </Row>
+      </Container>
         </Modal>
       </>
     );
