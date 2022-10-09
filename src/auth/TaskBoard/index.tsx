@@ -8,7 +8,7 @@ import { CardItem ,DetailModal } from './cardItem';
 import { SearchPanel } from './searchPanel';
 import {CreateTask} from './createTask';
 import {DeleteModal} from './deleteItem';
-
+import Icon from 'component/Icon'
 export const KanbanCol = React.forwardRef<HTMLDivElement,{kanban:Iprops<ColumnType>}>(({kanban,...props},ref) =>{
   
   return (
@@ -100,7 +100,7 @@ export const TaskBoard = ()=>{
         {
           !edit?
             <div>
-              <span className='text-left fs-2' style={{cursor:"pointer"}} onClick={()=>setEdit(!edit)}>+</span>
+              <Icon size='2x' className='text-left font-color' style={{cursor:"pointer"}} onClick={()=>setEdit(!edit)} icon='plus' />
             </div>
           :
           <div>
