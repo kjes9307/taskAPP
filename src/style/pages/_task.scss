@@ -6,13 +6,13 @@
 .mouseHover:hover{
     opacity: 100 !important;
 }
-@mixin mobile-margin{
-    @media (max-width:767px) {
+@mixin self-margin{
+    @media (max-width:992px) {
         @content;
     }
 }
 .mt-xs-2 {
-    @include mobile-margin{
+    @include self-margin{
         margin-top: 8px;
     }
 }

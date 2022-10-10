@@ -1,5 +1,5 @@
 import React, {useEffect, useState} from 'react'
-import {Card,Modal} from 'react-bootstrap'
+import {Card,Modal,Container,Row,Col} from 'react-bootstrap'
 import moment from 'moment'
 import { ColumnType,useTaskModel,useEditTask,useTaskSearchParam,useTaskMemberList,useAddPhoto,useGetPhoto } from "./util"
 import {useDelMember} from 'component/selectPerson/util'
@@ -207,17 +207,18 @@ export const DetailModal = () =>{
   },[taskName])
   const apiUrl = process.env.REACT_APP_API_URL;
   return (<Modal show={taskModalOpen} onHide={close} size='xl'>
-    <Modal.Header className='d-flex justify-content-between'>
-          <h2 className='fs-3'>
-            Task Type :
-          </h2>
-          <select value={status} onChange={(e)=>{handleType(e)}} className="form-select form-select-lg mb-3 w-25" aria-label=".form-select-lg example">
+    <Modal.Header className='d-flex justify-content-between align-items-center'>
+          <h1 className='font-color mb-0'>
+            STICKERS
+          </h1>
+          <select value={status} onChange={(e)=>{handleType(e)}} className="form-select form-select-sm w-25 font-color" aria-label=".form-select-lg example">
             <option value="idle">idle</option>
             <option value="ongoing">ongoing</option>
             <option value="done">done</option>
           </select>
     </Modal.Header>
-      <div>
+    <Container>
+      <Row className='flex-wrap'>
       {isLoading?
         <div className="text-center">
           <div className="spinner-border" role="status">
@@ -226,8 +227,7 @@ export const DetailModal = () =>{
         </div>:
         null
       } 
-      <div className='d-flex'>
-      <div className='w-70'>
+      <Col sm='12' lg='7'>
       <Modal.Body>
       <div className='divider'>
         <div><span className='text-secondary fs-6'>任務名:</span></div>
@@ -265,8 +265,8 @@ export const DetailModal = () =>{
           <TodoList TaskId={TaskId} taskTodoList={taskTodoList || []} />
         </div>
         </Modal.Body>
-      </div>
-      <div className='w-30'>
+      </Col>
+      <Col sm='12' lg='5'>
         <Modal.Body>
           <div>
             <div className='d-flex align-items-center'>
@@ -338,11 +338,8 @@ export const DetailModal = () =>{
         </textarea>
         </div>
         </Modal.Body>
-      </div>
-      </div>
-      <Modal.Footer>
-        
-      </Modal.Footer>
-      </div>
+      </Col>
+      </Row>
+    </Container>
     </Modal>)
 }

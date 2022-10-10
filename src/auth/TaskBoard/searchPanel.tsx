@@ -26,11 +26,11 @@ export const SearchPanel = () => {
   }
   const {type,status,taskName} = param
   return (
-    <Container fluid='md' className="mb-3">
+    <Container fluid='md' className="mb-3 p-0">
   
     <form onSubmit={handleSubmit(onSubmit)}>
      <Row className="d-flex align-items-center flex-wrap">
-      <Col xs='12' md='4' lg='3'>
+      <Col xs='12' lg='3'>
         <Form.Group 
             controlId="exampleForm" 
             className="d-flex align-items-center">
@@ -43,7 +43,7 @@ export const SearchPanel = () => {
                 />
         </Form.Group>
       </Col>
-      <Col xs='12' md='2' lg='2' className='mt-xs-2'>
+      <Col xs='12' lg='2' className='mt-xs-2'>
         <Form.Select 
             {...register("Status")} 
             className="h-25p font-color" 
@@ -57,7 +57,7 @@ export const SearchPanel = () => {
             <option value="done">done</option>
         </Form.Select>
       </Col>
-      <Col xs='12' md='2' className='mt-xs-2'>
+      <Col xs='12' lg='2' className='mt-xs-2'>
         <Form.Select 
         {...register("type")} 
         className="h-25p font-color" 
@@ -76,9 +76,9 @@ export const SearchPanel = () => {
         </Form.Select>
       </Col>
       {/* <Select label="負責人" {...register("owner")} /> */}
-      <Col xs='12' md='4'>
+      <Col xs='12' lg='4'>
       <Button type="submit" children='Search' className="text-white mt-xs-2" />
-      <Button type="reset" children='Reset' className="text-white mt-xs-2 ms-2" onClick={()=> reset()} />
+      <Button type="reset" children='Reset' className="text-white mt-xs-2 ms-3" onClick={()=> reset()} />
       </Col>
       </Row>
     </form>
