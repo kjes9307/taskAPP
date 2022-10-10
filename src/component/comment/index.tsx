@@ -46,18 +46,17 @@ export const Comment = (props:CommentProp) =>{
             </Toast.Header>
             <Toast.Body>
               {mode === false?
-                <div className='d-flex justify-content-between'>
-                  <span onClick={()=>setEdit(true)}>{comment}</span>
+                <div className='d-flex justify-content-between align-items-center'>
+                  <span onClick={()=> {if(userInfo?.id === user._id )setEdit(true)}}>{comment}</span>
                   {
                     userInfo?.id === user._id 
                       &&
-                    <span 
-                      className="material-symbols-outlined opacity-0 mouseHover"                   
+                    <Icon 
+                      icon='x' 
+                      className="opacity-0 mouseHover"                   
                       style={{cursor:"pointer"}}
                       onClick={deleteComment}
-                    >
-                      close
-                    </span>
+                    />
                   } 
                 </div>
                 :
