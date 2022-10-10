@@ -27,36 +27,40 @@ export const SearchPanel = () => {
   const {type,status,taskName} = param
   return (
     <Container fluid='md' className="mb-3">
-    <Row>
-    <Col md='12'>
+  
     <form onSubmit={handleSubmit(onSubmit)}>
-     <div className="d-flex align-items-center">
-     <Form.Group 
-        controlId="exampleForm" 
-        className="d-flex align-items-center">
-        <Form.Control 
-            {...register('taskName')} 
-            type="text"
-            value={taskName || ''}
-            placeholder="任務名" 
-            onChange={(e)=>setPanelParam({...param,taskName:e.target.value})}
-            />
-    </Form.Group>
-    <Form.Select 
-        {...register("Status")} 
-        className="w-100p ms-3 h-25p font-color" 
-        value={status || ''} 
-        aria-label="Default select example"
-        onChange={(e)=>setPanelParam({...param,status:e.target.value})}
-        >
-        <option value=''>狀態</option>
-        <option value="idle">idle</option>
-        <option value="ongoing">ongoing</option>
-        <option value="done">done</option>
-    </Form.Select>
-    <Form.Select 
+     <Row className="d-flex align-items-center flex-wrap">
+      <Col xs='12' md='4' lg='3'>
+        <Form.Group 
+            controlId="exampleForm" 
+            className="d-flex align-items-center">
+            <Form.Control 
+                {...register('taskName')} 
+                type="text"
+                value={taskName || ''}
+                placeholder="任務名" 
+                onChange={(e)=>setPanelParam({...param,taskName:e.target.value})}
+                />
+        </Form.Group>
+      </Col>
+      <Col xs='12' md='2' lg='2' className='mt-xs-2'>
+        <Form.Select 
+            {...register("Status")} 
+            className="h-25p font-color" 
+            value={status || ''} 
+            aria-label="Default select example"
+            onChange={(e)=>setPanelParam({...param,status:e.target.value})}
+            >
+            <option value=''>狀態</option>
+            <option value="idle">idle</option>
+            <option value="ongoing">ongoing</option>
+            <option value="done">done</option>
+        </Form.Select>
+      </Col>
+      <Col xs='12' md='2' className='mt-xs-2'>
+        <Form.Select 
         {...register("type")} 
-        className="w-100p ms-3 h-25p font-color" 
+        className="h-25p font-color" 
         value={type || ''} 
         aria-label="Default select example"
         onChange={(e)=>setPanelParam({...param,type:e.target.value})}
@@ -70,13 +74,14 @@ export const SearchPanel = () => {
         <option value={5}>Improvement</option>
 
         </Form.Select>
+      </Col>
       {/* <Select label="負責人" {...register("owner")} /> */}
-      <Button type="submit" children='Search' className="ms-4 text-white" />
-      <Button type="reset" children='Reset' className="ms-4 text-white" onClick={()=> reset()} />
-      </div>
+      <Col xs='12' md='4'>
+      <Button type="submit" children='Search' className="text-white mt-xs-2" />
+      <Button type="reset" children='Reset' className="text-white mt-xs-2 ms-2" onClick={()=> reset()} />
+      </Col>
+      </Row>
     </form>
-    </Col>
-    </Row>
     </Container>
   );
 };

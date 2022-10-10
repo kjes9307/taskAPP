@@ -1,10 +1,18 @@
-.w-100p{
-    width: 120px !important;
-}
+
 // .h-25p{
 //     height: 30px !important;
 // }
 
 .mouseHover:hover{
     opacity: 100 !important;
+}
+@mixin mobile-margin{
+    @media (max-width:767px) {
+        @content;
+    }
+}
+.mt-xs-2 {
+    @include mobile-margin{
+        margin-top: 8px;
+    }
 }
