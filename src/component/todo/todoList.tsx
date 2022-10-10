@@ -238,9 +238,10 @@ interface DataType {
     const mouseEvent = (event: boolean) => {
       showDisplay(event);
     };
-    const check = (event: React.ChangeEvent<HTMLInputElement>, id: string) => {
+    const check = async(event: React.ChangeEvent<HTMLInputElement>, id: string) => {
       if (id === "") return;
       updateItem(id, event.target.checked);
+      await editListAsync({_id : item?._id, done: event.target.checked})
     };
     const deleteTodo = (id: string) => {
         delItem(id);

@@ -245,7 +245,7 @@ export const DetailModal = () =>{
                 onClick={()=>setOpen(!open)}>Cancel
               </button>
               <button 
-                className='btn btn-primary ms-2' 
+                className='btn btn-primary ms-2 text-white' 
                 onClick={handleSave}>Save
               </button>
             </div>
