@@ -60,7 +60,7 @@ export const SelectPerson = (props:SelectPerson) =>{
                         renderOption = {renderCustom}
                         icon='magnifying-glass'
                         onClick={()=> setOpen(!open)} 
-                        />
+                    />
                 }
             </div>
         </div>

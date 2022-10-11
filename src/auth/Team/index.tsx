@@ -7,7 +7,7 @@ export const TeamUp =() =>{
         <Container>
             <Row>
                 <Col sm='12' md='2' className='mb-2'>
-                <h2 className='font-color'>Group</h2>
+                <h2 className='font-color fs-4 text-left'>Group</h2>
                 <ul className="list-group">
                     <li className="list-group-item">
                         <Link to='group' className='text-decoration-none'>
