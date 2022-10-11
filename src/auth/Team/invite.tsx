@@ -11,8 +11,8 @@ interface UserProps {
 export const Invites = () =>{
     const [user, setUser] = useState<UserProps[]>([])
     const handSelect = async(e:DataSourceType<UserProps>) =>{
-        const {name,_id} = e ;
-        const arr = [{name,_id}]
+        const {name,_id,photo} = e ;
+        const arr = [{name,_id,photo}]
         setUser([...user,...arr])
     }
     const renderCustom = (item: DataSourceType<UserProps>) => {
@@ -35,9 +35,9 @@ export const Invites = () =>{
         )
     }
     return (
-        <Col sm='12' md='5'>
+        <Col sm='12' md='10'>
             <h2>收到的邀請</h2>
-            <Card>
+            <Card className='w-45 ms-2 mt-1'>
                 <Card.Body>
                     <div className='d-flex align-items-center mb-2'>
                         <Card.Title className='mb-0'>
@@ -65,8 +65,26 @@ export const Invites = () =>{
                 />
                 </div>
             </div>
-            <div className='mt-3'>
-            {user.length>0 ? user?.map((x)=> <div className='mt-3' key={x._id}>{x.name}</div>):null}
+            <div className="flex-wrap d-flex">
+                {user.length>0 ? user?.map((x)=> (
+                    <Card className='w-45 ms-2 mt-1' key={x._id}>
+                        <Card.Body>
+                        <div className='d-flex align-items-center mb-2'>
+                            <Card.Title className='mb-0'>
+                                <img src={x?.photo || '/\images/\joe-shields-dLij9K4ObYY-unsplash.jpg'} alt="test" className='avatar-img' />
+                            </Card.Title>
+                            <div className='ms-2'>
+                                <span className='text-dark fs-6'>{x.name}</span>
+                            </div>
+                        </div>
+                        <Card.Text>
+                            Hello , i am here to invite you to join our mission.
+                        </Card.Text>
+                        <Button className='text-white'>Invite</Button>
+                        <Button className='text-white ms-2'>Cancel</Button>
+                        </Card.Body>
+                    </Card>
+                )):null}
             </div>
         </Col>
     )

@@ -37,7 +37,7 @@ export const Comment = (props:CommentProp) =>{
         <div className='d-flex align-items-start mt-2'>
         {user.photo?
          <img src={user.photo} className="rounded-circle comment-avatar" alt="avatar" />:
-         <Icon icon='user' className="rounded-circle comment-avatar" />
+         <img src='/images/joe-shields-dLij9K4ObYY-unsplash.jpg' className="rounded-circle comment-avatar" alt="avatar" />
         }
           <Toast className='w-100 border shadow-none position-relative ms-3'>
             <Toast.Header closeButton={false}>
