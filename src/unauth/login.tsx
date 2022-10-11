@@ -30,7 +30,7 @@ export const LoginForm = (props:switchModeParam) => {
     <h2 className="text-secondary mb-4">登入</h2>
     <Form onSubmit={handleSubmit(onSubmit)}>
       <Form.Group className="mb-5" controlId="formBasicEmail">
-        <Form.Label><h6 className="text-dark mb-0">電子信箱</h6></Form.Label>
+        <Form.Label><h6 className="text-dark mb-0">電子信箱 <Icon icon='envelope' /></h6></Form.Label>
         <Form.Control  placeholder="Enter email" {...register("email",{ pattern: emailRule,required: true, })} />
         {errors?.email?.type === "pattern" && 
           <div className="text-danger d-flex align-items-center alert-font">
