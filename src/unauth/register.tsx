@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {Form, Button, Spinner } from 'react-bootstrap';
 import {useAuth} from "context/userContext"
 import {useAsync} from "utils/use-async";
+import Icon from 'component/Icon'
 type RegisterInputs = {
   email: string,
   password: string,
@@ -29,8 +30,12 @@ export const RegisterForm = (props:switchModeParam) => {
       setMsg(error)
     }
   };
+  const [open,setOpen] = useState(false)
+  const handleType = () =>{
+    setOpen(!open)
+  }
   const emailRule = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z]+$/i;
-  const checkRule = /^[A-Za-z0-9]{6,}$/;
+  const checkRule = /^[A-Za-z0-9]{8,}$/;
   console.log(errors)
   return (
     <>
@@ -52,7 +57,7 @@ export const RegisterForm = (props:switchModeParam) => {
       </Form.Group>
       <Form.Group className="mb-4" controlId="formBasicPassword">
         <Form.Label><h6 className="text-dark mb-0">暱稱</h6></Form.Label>
-        <Form.Control type="text" placeholder="暱稱" {...register("name", {required: true ,minLength: 2, maxLength:6})} />
+        <Form.Control type="text" placeholder="暱稱" {...register("name", {required: true ,minLength: 2, maxLength:8})} />
         {errors?.name?.type === "required" && 
           <div className="text-danger d-flex align-items-center alert-font">
           <span className="material-symbols-outlined me-1 mt-1 alert-font">warning</span>This field is required
@@ -65,13 +70,13 @@ export const RegisterForm = (props:switchModeParam) => {
         }
         {errors?.name?.type === "maxLength" && 
           <div className="text-danger d-flex align-items-center alert-font">
-          <span className="material-symbols-outlined me-1 mt-1 alert-font">warning</span>name can not over 6 characters
+          <span className="material-symbols-outlined me-1 mt-1 alert-font">warning</span>name can not over 8 characters
           </div>
         }
       </Form.Group>
       <Form.Group className="mb-4" controlId="formBasicPassword">
-        <Form.Label><h6 className="text-dark mb-0">輸入密碼</h6></Form.Label>
-        <Form.Control type="password" placeholder="Password" {...register("password", {pattern: checkRule ,required: true ,minLength: 6})} />
+        <Form.Label><h6 className="text-dark mb-0">輸入密碼 <Icon icon='eye' onClick={handleType} /></h6></Form.Label>
+        <Form.Control type={!open?"password":"text"} placeholder="Password" {...register("password", {pattern: checkRule ,required: true ,minLength: 6})} />
         {errors?.password?.type === "required" && 
           <div className="text-danger d-flex align-items-center alert-font">
           <span className="material-symbols-outlined me-1 mt-1 alert-font">warning</span>This field is required
@@ -91,7 +96,7 @@ export const RegisterForm = (props:switchModeParam) => {
       </Form.Group>
       <Form.Group className="mb-4" controlId="formCopyPassword">
         <Form.Label><h6 className="text-dark mb-0">再次輸入密碼</h6></Form.Label>
-        <Form.Control type="password" placeholder="Check Password" {...register("confirmPassword", { required: true,validate: {
+        <Form.Control type={!open?"password":"text"} placeholder="Check Password" {...register("confirmPassword", { required: true,validate: {
       checkSame: v => v === getValues('password')
     } })} />
         {errors?.confirmPassword?.type === "required" && 
