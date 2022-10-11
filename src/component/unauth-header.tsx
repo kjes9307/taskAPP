@@ -7,7 +7,7 @@ export const UnAuthHeader = () =>{
         <header className="sticky-top mb-8">
             <div className="position-relative d-sm-flex justify-content-sm-between align-items-sm-center">
                 <h1 className="text-center text-lg-start mb-0">
-                <a href="#home" className="brand-color text-decoration-none click">Food Map</a>
+                <a href="#home" className="brand-color text-decoration-none click">DETAILS</a>
                 </h1>
                 <ul className="d-none d-sm-block d-sm-flex mb-0">
                     <li className="list-unstyled "><a href="/" className="text-decoration-none fs-6 brand-color click">首頁</a></li>
