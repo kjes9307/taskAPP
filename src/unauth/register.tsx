@@ -55,7 +55,7 @@ export const RegisterForm = (props:switchModeParam) => {
           </div>
         }
       </Form.Group>
-      <Form.Group className="mb-4" controlId="formBasicName">
+      <Form.Group className="mb-4" controlId="BasicName">
         <Form.Label><h6 className="text-dark mb-0">暱稱</h6></Form.Label>
         <Form.Control type="text" placeholder="暱稱" {...register("name", {required: true ,minLength: 2, maxLength:8})} />
         {errors?.name?.type === "required" && 

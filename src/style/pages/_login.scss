@@ -26,6 +26,10 @@
 }
 
 .login-img{
+    @include pad{
+        width: 360px;
+        height: 480px;
+    }
     @include desktop{
         width: 480px;
         height: 640px;
