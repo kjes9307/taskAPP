@@ -11,6 +11,8 @@ import {Board} from 'auth/board'
 import {Epic} from 'auth/epic'
 import {TaskBoard} from 'auth/TaskBoard'
 import {TeamUp} from 'auth/Team';
+import {Group} from 'auth/Team/group'
+import {Invites} from 'auth/Team/invite'
 export const Main =() =>{
     
     return (
@@ -23,7 +25,11 @@ export const Main =() =>{
                         <Route path='Event' element={<TaskBoard />} /> 
                         <Route index element={<TaskBoard />} />
                     </Route>
-                    <Route path='team' element={<TeamUp />}></Route>
+                    <Route path='team' element={<TeamUp />}>
+                        <Route path='group' element={<Group />} />
+                        <Route path='invites' element={<Invites />} />
+                        <Route index element={<Group />} />
+                    </Route>
                 </Routes>
             <ProjectModal projectModalOpen={false} />
             <DeleteNote deleteModalOpen={false} />
