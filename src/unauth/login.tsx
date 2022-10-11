@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
 import {Form, Button, Spinner } from 'react-bootstrap';
 import {useAuth} from "context/userContext"
 import {useAsync} from "utils/use-async";
+import Icon from 'component/Icon'
 type LoginInputs = {
   email: string,
   password: string
@@ -14,7 +15,7 @@ export const LoginForm = (props:switchModeParam) => {
   const {appLogin} = useAuth(); // user 登入系統
   const {run,isLoading} = useAsync(undefined,{throwError:true}); // 處理所有異步請求 & 執行狀態
   const [errorInfo,setMsg] = useState<{message:string}|null>(null);
-
+  const [open,setOpen] = useState(false)
   const { register, handleSubmit, formState: { errors } } = useForm<LoginInputs>();
   const onSubmit: SubmitHandler<LoginInputs> = async data => {
     try{  
@@ -43,7 +44,8 @@ export const LoginForm = (props:switchModeParam) => {
         }
       </Form.Group>
       <Form.Group className="mb-1" controlId="formBasicPassword">
-        <Form.Control type="password" placeholder="Password" {...register("password", { required: true })} />
+        <Form.Label><h6 className="text-dark mb-0">輸入密碼 {!open ?<Icon icon='lock' style={{cursor:"pointer"}} onClick={()=> setOpen(!open)} />:<Icon icon='unlock' style={{cursor:"pointer"}} onClick={()=>setOpen(!open)} />}</h6></Form.Label>
+        <Form.Control type={!open?"password":"text"} placeholder="Password" {...register("password", { required: true })} />
         {errors?.password?.type === "required" && 
           <div className="text-danger d-flex align-items-center alert-font">
           <span className="material-symbols-outlined me-1 mt-1">warning</span>This field is required

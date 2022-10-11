@@ -55,7 +55,7 @@ export const RegisterForm = (props:switchModeParam) => {
           </div>
         }
       </Form.Group>
-      <Form.Group className="mb-4" controlId="formBasicPassword">
+      <Form.Group className="mb-4" controlId="formBasicName">
         <Form.Label><h6 className="text-dark mb-0">暱稱</h6></Form.Label>
         <Form.Control type="text" placeholder="暱稱" {...register("name", {required: true ,minLength: 2, maxLength:8})} />
         {errors?.name?.type === "required" && 
@@ -75,7 +75,7 @@ export const RegisterForm = (props:switchModeParam) => {
         }
       </Form.Group>
       <Form.Group className="mb-4" controlId="formBasicPassword">
-        <Form.Label><h6 className="text-dark mb-0">輸入密碼 <Icon icon='eye' onClick={handleType} /></h6></Form.Label>
+        <Form.Label><h6 className="text-dark mb-0">輸入密碼 {!open ?<Icon icon='lock' style={{cursor:"pointer"}} onClick={handleType} />:<Icon icon='unlock' style={{cursor:"pointer"}} onClick={handleType} />}</h6></Form.Label>
         <Form.Control type={!open?"password":"text"} placeholder="Password" {...register("password", {pattern: checkRule ,required: true ,minLength: 6})} />
         {errors?.password?.type === "required" && 
           <div className="text-danger d-flex align-items-center alert-font">
