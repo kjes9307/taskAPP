@@ -59,7 +59,7 @@ export const SearchItem =(props:IfuncProps) =>{
 export const ContainBox =(props: DataType) =>{
     const {todoList,userList} =props
     return (
-            <Row>
+            <Row className='note-board-overflow'>
             {
                 todoList?.length !== 0 ? todoList?.map((item,idx)=>{
                     

@@ -53,6 +53,11 @@ $utilities: map-merge(
   background-color: #F8B52E; // #FFFACD;
   margin: 0 -8px;
 }
+.note-board-overflow{
+  height: calc(100vh - 230px);
+  overflow-y: auto;
+  align-content: flex-start;
+}
 
 
 
