@@ -34,8 +34,17 @@ export const Invites = () =>{
             </div>
         )
     }
+    const handInvite = (id:string) =>{
+        if(id){
+            setUser(prevState=> prevState.filter(x=> x._id !== id))
+        }
+    }
+    const handInviteSend = (id:string) =>{
+
+    }
     return (
         <Col sm='12' md='10'>
+          <div className='flex-column d-flex justify-content-between gap-12'>  
             <h2>收到的邀請</h2>
             <Card className='w-45 ms-2 mt-1'>
                 <Card.Body>
@@ -80,12 +89,14 @@ export const Invites = () =>{
                         <Card.Text>
                             Hello , i am here to invite you to join our mission.
                         </Card.Text>
-                        <Button className='text-white'>Invite</Button>
-                        <Button className='text-white ms-2'>Cancel</Button>
+                        <Button onClick={()=>handInviteSend(x?._id ||'')} className='text-white'>Invite</Button>
+                        <Button onClick={()=>handInvite(x?._id ||'')} className='text-white ms-2'>Cancel</Button>
                         </Card.Body>
                     </Card>
                 )):null}
             </div>
+            <h2 className='mb-0'>邀請中</h2>
+          </div>  
         </Col>
     )
 }
