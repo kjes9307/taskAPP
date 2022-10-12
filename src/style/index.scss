@@ -58,7 +58,11 @@ $utilities: map-merge(
   overflow-y: auto;
   align-content: flex-start;
 }
-
+.team-board-overflow{
+  height: calc(100vh - 230px);
+  overflow-y: auto;
+  align-content: flex-start;
+}
 
 
 

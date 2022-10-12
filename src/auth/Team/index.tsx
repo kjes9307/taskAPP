@@ -5,7 +5,7 @@ import Icon from 'component/Icon'
 export const TeamUp =() =>{
     return (
         <Container>
-            <Row>
+            <Row className='team-board-overflow'>
                 <Col sm='12' md='2' className='mb-2'>
                 <h2 className='font-color fs-4 text-left'>Group</h2>
                 <ul className="list-group">
