@@ -179,7 +179,8 @@ export const Invites = () =>{
                                 <img src={x?.receiver.photo || '/\images/\joe-shields-dLij9K4ObYY-unsplash.jpg'} alt="test" className='avatar-img' />
                             </Card.Title>
                             <div className='ms-2'>
-                                <span className='text-dark fs-6'>{x?.receiver.name}</span>
+                                <h4 className='mb-0'>{x?.receiver.name}</h4>
+                                <span className='text-dark fs-6'>{x?.projectId.name}</span>
                             </div>
                         </div>
                         <Card.Subtitle className='font-color'>
@@ -187,7 +188,7 @@ export const Invites = () =>{
                         </Card.Subtitle>
                         <Card.Text className='text-dark'>     
                             {x.status === 'await' && `Waiting for user's response.`}
-                            {x.status === 'reject' && `The request has been rejected`}
+                            {x.status === 'reject' && `The invitation has been rejected`}
                             {x.status === 'check' && `This user has joined your Note`}
                         </Card.Text>
                         <div className='mt-2 d-flex'>
