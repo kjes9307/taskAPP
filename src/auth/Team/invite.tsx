@@ -194,7 +194,7 @@ export const Invites = () =>{
                         <div className='mt-2 d-flex'>
                             {x.status === 'await' && <span className='text-dark fs-6'>狀態: 等待中</span>}
                             {x.status === 'reject' && <span className='text-danger fs-6'>狀態: 拒絕</span>}
-                            {x.status === 'check' && <span className='text-primary fs-6'>狀態: 成功</span>}
+                            {x.status === 'check' && <span className='text-success fs-6'>狀態: 成功</span>}
                         </div>
                         </Card.Body>
                     </Card>    
