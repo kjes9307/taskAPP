@@ -52,6 +52,7 @@ export const Input: FC<InputProps> = (props) => {
         <div className={cnames} style={style}>
         {icon && <div className="icon-wrapper"><Icon icon={icon} title={`title-${icon}`}/></div>}
         <input 
+            className="inner-input"
             disabled={disabled}
             {...restProps}
         />

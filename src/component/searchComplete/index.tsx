@@ -123,20 +123,15 @@ export const SearchComplete: FC<CompleteProps> = (props) => {
         setHighlightIndex(-1)
     },[devalue,fetchData])
     return (
-        <div 
-            className="position-relative" 
-            ref={componentRef}
-        >
-            <div className="position-absolute search-data">
-                <Input
-                    value={inputValue}
-                    {...restProps}
-                    onKeyDown={handleKeyDown}
-                    onChange={handleChange}
-                    placeholder="Search Member..."
-                />
-            </div>
-            <div className="position-absolute show-search select-person">
+        <div ref={componentRef} >
+            <Input
+                value={inputValue}
+                {...restProps}
+                onKeyDown={handleKeyDown}
+                onChange={handleChange}
+                placeholder="Search Member..."
+            />
+            <div className="select-person">
             { isLoading && <ul><Icon icon="spinner" spin/></ul>}
             {( suggestions?.length > 0) && generateDropdown()}
             </div>  

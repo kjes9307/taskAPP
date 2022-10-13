@@ -126,16 +126,16 @@ export const Invites = () =>{
                     </Card.Body>
                 </Card>
             ))}
-            <div className='d-flex mt-3 align-items-start'>
+            <Col sm='12' md='8'>
+                <div className='d-sm-flex'>
                 <h2 className='mb-0'>邀請別人</h2>
-                <div className='d-block'>
                 <SearchComplete
                     onSelect={handleAddInvite}
                     renderOption = {renderCustom}
                     icon='magnifying-glass'
                 />
                 </div>
-            </div>
+            </Col>
             <div className="flex-wrap d-flex">
                 {user.length>0 ? user?.map((x)=> (
                     <Card className='w-45 ms-2 mt-1' key={x._id}>
