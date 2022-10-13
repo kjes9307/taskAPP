@@ -1,7 +1,9 @@
 import {Col,Card,Button} from 'react-bootstrap'
-import { useState } from 'react'
+import { useState,useEffect } from 'react'
 import moment from 'moment'
 import { SearchComplete,DataSourceType } from 'component/searchComplete'
+import { useGetMember, member } from 'component/searchComplete/util'
+import { useDebounce } from 'utils'
 import Icon from 'component/Icon'
 import {useUserProjectList,useAddInvite,useEditInvite,useGetSendinglist,useGetReceivinglist,sendInvite} from './util'
 interface UserProps {
@@ -13,6 +15,10 @@ interface UserProps {
 }
 export const Invites = () =>{
     const [user,setUser] = useState<UserProps[]>([])
+    const [dataList,setDataList] = useState<member[]|[]>([])
+    const [param,setParam] = useState<string|undefined>(undefined)
+    const devalue = useDebounce(param,700)
+    const {data:fetchData,isLoading} = useGetMember(devalue as string) 
     const {data} = useUserProjectList()
     const {mutateAsync:addInviteAsync} = useAddInvite()
     const {mutateAsync:editInviteAsync} = useEditInvite()
@@ -91,6 +97,12 @@ export const Invites = () =>{
     const onCheckInvitation = async(inviteId:string,state: 'reject' | 'check') =>{
         await editInviteAsync({inviteId,state})
     }
+    const handleSearchChange = (e:string) => setParam(e)
+    useEffect(()=>{
+        if(fetchData){
+            setDataList(fetchData)
+        }
+    },[fetchData])
     //note-board-overflow
     return (
         <Col sm='12' md='10'>
@@ -137,6 +149,10 @@ export const Invites = () =>{
                     renderOption = {renderCustom}
                     icon='magnifying-glass'
                     className='form-control mt-1'
+                    onInputChange={handleSearchChange}
+                    fetchResult={dataList || []}
+                    isLoading={isLoading}
+                    searchKey={devalue}
                 />
                 </div>
             </Col>

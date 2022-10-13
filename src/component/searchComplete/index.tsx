@@ -2,8 +2,7 @@ import { FC, useState, ChangeEvent,KeyboardEvent, ReactElement, useEffect, useRe
 import classNames from "classnames";
 import  { Input,InputProps } from '../input'
 import Icon from 'component/Icon'
-import {useDebounce,useClickOutside} from 'utils'
-import {useGetMember} from './util'
+import {useClickOutside} from 'utils'
 
 interface DataSourceObject {
     value: string;
@@ -11,18 +10,26 @@ interface DataSourceObject {
 export type DataSourceType<T = {}> =  Partial<T & DataSourceObject>
 
 export interface CompleteProps extends Omit<InputProps, 'onSelect'> {
+    fetchResult?: DataSourceType[]
     onSelect?: (item: DataSourceType) => void; //選中誰
     renderOption?: (item: DataSourceType) => ReactElement;
     onClick?: ()=> void
+    onInputChange?: (item:string)=> void
     ref?:RefObject<HTMLElement>
+    isLoading?:boolean
+    searchKey?:string
 }
 
 export const SearchComplete: FC<CompleteProps> = (props) => {
     const {
         onSelect,
+        onInputChange,
         value,
         renderOption,
         onClick,
+        fetchResult,
+        isLoading,
+        searchKey,
         ...restProps
     } = props
     // 組件控制值
@@ -33,22 +40,20 @@ export const SearchComplete: FC<CompleteProps> = (props) => {
     const triggerSearch = useRef(false)
     const componentRef = useRef<HTMLDivElement>(null)
 
-    const devalue = useDebounce(inputValue,700)
-    const {data:fetchData,isError,isLoading} = useGetMember(devalue) 
-
     // console.log("@",suggestions) 
     //1 改變輸入值
     const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value.trim()
         setInputValue(value)
+        if(onInputChange){onInputChange(value)}
         triggerSearch.current = true;
-
     }
     const rendetSearch = (value:string) =>{
-        if(value &&  triggerSearch.current) {
+        if(value &&  triggerSearch.current && fetchResult ) {
+            // console.log("@",value,fetchResult)
             // 1.1 狀態改變 下拉選單更新
             // 1.2 fetchSuggestions 引入外部清單
-            let results = fetchData; // array or promise
+            let results = fetchResult; // array or promise
             console.log('trigged')
             setSuggestions(results);
 
@@ -121,9 +126,11 @@ export const SearchComplete: FC<CompleteProps> = (props) => {
     useClickOutside(componentRef, () => { setSuggestions([]);})
 
     useEffect(()=>{
-        rendetSearch(devalue as string)
+        if(searchKey && fetchResult){
+        rendetSearch(searchKey as string)
+        }
         setHighlightIndex(-1)
-    },[devalue,fetchData])
+    },[searchKey,fetchResult])
     return (
         <div className="position-relative" ref={componentRef} >
             <Input
