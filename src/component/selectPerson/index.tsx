@@ -1,12 +1,19 @@
-import { useState } from "react"
+import { useState,useEffect } from "react"
 import Icon from 'component/Icon'
 import {useAddMember} from './util'
 import {SearchComplete,DataSourceType} from 'component/searchComplete'
+import { useGetMember, member } from 'component/searchComplete/util'
+import { useDebounce } from 'utils'
+
 type SelectPerson = {
     projectId : string
 }
 export const SelectPerson = (props:SelectPerson) =>{
     const [open,setOpen] = useState(false)   
+    const [param,setParam] = useState<string|undefined>(undefined)
+    const [dataList,setDataList] = useState<member[]|[]>([])
+    const devalue = useDebounce(param,700)
+    const {data:fetchData,isLoading} = useGetMember(devalue as string) 
     const {projectId} = props
     const {mutateAsync:addMemberAsync} = useAddMember()
     const handSelect = async(e:DataSourceType<UserProps>) =>{
@@ -40,7 +47,12 @@ export const SelectPerson = (props:SelectPerson) =>{
             </div>
         )
     }
-
+    const handleSearchChange = (e:string) => setParam(e)
+    useEffect(()=>{
+        if(fetchData){
+            setDataList(fetchData)
+        }
+    },[fetchData])
     return (
         <div className="d-flex">
             <div>
@@ -60,6 +72,11 @@ export const SelectPerson = (props:SelectPerson) =>{
                         renderOption = {renderCustom}
                         icon='magnifying-glass'
                         onClick={()=> setOpen(!open)} 
+                        className='form-control mt-1'
+                        onInputChange={handleSearchChange}
+                        fetchResult={dataList || []}
+                        isLoading={isLoading}
+                        searchKey={devalue}
                     />
                 }
             </div>
