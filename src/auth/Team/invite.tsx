@@ -60,8 +60,11 @@ export const Invites = () =>{
     }
     const handleAddInvite = (e:DataSourceType<UserProps>) =>{
         const {name,_id,photo} = e ;
-        const arr = [{name,_id,photo,currentVal:'',message:''}]
-        setUser([...user,...arr])
+        let isDuplicate = user.filter(x=> x._id === _id)
+        if(isDuplicate.length < 1){
+            const arr = [{name,_id,photo,currentVal:'',message:''}]
+            setUser([...user,...arr])
+        }
     }
     const handleDeleteList = (inviteId:string) =>{
         if(inviteId){
@@ -153,7 +156,7 @@ export const Invites = () =>{
                             Hello , i am here to invite you to join our mission.
                         </Card.Text>
                         <div>
-                            <select onChange={e=>handleNoteChange(e,x?._id || '')}>
+                            <select className='form-control' onChange={e=>handleNoteChange(e,x?._id || '')}>
                                 <option key='' value=''>選擇Note...</option>
                                 {data && data?.map(project=>(
                                     <option key={project._id} value={project._id}>{project.name}</option>

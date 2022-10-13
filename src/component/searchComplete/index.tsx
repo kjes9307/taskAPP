@@ -28,6 +28,7 @@ export const SearchComplete: FC<CompleteProps> = (props) => {
     // 組件控制值
     const [ inputValue, setInputValue ] = useState<string>('')
     const [ suggestions, setSuggestions ] = useState<DataSourceType[]>([])
+    const [ history, setHistory] = useState<string[]>([])
     const [ highlightIndex, setHighlightIndex ] = useState(-1)
     const triggerSearch = useRef(false)
     const componentRef = useRef<HTMLDivElement>(null)
@@ -47,7 +48,7 @@ export const SearchComplete: FC<CompleteProps> = (props) => {
         if(value &&  triggerSearch.current) {
             // 1.1 狀態改變 下拉選單更新
             // 1.2 fetchSuggestions 引入外部清單
-            const results = fetchData; // array or promise
+            let results = fetchData; // array or promise
             console.log('trigged')
             setSuggestions(results);
 
@@ -109,6 +110,7 @@ export const SearchComplete: FC<CompleteProps> = (props) => {
     // 3 展示清單元素被點擊時 展示元素訊息
     const handleSelect = (item: DataSourceType) => {
         setInputValue(item.value as string)
+        setHistory([...history,item.value as string])
         setSuggestions([])
         if ( onSelect ) {
             // 將元素訊息向外傳遞
