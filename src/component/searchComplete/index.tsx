@@ -98,7 +98,7 @@ export const SearchComplete: FC<CompleteProps> = (props) => {
                         'item-highlighted' : index === highlightIndex 
                     })
                     return (
-                        <li key={index} onClick={() => handleSelect(item)} className={cnames}>
+                        <li key={index} onClick={() => handleSelect(item)} className={cnames} style={{cursor:'pointer'}}>
                             {renderTemplate(item)}
                         </li>
                     )
@@ -123,7 +123,7 @@ export const SearchComplete: FC<CompleteProps> = (props) => {
         setHighlightIndex(-1)
     },[devalue,fetchData])
     return (
-        <div ref={componentRef} >
+        <div className="position-relative" ref={componentRef} >
             <Input
                 value={inputValue}
                 {...restProps}
@@ -131,7 +131,7 @@ export const SearchComplete: FC<CompleteProps> = (props) => {
                 onChange={handleChange}
                 placeholder="Search Member..."
             />
-            <div className="select-person">
+            <div className={inputValue ? `position-absolute select-person` :'d-none'}>
             { isLoading && <ul><Icon icon="spinner" spin/></ul>}
             {( suggestions?.length > 0) && generateDropdown()}
             </div>  

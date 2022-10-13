@@ -133,6 +133,7 @@ export const Invites = () =>{
                     onSelect={handleAddInvite}
                     renderOption = {renderCustom}
                     icon='magnifying-glass'
+                    className='form-control mt-1'
                 />
                 </div>
             </Col>
