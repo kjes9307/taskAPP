@@ -108,8 +108,12 @@ export const useTitle = (title : string , keepOnMount: boolean = true) =>{
 export const useClickOutside= (ref: RefObject<HTMLElement>,parent:RefObject<HTMLElement>, handler: Function) =>{
   useEffect(() => {
       const listener = (event: MouseEvent) => {
-          if(!ref.current || ref.current.contains(event.target as HTMLElement) || !parent.current || parent.current.contains(event.target as HTMLElement)){
-              return
+          if(!parent || !parent.current || parent.current.contains(event.target as HTMLElement)  ){
+            // 有點應急的解法
+            return
+          }
+          if(!ref.current || ref.current.contains(event.target as HTMLElement) ){
+            return
           }
           handler(event)
       }
@@ -117,5 +121,5 @@ export const useClickOutside= (ref: RefObject<HTMLElement>,parent:RefObject<HTML
       return () => {
           document.removeEventListener('click', listener)
       }
-  }, [ref, handler])
+  }, [ref,parent, handler])
 }  
