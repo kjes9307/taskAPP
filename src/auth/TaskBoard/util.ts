@@ -174,7 +174,7 @@ export interface SortProps {
 export const useReorderTask = () => {
   const client = useHttp();
   return useMutation((params: any) => {
-    return client("tasks/reorder", {
+    return client("task/reorder", {
       data: params,
       method: "POST",
     });

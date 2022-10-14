@@ -1,9 +1,9 @@
 import { Container,Row,Col,Spinner } from 'react-bootstrap';
 import React,{ useState, useRef } from 'react';
 import classNames from "classnames";
-import { DragDropContext } from 'react-beautiful-dnd';
+import { DragDropContext, DropResult } from 'react-beautiful-dnd';
 import { Drop, DropChild ,Drag } from 'component/drag';
-import {useBoardData,useAddKanban, ColumnType,Iprops} from './util'
+import {useBoardData,useAddKanban, ColumnType,Iprops,useReorderTask} from './util'
 import { CardItem ,DetailModal } from './cardItem';
 import { SearchPanel } from './searchPanel';
 import {CreateTask} from './createTask';
@@ -49,6 +49,7 @@ export const KanbanCol = React.forwardRef<HTMLDivElement,{kanban:Iprops<ColumnTy
 export const TaskBoard = ()=>{
   const {data,isLoading} = useBoardData();
   const {mutateAsync:addKanbanAsync,isError,error} = useAddKanban()
+  const {mutateAsync:reOrderAsync} = useReorderTask()
   const [kanbanName,setKanban] = useState('')
   const [edit,setEdit] = useState(false);
   const test = useRef<HTMLElement>(null);
@@ -66,7 +67,11 @@ export const TaskBoard = ()=>{
     let html = test.current as HTMLElement
     html.scrollLeft = html.scrollLeft+500
   };
-  
+  const handleDrag = (param:DropResult) =>{
+    const {source:{droppableId},draggableId} = param
+    let fromKanbanId = droppableId
+    console.log(param)
+  }
   return (
     <>
     
@@ -80,7 +85,7 @@ export const TaskBoard = ()=>{
       <h1 className='font-color'>STICKERS</h1>
       <SearchPanel />
       <Row className='d-flex flex-nowrap scroll-kanban' ref={test} >
-      <DragDropContext onDragEnd={(param)=>console.log(param)}>
+      <DragDropContext onDragEnd={(param)=>handleDrag(param)}>
       <Drop type={"COLUMN"}
                 direction={"horizontal"}
                 droppableId={"kanban"}>
