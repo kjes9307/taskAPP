@@ -17,6 +17,7 @@ export const Invites = () =>{
     const [user,setUser] = useState<UserProps[]>([])
     const [dataList,setDataList] = useState<member[]|[]>([])
     const [param,setParam] = useState<string|undefined>(undefined)
+    const [ history, setHistory] = useState<string[]>([])
     const devalue = useDebounce(param,700)
     const {data:fetchData,isLoading} = useGetMember(devalue as string) 
     const {data} = useUserProjectList()
@@ -66,6 +67,7 @@ export const Invites = () =>{
     }
     const handleAddInvite = (e:DataSourceType<UserProps>) =>{
         const {name,_id,photo} = e ;
+        setHistory([...history, _id as string])
         let isDuplicate = user.filter(x=> x._id === _id)
         if(isDuplicate.length < 1){
             const arr = [{name,_id,photo,currentVal:'',message:''}]
@@ -100,7 +102,12 @@ export const Invites = () =>{
     const handleSearchChange = (e:string) => setParam(e)
     useEffect(()=>{
         if(fetchData){
-            setDataList(fetchData)
+            if(history && history.length>0){
+                let filterResult = fetchData.filter(x=> history.indexOf(x._id) === -1)
+                setDataList(filterResult)
+            }else{
+                setDataList(fetchData)
+            }
         }
     },[fetchData])
     //note-board-overflow

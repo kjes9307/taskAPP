@@ -37,7 +37,6 @@ export const SearchComplete: FC<CompleteProps> = (props) => {
     // 組件控制值
     const [ inputValue, setInputValue ] = useState<string>('')
     const [ suggestions, setSuggestions ] = useState<DataSourceType[]>([])
-    const [ history, setHistory] = useState<string[]>([])
     const [ highlightIndex, setHighlightIndex ] = useState(-1)
     const triggerSearch = useRef(false)
     const componentRef = useRef<HTMLDivElement>(null)
@@ -117,7 +116,6 @@ export const SearchComplete: FC<CompleteProps> = (props) => {
     // 3 展示清單元素被點擊時 展示元素訊息
     const handleSelect = (item: DataSourceType) => {
         setInputValue(item.value as string)
-        setHistory([...history,item.value as string])
         setSuggestions([])
         if ( onSelect ) {
             // 將元素訊息向外傳遞

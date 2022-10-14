@@ -13,12 +13,14 @@ export const SelectPerson = (props:SelectPerson) =>{
     const parentRef = useRef<HTMLDivElement>(null)
     const [param,setParam] = useState<string|undefined>(undefined)
     const [dataList,setDataList] = useState<member[]|[]>([])
+    const [ history, setHistory] = useState<string[]>([])
     const devalue = useDebounce(param,700)
     const {data:fetchData,isLoading} = useGetMember(devalue as string) 
     const {projectId} = props
     const {mutateAsync:addMemberAsync} = useAddMember()
     const handSelect = async(e:DataSourceType<UserProps>) =>{
         const {_id:userId} = e ;
+        setHistory([...history, userId as string])
         if(userId&&projectId){
             await addMemberAsync({userId,projectId})
         }
@@ -51,7 +53,12 @@ export const SelectPerson = (props:SelectPerson) =>{
     const handleSearchChange = (e:string) => setParam(e)
     useEffect(()=>{
         if(fetchData){
-            setDataList(fetchData)
+            if(history && history.length>0){
+                let filterResult = fetchData.filter(x=> history.indexOf(x._id) === -1)
+                setDataList(filterResult)
+            }else{
+                setDataList(fetchData)
+            }
         }
     },[fetchData])
     return (
