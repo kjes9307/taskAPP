@@ -1,5 +1,6 @@
 import { useMutation,useQueryClient } from 'react-query';
 import { useHttp } from 'utils/request';
+import {useUrlQueryParam} from 'utils/url'
 
 type listData = {
     name?:string,
@@ -37,8 +38,11 @@ export const useEditList = () =>{
 export const useDeleteList = () =>{
   const client = useHttp()
   const queryClient = useQueryClient()
+  const [{ taskEdit }] = useUrlQueryParam([
+    "taskEdit",
+  ]);
   return useMutation((params:listData) =>  client(`task/deleteTodo`, {
-    data: {...params},
+    data: {...params,taskId:taskEdit},
     method: "DELETE",
   }),{
     onSuccess: () =>{
