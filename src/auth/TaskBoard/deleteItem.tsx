@@ -1,15 +1,19 @@
 import {useState} from 'react'
 import {Modal,Button,Container,Row,Col} from 'react-bootstrap'
 import { useDeleteTask,useDeleteKanban } from './util';
-export const DeleteModal = ({title,type,id}:{title:string,type:string,id:string})=>{
+export const DeleteModal = ({title,type,id,kanbanId}:{title:string,type:string,id:string,kanbanId?:string})=>{
     const [show, setShow] = useState(false);
     const useDelete = type === 'kanban' ? useDeleteKanban : useDeleteTask;
     const {mutateAsync} = useDelete()
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
     const submit = async () =>{
-        await mutateAsync(id)
-        setShow(false);
+      if(type === 'kanban' && !kanbanId ){
+        await mutateAsync({id})
+      }else{
+        await mutateAsync({id,kanbanId})
+      }
+      setShow(false);
     }
     let alert = type==='kanban' ? 
       <h1 className="font-color">Delete </h1> : 

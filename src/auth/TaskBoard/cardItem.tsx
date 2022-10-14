@@ -94,7 +94,7 @@ const Mark = ({name,keyword}:{name:string,keyword:string}) =>{
   </>
 }
 export const CardItem = (props:ColumnType) =>{
-    const {taskName,status,_id,idx,length,type,createAt} = props
+    const {taskName,status,_id,idx,length,type,createAt,kanbanId} = props
     const {startEdit} = useTaskModel()
     const [param]= useTaskSearchParam()
     const {taskName:keyword} = param
@@ -116,7 +116,7 @@ export const CardItem = (props:ColumnType) =>{
           </Card.Subtitle>
           </div>
           <div className='d-flex align-items-center justify-content-center' style={{width:30,height:30 ,zIndex:10}} onClick={(e)=> handleShow(e)}>
-          <DeleteModal id={_id || ""} type='task' title={taskName || ""} />
+          <DeleteModal kanbanId={kanbanId as string} id={_id || ""} type='task' title={taskName || ""} />
           </div>
         </div>
         <div className='font-color cardItem-sub text-end mt-2'>{createAt && moment(createAt).format("YYYY.MM.DD HH:mm")}</div>

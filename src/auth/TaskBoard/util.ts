@@ -83,7 +83,7 @@ export const useDeleteKanban = () =>{
   const client = useHttp()
   const queryClient = useQueryClient()
 
-  return useMutation((id:string) =>  client(`task/deleteKanBan/${id}`, {
+  return useMutation((param:{id:string}) =>  client(`task/deleteKanBan/${param.id}`, {
     data: {},
     method: "DELETE",
   }),{
@@ -125,8 +125,8 @@ export const useDeleteTask = () =>{
   const client = useHttp()
   const queryClient = useQueryClient()
 
-  return useMutation((id:string) =>  client(`task/deleteTask/${id}`, {
-    data: {},
+  return useMutation((param:{id:string,kanbanId?:string}) =>  client(`task/deleteTask/${param.id}`, {
+    data: {...param},
     method: "DELETE",
   }),{
     onSuccess: () =>queryClient.invalidateQueries(`task/getKanBan`)
