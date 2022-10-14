@@ -178,7 +178,7 @@ interface DataType {
       <>
       <ul className="nav nav-tabs d-flex align-items-center">
         {
-          defaultNav?.map((item)=>{
+          defaultNav.length>0 && defaultNav?.map((item)=>{
             return (
               <li key={item} className="nav-item" onClick={()=> {setNav(item);pageHandler(item)}}>
                 <div className={nav === item? `nav-link active text-primary d-flex align-items-center justify-content-between`: `nav-link text-dark d-flex align-items-center justify-content-between`}>
@@ -209,17 +209,17 @@ interface DataType {
       </ul>
       <ul className='list-group list-group-flush'>
         {todoList?.length !== 0 ? (
-          todoList?.map((item) => {
+          todoList?.map((item,idx) => {
             if(item.tab === nav){
             return (
-              <li key={item._id} className="list-group-item py-1 px-0">
-                <Item item={item} />
+              <li key={item._id+`${idx}`} className="list-group-item py-1 px-0">
+                <Item key={item._id} item={item} />
               </li>
             );
             }
           })
         ) : (
-          <li className="list-group-item">No data</li>
+          <li key='nodata' className="list-group-item">No data</li>
         )}
       </ul>
       </>
