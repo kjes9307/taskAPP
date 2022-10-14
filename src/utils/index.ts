@@ -105,10 +105,10 @@ export const useTitle = (title : string , keepOnMount: boolean = true) =>{
   },[keepOnMount,oldTitle])
 }
 
-export const useClickOutside= (ref: RefObject<HTMLElement>, handler: Function) =>{
+export const useClickOutside= (ref: RefObject<HTMLElement>,parent:RefObject<HTMLElement>, handler: Function) =>{
   useEffect(() => {
       const listener = (event: MouseEvent) => {
-          if(!ref.current || ref.current.contains(event.target as HTMLElement)){
+          if(!ref.current || ref.current.contains(event.target as HTMLElement) || !parent.current || parent.current.contains(event.target as HTMLElement)){
               return
           }
           handler(event)

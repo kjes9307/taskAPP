@@ -16,6 +16,7 @@ export interface CompleteProps extends Omit<InputProps, 'onSelect'> {
     onClick?: ()=> void
     onInputChange?: (item:string)=> void
     ref?:RefObject<HTMLElement>
+    parentRef?:RefObject<HTMLElement>
     isLoading?:boolean
     searchKey?:string
 }
@@ -30,6 +31,7 @@ export const SearchComplete: FC<CompleteProps> = (props) => {
         fetchResult,
         isLoading,
         searchKey,
+        parentRef,
         ...restProps
     } = props
     // 組件控制值
@@ -123,8 +125,13 @@ export const SearchComplete: FC<CompleteProps> = (props) => {
         }
         triggerSearch.current = false;
     }
-    useClickOutside(componentRef, () => { 
+    useClickOutside(componentRef,parentRef as RefObject<HTMLElement>, () => { 
         setSuggestions([]); 
+        if(onClick){onClick()}
+        if(searchKey){
+            setInputValue('')
+            if(onInputChange){onInputChange('')}
+        }
     })
 
     useEffect(()=>{

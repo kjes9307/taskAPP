@@ -1,4 +1,4 @@
-import { useState,useEffect } from "react"
+import { useState,useEffect,useRef } from "react"
 import Icon from 'component/Icon'
 import {useAddMember} from './util'
 import {SearchComplete,DataSourceType} from 'component/searchComplete'
@@ -10,6 +10,7 @@ type SelectPerson = {
 }
 export const SelectPerson = (props:SelectPerson) =>{
     const [open,setOpen] = useState(false)   
+    const parentRef = useRef<HTMLDivElement>(null)
     const [param,setParam] = useState<string|undefined>(undefined)
     const [dataList,setDataList] = useState<member[]|[]>([])
     const devalue = useDebounce(param,700)
@@ -55,7 +56,7 @@ export const SelectPerson = (props:SelectPerson) =>{
     },[fetchData])
     return (
         <div className="d-flex align-items-center">
-            <div>
+            <div ref={parentRef}>
             <Icon 
                 onClick={()=> setOpen(!open)} 
                 className='Icon-move rounded-circle p-2' 
@@ -77,6 +78,7 @@ export const SelectPerson = (props:SelectPerson) =>{
                         fetchResult={dataList || []}
                         isLoading={isLoading}
                         searchKey={devalue}
+                        parentRef={parentRef}
                     />
                 }
             </div>
