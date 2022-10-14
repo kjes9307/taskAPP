@@ -54,7 +54,7 @@ export const SearchComplete: FC<CompleteProps> = (props) => {
             // 1.1 狀態改變 下拉選單更新
             // 1.2 fetchSuggestions 引入外部清單
             let results = fetchResult; // array or promise
-            console.log('trigged')
+            // console.log('trigged')
             setSuggestions(results);
 
         }else {
@@ -123,7 +123,9 @@ export const SearchComplete: FC<CompleteProps> = (props) => {
         }
         triggerSearch.current = false;
     }
-    useClickOutside(componentRef, () => { setSuggestions([]);})
+    useClickOutside(componentRef, () => { 
+        setSuggestions([]); 
+    })
 
     useEffect(()=>{
         if(searchKey && fetchResult){
@@ -131,6 +133,13 @@ export const SearchComplete: FC<CompleteProps> = (props) => {
         }
         setHighlightIndex(-1)
     },[searchKey,fetchResult])
+
+    const handleIconClick = () =>{
+        if(searchKey){
+            setInputValue('')
+            if(onInputChange){onInputChange('')}
+        }
+    }
     return (
         <div className="position-relative" ref={componentRef} >
             <Input
@@ -139,6 +148,7 @@ export const SearchComplete: FC<CompleteProps> = (props) => {
                 onKeyDown={handleKeyDown}
                 onChange={handleChange}
                 placeholder="Search Member..."
+                iconAction={handleIconClick}
             />
             <div className={inputValue ? `position-absolute select-person` :'d-none'}>
             { isLoading && <ul><Icon icon="spinner" spin/></ul>}

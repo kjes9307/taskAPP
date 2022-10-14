@@ -54,7 +54,7 @@ export const SelectPerson = (props:SelectPerson) =>{
         }
     },[fetchData])
     return (
-        <div className="d-flex">
+        <div className="d-flex align-items-center">
             <div>
             <Icon 
                 onClick={()=> setOpen(!open)} 
@@ -70,8 +70,8 @@ export const SelectPerson = (props:SelectPerson) =>{
                     <SearchComplete
                         onSelect={handSelect}
                         renderOption = {renderCustom}
-                        icon='magnifying-glass'
-                        onClick={()=> setOpen(!open)} 
+                        icon={!devalue?'magnifying-glass':'x'}
+                        onClick={()=> setOpen(false)} 
                         className='form-control mt-1'
                         onInputChange={handleSearchChange}
                         fetchResult={dataList || []}

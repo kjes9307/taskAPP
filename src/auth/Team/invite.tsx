@@ -147,7 +147,7 @@ export const Invites = () =>{
                 <SearchComplete
                     onSelect={handleAddInvite}
                     renderOption = {renderCustom}
-                    icon='magnifying-glass'
+                    icon={!devalue?'magnifying-glass':'x'}
                     className='form-control mt-1'
                     onInputChange={handleSearchChange}
                     fetchResult={dataList || []}

@@ -15,7 +15,8 @@ export interface InputProps extends Omit<InputHTMLAttributes<HTMLElement>, 'size
     prepend?: string | ReactElement;
     /**添加后缀 用于配置一些固定组合 */
     append?: string | ReactElement;
-    onChange? : (e: ChangeEvent<HTMLInputElement>) => void;
+    onChange?: (e: ChangeEvent<HTMLInputElement>) => void;
+    iconAction?: ()=> void
 }
 
 export const Input: FC<InputProps> = (props) => {
@@ -26,6 +27,7 @@ export const Input: FC<InputProps> = (props) => {
         prepend,
         append,
         style,
+        iconAction,
         ...restProps
     } = props
     const cnames = classNames('viking-input-wrapper', {
@@ -48,9 +50,19 @@ export const Input: FC<InputProps> = (props) => {
         restProps.value = fixControlledValue(props.value)
 
     }
+    const handleClick =()=>{
+        if(iconAction){
+            iconAction()
+        }
+    }
+    let iconClick = icon === 'x' ? true:false
     return (
         <div className={cnames} style={style}>
-        {icon && <div className="icon-wrapper"><Icon icon={icon} title={`title-${icon}`}/></div>}
+        {icon && 
+            <div className="icon-wrapper">
+                <Icon onClick={handleClick} icon={icon} title={`title-${icon}`} style={{cursor: iconClick ? 'pointer' : ''}} />
+            </div>
+        }
         <input 
             disabled={disabled}
             {...restProps}
