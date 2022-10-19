@@ -17,6 +17,7 @@
     "@welldone-software/why-did-you-render": "^7.0.1",
     "axios": "^0.27.2",
     "bootstrap": "^5.2.1",
+    "gh-pages": "^4.0.0",
     "moment": "^2.29.4",
     "qs": "^6.11.0",
     "react": "^18.2.0",
@@ -35,6 +36,8 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
+    "predeploy": "npm run build",
+    "deploy": "gh-pages -d build",
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
